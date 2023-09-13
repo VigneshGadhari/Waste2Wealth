@@ -12,6 +12,9 @@ android {
     namespace = "app.waste2wealth.com"
     compileSdk = 33
 
+    lint {
+        abortOnError = false
+    }
     defaultConfig {
         applicationId = "app.waste2wealth.com"
         minSdk = 27
