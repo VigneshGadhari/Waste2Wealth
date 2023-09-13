@@ -268,11 +268,11 @@ fun Community(
                             )
 
                         }
-//                        when (tabIndex) {
-//                            0 -> Challenges()
-//                            1 -> Clubs()
-//                            2 -> Posts()
-//                        }
+                        when (tabIndex) {
+                            0 -> Challenges()
+                            1 -> Clubs()
+                            2 -> Posts()
+                        }
                     }
 
 
