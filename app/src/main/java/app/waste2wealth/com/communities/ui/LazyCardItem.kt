@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.waste2wealth.com.communities.MainViewModel
+import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.communities.data.Drives
 
 val cleanlinessDrives = listOf(
@@ -41,7 +41,7 @@ val cleanlinessDrives = listOf(
 @Composable
 fun LazyCard(
     list: List<Drives?>?,
-    viewModel: MainViewModel
+    viewModel: CommunitiesViewModel
 ) {
     LazyColumn(
         contentPadding = PaddingValues(

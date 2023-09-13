@@ -34,6 +34,7 @@ import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
+import app.waste2wealth.com.rewards.ClaimedRewardsScreen
 import app.waste2wealth.com.rewards.NewRewardsScreen
 import app.waste2wealth.com.rewards.RewardDetails
 import app.waste2wealth.com.successtask.DeliveryDetailsScreen
@@ -211,6 +212,15 @@ fun NavigationController(
                 name = name.value,
             )
         }
+        composable(Screens.ClaimedRewards.route) {
+            ClaimedRewardsScreen(
+                navController = navController,
+                email = email.value,
+                name =name.value,
+                pfp =profile.value,
+                viewModel =viewModel
+            )
+        }
         composable(
             Screens.TaskDetail.route
                 .plus(
@@ -248,7 +258,7 @@ fun NavigationController(
         }
 
         composable(route = Screens.SuccessTask.route.plus(
-                    "?${TaskDetailsConstants.taskPrice.value}={taskPrice}"
+            "?${TaskDetailsConstants.taskPrice.value}={taskPrice}"
         ), arguments = listOf(
             navArgument("taskPrice") {
                 this.type = NavType.StringType
@@ -276,8 +286,8 @@ fun NavigationController(
         composable(Screens.QrCodeScanner.route) {
             ScanQr(viewModel = locationViewModel)
         }
-        
-        composable(Screens.Splash.route){
+
+        composable(Screens.Splash.route) {
             SplashScreen(navController = navController, email = email.value)
         }
 
