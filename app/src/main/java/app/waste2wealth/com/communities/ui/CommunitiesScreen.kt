@@ -15,19 +15,19 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Card
@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
@@ -244,7 +245,7 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                 ) {
                                     Card(
                                         backgroundColor =
-                                        items[0].cardColor,
+                                        items[viewModel.currentPage.value].cardColor,
                                         border = BorderStroke(
                                             width = 4.dp, color = items[0].borderColor
                                         ),
@@ -253,10 +254,15 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                             .width(160.dp)
                                             .height(100.dp)
                                     ) {
-                                        Text(text = "")
+                                        ProfileImage(
+                                            imageUrl = items[viewModel.currentPage.value].image,
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .clip(RoundedCornerShape(30.dp)),
+                                        )
                                     }
                                     Text(
-                                        text = "American Express \nPlatinum",
+                                        text =  items[viewModel.currentPage.value].title,
                                         fontSize = 21.sp,
                                         fontWeight = FontWeight.Bold,
                                         softWrap = true,
@@ -286,7 +292,7 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "American Express \n\n Platinum",
+                                        text =  items[viewModel.currentPage.value].title,
                                         fontSize = 25.sp,
                                         fontWeight = FontWeight.Bold,
                                         softWrap = true,

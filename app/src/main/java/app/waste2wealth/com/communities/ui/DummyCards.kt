@@ -5,5 +5,12 @@ import androidx.compose.ui.graphics.Color
 data class DummyCards(
     val borderColor: Color = Color.White,
     val cardColor: Color,
-    val name: String
+    val date: String,
+    val time: String,
+    val location: String,
+    val title: String,
+    val image: String,
+    val points: Int,
+    val emoji: String,
+    val type: String
 )
