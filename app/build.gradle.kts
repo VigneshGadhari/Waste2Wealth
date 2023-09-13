@@ -101,6 +101,10 @@ dependencies {
     implementation(libs.material.icons.extended)
     implementation("io.github.vanpra.compose-material-dialogs:core:0.9.0")
 
+    //HorizontalPager
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+
     // Camera
     implementation(libs.camera.android)
     implementation(libs.camera.lifecycle)
@@ -124,6 +128,9 @@ dependencies {
 
     //Stacked Cards
     implementation(libs.stacked.cards)
+
+    //Compose ConstraintLayout
+    implementation(libs.androidx.constraintlayout.compose)
 
     //Ktor-Client
     implementation("io.ktor:ktor-client-core:1.6.3")

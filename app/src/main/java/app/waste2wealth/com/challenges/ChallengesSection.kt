@@ -190,37 +190,37 @@ fun Community(
                         }
                     }
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 35.dp, end = 35.dp)
-                    ) {
-                        TabRow(
-                            selectedTabIndex = tabIndex,
-                            backgroundColor = appBackground,
-                            contentColor = textColor,
-                            divider = {
-                                TabRowDefaults.Divider(
-                                    color = Color(0xFFF37952),
-                                    thickness = 1.dp
-                                )
-                            },
-                        ) {
-                            cList.forEachIndexed { index, title ->
-                                Tab(text = {
-                                    Text(
-                                        title,
-                                        softWrap = false,
-                                        fontSize = 13.sp,
-                                    )
-                                },
-                                    selected = tabIndex == index,
-                                    onClick = { tabIndex = index }
-                                )
-                            }
-
-                        }
-                    }
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 35.dp, end = 35.dp)
+//                    ) {
+//                        TabRow(
+//                            selectedTabIndex = tabIndex,
+//                            backgroundColor = appBackground,
+//                            contentColor = textColor,
+//                            divider = {
+//                                TabRowDefaults.Divider(
+//                                    color = Color(0xFFF37952),
+//                                    thickness = 1.dp
+//                                )
+//                            },
+//                        ) {
+//                            cList.forEachIndexed { index, title ->
+//                                Tab(text = {
+//                                    Text(
+//                                        title,
+//                                        softWrap = false,
+//                                        fontSize = 13.sp,
+//                                    )
+//                                },
+//                                    selected = tabIndex == index,
+//                                    onClick = { tabIndex = index }
+//                                )
+//                            }
+//
+//                        }
+//                    }
                     Row(
                         modifier = Modifier
                             .offset(y = (-50).dp)
