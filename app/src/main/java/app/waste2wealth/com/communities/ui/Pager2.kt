@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -30,11 +32,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +50,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import app.waste2wealth.com.communities.MainViewModel
+import app.waste2wealth.com.components.permissions.Grapple
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -190,8 +195,9 @@ fun Pager2(
                                         orientation = Orientation.Vertical,
                                         startDragImmediately = true,
                                     )
-                                    .then(if (viewModel.expandedState.value < 0.9f)
-                                        Modifier
+                                    .then(
+                                        if (viewModel.expandedState.value < 0.9f)
+                                            Modifier
                                         else Modifier.rotate(-90f)
                                     ),
                             )
@@ -275,7 +281,9 @@ fun Pager2(
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                         Box(
-                            modifier = Modifier.fillMaxSize().padding(bottom = 15.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 15.dp),
                             contentAlignment = Alignment.BottomCenter
                         ) {
                             Button(
@@ -292,7 +300,8 @@ fun Pager2(
                                     color = Color.White,
                                     fontSize = 12.sp,
                                     fontFamily = monteSB,
-                                    modifier = Modifier.padding(bottom = 4.dp)
+                                    modifier = Modifier
+                                        .padding(bottom = 4.dp)
                                         .draggable(
                                             state = draggableState,
                                             orientation = Orientation.Vertical,
@@ -322,13 +331,59 @@ fun Pager2(
                 elevation = 10.dp,
                 shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
             ) {
-                Text(text = "")
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .draggable(
+                                    state = draggableState2,
+                                    orientation = Orientation.Vertical,
+                                    startDragImmediately = true,
+                                ),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Grapple(
+                                modifier = Modifier
+                                    .padding(bottom = 0.dp)
+                                    .requiredHeight(20.dp)
+                                    .requiredWidth(55.dp)
+                                    .alpha(0.22f), color = Color.DarkGray
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth().padding(start = 10.dp)
+                                .draggable(
+                                    state = draggableState2,
+                                    orientation = Orientation.Vertical,
+                                    startDragImmediately = true,
+                                ),
+                        ) {
+                            Text(
+                                text = "Drives Conducted",
+                                fontSize = 21.sp,
+                                color = Color.DarkGray,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.padding(start = 14.dp)
+                            )
+                        }
+                        LazyCard(
+                            list = cleanlinessDrives,
+                            viewModel = viewModel,
+                        )
+                    }
+                }
+
 
             }
 
         }
     }
 }
+
 
 
 
