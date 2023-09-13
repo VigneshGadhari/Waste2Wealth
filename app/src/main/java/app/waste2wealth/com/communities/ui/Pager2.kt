@@ -132,6 +132,7 @@ fun Pager2(
         userScrollEnabled = viewModel.expandedState.value < 0.5f,
     ) { page: Int ->
         val progressState = remember { mutableStateOf(0f) }
+        val isRegistered = remember { mutableStateOf(false) }
         val draggableState = rememberDraggableState(onDelta = { delta ->
             val dragProgress = -delta / 200
             val newProgress = progressState.value + dragProgress
@@ -170,11 +171,13 @@ fun Pager2(
             },
             modifier = Modifier.fillMaxSize(),
         ) {
-            Card(backgroundColor =
-            appBackground, border = BorderStroke(
-                width = 1.dp, color = items[page].cardColor
-            ), shape = RoundedCornerShape(40.dp), modifier = Modifier
-                .layoutId("card")) {
+            Card(
+                backgroundColor =
+                appBackground, border = BorderStroke(
+                    width = 1.dp, color = items[page].cardColor
+                ), shape = RoundedCornerShape(40.dp), modifier = Modifier
+                    .layoutId("card")
+            ) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column {
                         Row(
@@ -261,7 +264,9 @@ fun Pager2(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                isRegistered.value = true
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color(0xFFFD5065),
                                 contentColor = Color.White
@@ -270,7 +275,7 @@ fun Pager2(
                             modifier = Modifier.padding(start = 10.dp)
                         ) {
                             Text(
-                                text = "Join Now",
+                                text = "Register",
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 fontFamily = monteSB,
@@ -355,7 +360,8 @@ fun Pager2(
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(
                             modifier = Modifier
-                                .fillMaxWidth().padding(start = 10.dp)
+                                .fillMaxWidth()
+                                .padding(start = 10.dp)
                                 .draggable(
                                     state = draggableState2,
                                     orientation = Orientation.Vertical,
