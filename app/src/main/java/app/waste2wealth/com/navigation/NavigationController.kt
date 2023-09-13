@@ -23,6 +23,7 @@ import app.waste2wealth.com.challenges.Community
 import app.waste2wealth.com.collectwaste.CollectWaste
 import app.waste2wealth.com.collectwaste.CollectWasteInfo
 import app.waste2wealth.com.collectwaste.SuccessfullyCollected
+import app.waste2wealth.com.communities.ui.CommunitiesSection
 import app.waste2wealth.com.dashboard.NewDashboard
 import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
@@ -147,11 +148,9 @@ fun NavigationController(
 
         }
         composable(Screens.Community.route) {
-            Community(
+            CommunitiesSection(
                 navController = navController,
-                email = email.value,
-                name = name.value,
-                pfp = profile.value
+                email = email.value
             )
         }
         composable(Screens.ReportWaste.route) {
