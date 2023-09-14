@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "app.waste2wealth.com"
-    compileSdk = 33
+    compileSdk = 34
 
     lint {
         abortOnError = false
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "app.waste2wealth.com"
         minSdk = 27
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -152,5 +152,8 @@ dependencies {
 
     //Barcode
     implementation(libs.google.mlkit)
+
+    // MapBox
+    implementation("com.mapbox.maps:android:10.14.0")
 
 }

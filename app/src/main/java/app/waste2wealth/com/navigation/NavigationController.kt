@@ -31,6 +31,7 @@ import app.waste2wealth.com.login.CompleteProfile
 import app.waste2wealth.com.login.LoginPage
 import app.waste2wealth.com.login.onboarding.Onboarding
 import app.waste2wealth.com.login.onboarding.SettingUp
+import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste

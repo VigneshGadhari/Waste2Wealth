@@ -24,6 +24,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
@@ -46,9 +49,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.bottombar.BottomBar
+import app.waste2wealth.com.challenges.Challenges
+import app.waste2wealth.com.challenges.Clubs
+import app.waste2wealth.com.challenges.Posts
 import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
+import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -143,60 +150,101 @@ fun CollectWaste(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(30.dp))
-                    if (allWastes != null) {
-                        LazyColumn(
-                            contentPadding = PaddingValues(
-                                bottom = 150.dp,
-                                top = 40.dp
-                            )
+                    val cList = listOf("List View", "Map View (Beta)")
+                    var tabIndex by remember { mutableStateOf(0) }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 35.dp, end = 35.dp)
+                    ) {
+                        TabRow(
+                            selectedTabIndex = tabIndex,
+                            backgroundColor = appBackground,
+                            contentColor = textColor,
+                            divider = {
+                                TabRowDefaults.Divider(
+                                    color = Color(0xFFF37952),
+                                    thickness = 1.dp
+                                )
+                            },
                         ) {
-                            allWastes = allWastes?.sortedBy {
-                                distance(
-                                    viewModel.latitude,
-                                    viewModel.longitude,
-                                    it.latitude,
-                                    it.longitude
+                            cList.forEachIndexed { index, title ->
+                                Tab(text = {
+                                    Text(
+                                        title,
+                                        softWrap = false,
+                                        fontSize = 13.sp,
+                                    )
+                                },
+                                    selected = tabIndex == index,
+                                    onClick = { tabIndex = index }
                                 )
                             }
-                            itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
-                                WasteItemCard(
-                                    locationNo = "Location ${index + 1}",
-                                    address = wasteItem.address,
-                                    distance = "${
-                                        convertDistance(
-                                            distance(
-                                                viewModel.latitude,
-                                                viewModel.longitude,
-                                                wasteItem.latitude,
-                                                wasteItem.longitude
-                                            )
-                                        )
-                                    } away",
-                                    time = getTimeAgo(wasteItem.timeStamp),
-                                ) {
-                                    viewModel.locationNo.value = "Location ${index + 1}"
-                                    viewModel.address.value = wasteItem.address
-                                    viewModel.distance.value = "${
-                                        convertDistance(
-                                            distance(
-                                                viewModel.latitude,
-                                                viewModel.longitude,
-                                                wasteItem.latitude,
-                                                wasteItem.longitude
-                                            )
-                                        )
-                                    } away"
-                                    viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
-                                    viewModel.wastePhoto.value = wasteItem.imagePath
-                                    viewModel.theirLatitude.value = wasteItem.latitude
-                                    viewModel.theirLongitude.value = wasteItem.longitude
-                                    println("Collected time ${viewModel.time.value}")
-                                    navController.navigate(Screens.CollectWasteInfo.route)
-                                }
 
+                        }
+
+                    }
+                    if (tabIndex == 0) {
+                        Spacer(modifier = Modifier.height(30.dp))
+                        if (allWastes != null) {
+                            LazyColumn(
+                                contentPadding = PaddingValues(
+                                    bottom = 150.dp,
+                                    top = 40.dp
+                                )
+                            ) {
+                                allWastes = allWastes?.sortedBy {
+                                    distance(
+                                        viewModel.latitude,
+                                        viewModel.longitude,
+                                        it.latitude,
+                                        it.longitude
+                                    )
+                                }
+                                itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
+                                    WasteItemCard(
+                                        locationNo = "Location ${index + 1}",
+                                        address = wasteItem.address,
+                                        distance = "${
+                                            convertDistance(
+                                                distance(
+                                                    viewModel.latitude,
+                                                    viewModel.longitude,
+                                                    wasteItem.latitude,
+                                                    wasteItem.longitude
+                                                )
+                                            )
+                                        } away",
+                                        time = getTimeAgo(wasteItem.timeStamp),
+                                    ) {
+                                        viewModel.locationNo.value = "Location ${index + 1}"
+                                        viewModel.address.value = wasteItem.address
+                                        viewModel.distance.value = "${
+                                            convertDistance(
+                                                distance(
+                                                    viewModel.latitude,
+                                                    viewModel.longitude,
+                                                    wasteItem.latitude,
+                                                    wasteItem.longitude
+                                                )
+                                            )
+                                        } away"
+                                        viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
+                                        viewModel.wastePhoto.value = wasteItem.imagePath
+                                        viewModel.theirLatitude.value = wasteItem.latitude
+                                        viewModel.theirLongitude.value = wasteItem.longitude
+                                        println("Collected time ${viewModel.time.value}")
+                                        navController.navigate(Screens.CollectWasteInfo.route)
+                                    }
+
+                                }
                             }
                         }
+                    } else {
+                        MapScreen(
+                            navController = navController,
+                            viewModel = viewModel,
+                        )
                     }
 
                 }
