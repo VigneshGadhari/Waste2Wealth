@@ -156,419 +156,406 @@ fun NewDashboard(
                 }
             }
         }
-        PermissionDrawer(
-            drawerState = permissionDrawerState,
-            permissionState = permissionState,
-            rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                    ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-            withoutRationaleText = "Location permission required for functionality of this app." +
-                    " Please grant the permission.",
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(appBackground)
         ) {
-            Scaffold(bottomBar = {
-                BottomBar(navController = navController)
-            }) {
-                println(it)
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(appBackground)
+            Card(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(0.dp, 0.dp, 50.dp, 50.dp))
+                    .fillMaxWidth(),
+                backgroundColor = CardColor,
+
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(0.dp, 0.dp, 50.dp, 50.dp))
-                            .fillMaxWidth(),
-                        backgroundColor = CardColor,
-
-                        ) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        top = 45.dp,
-                                        bottom = 15.dp,
-                                        end = 25.dp,
-                                        start = 25.dp
-                                    ),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "Welcome Back",
-                                        color = Color.Gray,
-                                        fontSize = 13.sp,
-                                        fontFamily = monteSB,
-                                        modifier = Modifier.padding(bottom = 7.dp)
-                                    )
-                                    Text(
-                                        text = name,
-                                        color = CardTextColor,
-                                        fontSize = 20.sp,
-                                        fontFamily = monteBold,
-                                        modifier = Modifier.padding(bottom = 7.dp)
-                                    )
-                                    Text(
-                                        text = "Start making a difference today!",
-                                        color = Color.Gray,
-                                        fontSize = 13.sp,
-                                        fontFamily = monteSB,
-                                        modifier = Modifier.padding(bottom = 7.dp)
-                                    )
-                                }
-                                ProfileImage(
-                                    imageUrl = pfp,
-                                    modifier = Modifier
-                                        .size(70.dp)
-                                        .border(
-                                            width = 1.dp,
-                                            color = textColor,
-                                            shape = CircleShape
-                                        )
-                                        .padding(2.dp)
-                                        .clip(CircleShape)
-                                        .clickable {
-                                            navController.navigate(Screens.Profile.route)
-                                        }
-                                )
-                            }
-                            LazyVerticalGrid(
-                                columns = GridCells.Fixed(2),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 20.dp)
-                            ) {
-                                item {
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(top = 15.dp)
-                                            .offset(x = (-15).dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
-                                    ) {
-                                        Text(
-                                            text = "Points Earned",
-                                            color = CardTextColor,
-                                            fontSize = 14.sp,
-                                            fontFamily = monteBold,
-                                            softWrap = true,
-                                            modifier = Modifier.padding(start = 7.dp)
-                                        )
-                                        Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                            Icon(
-                                                painter = painterResource(id = R.drawable.coins),
-                                                contentDescription = "coins",
-                                                modifier = Modifier
-                                                    .size(20.dp)
-                                                    .padding(end = 5.dp),
-                                                tint = Color.Unspecified
-                                            )
-                                            Text(
-                                                text = pointsEarned,
-                                                color = CardTextColor,
-                                                fontSize = 15.sp,
-                                                fontFamily = monteNormal,
-                                            )
-                                        }
-
-                                    }
-                                }
-                                item {
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(top = 15.dp)
-                                            .offset(x = (-15).dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
-                                    ) {
-                                        Text(
-                                            text = "Points Redeemed",
-                                            color = CardTextColor,
-                                            fontSize = 14.sp,
-                                            fontFamily = monteBold,
-                                            softWrap = true,
-                                            modifier = Modifier.padding(start = 7.dp)
-                                        )
-                                        Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                            Icon(
-                                                painter = painterResource(id = R.drawable.coins),
-                                                contentDescription = "coins",
-                                                modifier = Modifier
-                                                    .size(20.dp)
-                                                    .padding(end = 5.dp),
-                                                tint = Color.Unspecified
-                                            )
-                                            Text(
-                                                text = pointsRedeemed,
-                                                color = CardTextColor,
-                                                fontSize = 15.sp,
-                                                fontFamily = monteNormal,
-                                            )
-                                        }
-
-                                    }
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(15.dp))
-                        }
-                    }
-
-
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
+                Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
+                            .padding(
+                                top = 45.dp,
+                                bottom = 15.dp,
+                                end = 25.dp,
+                                start = 25.dp
+                            ),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(horizontalAlignment = Alignment.Start) {
+                        Column {
                             Text(
-                                text = "Current Progress",
-                                color = textColor,
+                                text = "Welcome Back",
+                                color = Color.Gray,
+                                fontSize = 13.sp,
+                                fontFamily = monteSB,
+                                modifier = Modifier.padding(bottom = 7.dp)
+                            )
+                            Text(
+                                text = name,
+                                color = CardTextColor,
                                 fontSize = 20.sp,
                                 fontFamily = monteBold,
                                 modifier = Modifier.padding(bottom = 7.dp)
                             )
                             Text(
-                                text = "200 more points to reach weekly target",
-                                color = textColor,
-                                fontSize = 9.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(start = 0.dp)
+                                text = "Start making a difference today!",
+                                color = Color.Gray,
+                                fontSize = 13.sp,
+                                fontFamily = monteSB,
+                                modifier = Modifier.padding(bottom = 7.dp)
                             )
                         }
-
-                        ArcComposable(
-                            modifier = Modifier.padding(end = 25.dp),
-                            text = "50%"
+                        ProfileImage(
+                            imageUrl = pfp,
+                            modifier = Modifier
+                                .size(70.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = textColor,
+                                    shape = CircleShape
+                                )
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    navController.navigate(Screens.Profile.route)
+                                }
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .padding(5.dp),
-                            backgroundColor = Color.Transparent,
-                            elevation = 0.dp
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                ProfileImage(
-                                    imageUrl = R.drawable.ic_reportwaste,
-                                    modifier = Modifier
-                                        .size(70.dp)
-                                        .border(
-                                            width = 1.dp,
-                                            color = textColor,
-                                            shape = CircleShape
-                                        )
-                                        .padding(2.dp)
-                                        .clip(CircleShape)
-                                        .clickable {
-                                            navController.navigate(Screens.ReportWaste.route)
-                                        }
-                                )
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Text(
-                                    text = "Report Waste",
-                                    color = textColor,
-                                    fontSize = 13.sp,
-                                    fontFamily = monteNormal,
-                                    softWrap = true
-                                )
-                            }
-                        }
-
-                        Card(
-                            modifier = Modifier
-                                .padding(5.dp),
-                            backgroundColor = Color.Transparent,
-                            elevation = 0.dp
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                ProfileImage(
-                                    imageUrl = R.drawable.ic_collectwaste,
-                                    modifier = Modifier
-                                        .size(70.dp)
-                                        .border(
-                                            width = 1.dp,
-                                            color = textColor,
-                                            shape = CircleShape
-                                        )
-                                        .padding(2.dp)
-                                        .clip(CircleShape)
-                                        .clickable {
-                                            navController.navigate(Screens.CollectWasteLists.route)
-                                        }
-                                )
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Text(
-                                    text = "Collect Waste",
-                                    color = textColor,
-                                    fontSize = 13.sp,
-                                    fontFamily = monteNormal,
-                                    softWrap = true
-                                )
-                            }
-                        }
-
-                        Card(
-                            modifier = Modifier
-                                .padding(5.dp),
-                            backgroundColor = Color.Transparent,
-                            elevation = 0.dp
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                ProfileImage(
-                                    imageUrl = R.drawable.ic_rewards,
-                                    modifier = Modifier
-                                        .size(70.dp)
-                                        .border(
-                                            width = 1.dp,
-                                            color = textColor,
-                                            shape = CircleShape
-                                        )
-                                        .padding(2.dp)
-                                        .clip(CircleShape)
-                                        .clickable {
-                                            navController.navigate(Screens.Rewards.route)
-                                        }
-                                )
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Text(
-                                    text = "Rewards",
-                                    color = textColor,
-                                    fontSize = 13.sp,
-                                    fontFamily = monteNormal,
-                                    softWrap = true
-                                )
-                            }
-                        }
-
-                    }
-
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-
-                    Row(
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 25.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .padding(bottom = 20.dp)
                     ) {
-                        Text(
-                            text = "Upcoming Community Events",
-                            color = textColor,
-                            fontSize = 15.sp)
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .padding(top = 15.dp)
+                                    .offset(x = (-15).dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "Points Earned",
+                                    color = CardTextColor,
+                                    fontSize = 14.sp,
+                                    fontFamily = monteBold,
+                                    softWrap = true,
+                                    modifier = Modifier.padding(start = 7.dp)
+                                )
+                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.coins),
+                                        contentDescription = "coins",
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .padding(end = 5.dp),
+                                        tint = Color.Unspecified
+                                    )
+                                    Text(
+                                        text = pointsEarned,
+                                        color = CardTextColor,
+                                        fontSize = 15.sp,
+                                        fontFamily = monteNormal,
+                                    )
+                                }
 
-                        Text(
-                            text = "All Events",
-                            color = textColor,
-                            fontSize = 15.sp,
-                            modifier = Modifier.clickable {
-                                navController.navigate(Screens.Community.route)
                             }
+                        }
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .padding(top = 15.dp)
+                                    .offset(x = (-15).dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "Points Redeemed",
+                                    color = CardTextColor,
+                                    fontSize = 14.sp,
+                                    fontFamily = monteBold,
+                                    softWrap = true,
+                                    modifier = Modifier.padding(start = 7.dp)
+                                )
+                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.coins),
+                                        contentDescription = "coins",
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .padding(end = 5.dp),
+                                        tint = Color.Unspecified
+                                    )
+                                    Text(
+                                        text = pointsRedeemed,
+                                        color = CardTextColor,
+                                        fontSize = 15.sp,
+                                        fontFamily = monteNormal,
+                                    )
+                                }
+
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
+            }
+
+
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = "Current Progress",
+                        color = textColor,
+                        fontSize = 20.sp,
+                        fontFamily = monteBold,
+                        modifier = Modifier.padding(bottom = 7.dp)
+                    )
+                    Text(
+                        text = "200 more points to reach weekly target",
+                        color = textColor,
+                        fontSize = 9.sp,
+                        fontFamily = monteBold,
+                        modifier = Modifier.padding(start = 0.dp)
+                    )
+                }
+
+                ArcComposable(
+                    modifier = Modifier.padding(end = 25.dp),
+                    text = "50%"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 40.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+
+            ) {
+                Card(
+                    modifier = Modifier
+                        .padding(5.dp),
+                    backgroundColor = Color.Transparent,
+                    elevation = 0.dp
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ProfileImage(
+                            imageUrl = R.drawable.ic_reportwaste,
+                            modifier = Modifier
+                                .size(70.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = textColor,
+                                    shape = CircleShape
+                                )
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    navController.navigate(Screens.ReportWaste.route)
+                                }
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Report Waste",
+                            color = textColor,
+                            fontSize = 13.sp,
+                            fontFamily = monteNormal,
+                            softWrap = true
                         )
                     }
+                }
 
-                    LazyRow(contentPadding = PaddingValues(10.dp)) {
-                        items(communitiesItems.take(3)) { item ->
-                            Card(
+                Card(
+                    modifier = Modifier
+                        .padding(5.dp),
+                    backgroundColor = Color.Transparent,
+                    elevation = 0.dp
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ProfileImage(
+                            imageUrl = R.drawable.ic_collectwaste,
+                            modifier = Modifier
+                                .size(70.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = textColor,
+                                    shape = CircleShape
+                                )
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    navController.navigate(Screens.CollectWasteLists.route)
+                                }
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Collect Waste",
+                            color = textColor,
+                            fontSize = 13.sp,
+                            fontFamily = monteNormal,
+                            softWrap = true
+                        )
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .padding(5.dp),
+                    backgroundColor = Color.Transparent,
+                    elevation = 0.dp
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ProfileImage(
+                            imageUrl = R.drawable.ic_rewards,
+                            modifier = Modifier
+                                .size(70.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = textColor,
+                                    shape = CircleShape
+                                )
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    navController.navigate(Screens.Rewards.route)
+                                }
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Rewards",
+                            color = textColor,
+                            fontSize = 13.sp,
+                            fontFamily = monteNormal,
+                            softWrap = true
+                        )
+                    }
+                }
+
+            }
+
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 25.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Upcoming Community Events",
+                    color = textColor,
+                    fontSize = 15.sp
+                )
+
+                Text(
+                    text = "All Events",
+                    color = textColor,
+                    fontSize = 15.sp,
+                    modifier = Modifier.clickable {
+                        navController.navigate(Screens.Community.route)
+                    }
+                )
+            }
+
+            LazyRow(contentPadding = PaddingValues(10.dp)) {
+                items(communitiesItems.take(3)) { item ->
+                    Card(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(200.dp)
+                            .padding(end = 10.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        elevation = 10.dp,
+                        backgroundColor = CardColor
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            ProfileImage(
+                                imageUrl = item.image,
                                 modifier = Modifier
-                                    .width(300.dp)
-                                    .height(200.dp)
-                                    .padding(end = 10.dp),
-                                shape = RoundedCornerShape(10.dp),
-                                elevation = 10.dp,
-                                backgroundColor = CardColor
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxSize(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    ProfileImage(
-                                        imageUrl = item.image,
-                                        modifier = Modifier
-                                            .fillMaxWidth(0.5f)
-                                            .fillMaxHeight()
+                                    .fillMaxWidth(0.5f)
+                                    .fillMaxHeight()
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = item.title,
+                                    color = CardTextColor,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    softWrap = true
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = item.time,
+                                    color = CardTextColor,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Normal
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Button(
+                                    onClick = {
+
+                                    },
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = appBackground
                                     )
-                                    Spacer(modifier = Modifier.width(10.dp))
-                                    Column(modifier = Modifier.fillMaxWidth()) {
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Text(
-                                            text = item.title,
-                                            color = CardTextColor,
-                                            fontSize = 20.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            softWrap = true
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            imageVector = Icons.Filled.LocationOn,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(20.dp),
+                                            tint = CardColor
                                         )
-                                        Spacer(modifier = Modifier.height(10.dp))
+                                        Spacer(modifier = Modifier.width(10.dp))
                                         Text(
-                                            text = item.time,
-                                            color = CardTextColor,
+                                            text = "Register",
+                                            color = textColor,
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Normal
                                         )
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Button(
-                                            onClick = {
-
-                                            },
-                                            shape = RoundedCornerShape(10.dp),
-                                            colors = ButtonDefaults.buttonColors(
-                                                backgroundColor = appBackground
-                                            )
-                                        ) {
-                                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.LocationOn,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.size(20.dp),
-                                                    tint = CardColor
-                                                )
-                                                Spacer(modifier = Modifier.width(10.dp))
-                                                Text(
-                                                    text = "Register",
-                                                    color = textColor,
-                                                    fontSize = 10.sp,
-                                                    fontWeight = FontWeight.Normal
-                                                )
-                                            }
-                                        }
                                     }
-                                    Spacer(modifier = Modifier.width(10.dp))
                                 }
                             }
+                            Spacer(modifier = Modifier.width(10.dp))
                         }
-
                     }
-
-                    Spacer(modifier = Modifier.height(100.dp))
-
                 }
+
             }
+
+            Spacer(modifier = Modifier.height(100.dp))
+
         }
     }
 }

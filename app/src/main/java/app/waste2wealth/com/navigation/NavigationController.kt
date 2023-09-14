@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
@@ -49,7 +50,8 @@ import com.google.accompanist.navigation.animation.composable
 fun NavigationController(
     scaffoldState: ScaffoldState,
     locationViewModel: LocationViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    paddingValues: PaddingValues
 ) {
     val viewModel: LocationViewModel = hiltViewModel()
     val context = LocalContext.current
@@ -151,7 +153,7 @@ fun NavigationController(
         }
         composable(Screens.Community.route) {
             CommunitiesSection(
-                navController = navController,
+                paddingValues = paddingValues,
                 email = email.value
             )
         }
@@ -164,7 +166,7 @@ fun NavigationController(
             )
         }
         composable(Screens.CollectWasteLists.route) {
-            CollectWaste(navController = navController, viewModel = viewModel)
+            CollectWaste(navController = navController, viewModel = viewModel, paddingValues = paddingValues)
         }
         composable(Screens.CollectWasteInfo.route) {
             CollectWasteInfo(navController = navController, viewModel = viewModel)
