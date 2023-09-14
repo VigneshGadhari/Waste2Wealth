@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                 NavigationController(scaffoldState, locationViewModel, navController)
 //                    CompleteProfile()
 
+
             }
         }
     }

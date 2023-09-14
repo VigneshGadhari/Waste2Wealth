@@ -1,7 +1,6 @@
 package app.waste2wealth.com.dashboard
 
 import android.Manifest
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.components.*
 import app.waste2wealth.com.components.permissions.PermissionDrawer
-import app.waste2wealth.com.location.LocationService
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.backGround
@@ -160,12 +158,6 @@ fun DashBoardPage(
                         }
                     }
                 } else {
-                    LaunchedEffect(Unit) {
-                        Intent(context.applicationContext, LocationService::class.java).apply {
-                            action = LocationService.ACTION_START
-                            context.startService(this)
-                        }
-                    }
                     DashboardContent(
                         locationViewModel = locationViewModel,
                         navHostController = navHostController

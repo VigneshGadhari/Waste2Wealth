@@ -3,6 +3,7 @@ package app.waste2wealth.com.location
 import android.app.Application
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -85,6 +86,7 @@ class LocationViewModel @Inject constructor(
                             }
                             latitude = it.latitude
                             longitude = it.longitude
+                            println("New Location is ${it.longitude} & ${it.latitude}")
                         }
                     }
                 }
