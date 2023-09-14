@@ -241,9 +241,9 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                 ) {
                                     Card(
                                         backgroundColor =
-                                        items[viewModel.currentPage.value].cardColor,
+                                        communitiesItems[viewModel.currentPage.value].cardColor,
                                         border = BorderStroke(
-                                            width = 4.dp, color = items[0].borderColor
+                                            width = 4.dp, color = communitiesItems[0].borderColor
                                         ),
                                         shape = RoundedCornerShape(30.dp),
                                         modifier = Modifier
@@ -251,14 +251,14 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                             .height(100.dp)
                                     ) {
                                         ProfileImage(
-                                            imageUrl = items[viewModel.currentPage.value].image,
+                                            imageUrl = communitiesItems[viewModel.currentPage.value].image,
                                             modifier = Modifier
                                                 .fillMaxSize()
                                                 .clip(RoundedCornerShape(30.dp)),
                                         )
                                     }
                                     Text(
-                                        text =  items[viewModel.currentPage.value].title,
+                                        text =  communitiesItems[viewModel.currentPage.value].title,
                                         fontSize = 21.sp,
                                         fontWeight = FontWeight.Bold,
                                         softWrap = true,
@@ -288,7 +288,7 @@ fun CommunitiesSection(navController: NavController, email: String) {
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text =  items[viewModel.currentPage.value].title,
+                                        text =  communitiesItems[viewModel.currentPage.value].title,
                                         fontSize = 25.sp,
                                         fontWeight = FontWeight.Bold,
                                         softWrap = true,
