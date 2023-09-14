@@ -66,24 +66,12 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 
-@OptIn(
-    ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class,
-    ExperimentalMaterialApi::class
-)
 @Composable
 fun CollectWasteInfo(
     navController: NavHostController,
     viewModel: LocationViewModel
 ) {
     val context = LocalContext.current
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        )
-    )
-    val permissionDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
-    val gesturesEnabled by remember { derivedStateOf { permissionDrawerState.isOpen } }
     var isDialogVisible by remember { mutableStateOf(false) }
     val isWithin = isWithinRadius(
         viewModel.latitude,
@@ -104,153 +92,137 @@ fun CollectWasteInfo(
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Waste2Wealth to access your device's camera" +
-                ". Tap Settings > Permission, and turn \"Access Camera On\" on.",
-        withoutRationaleText = "Camera permission required for this feature to be available." +
-                " Please grant the permission.",
-        model = R.drawable.camera,
-        gesturesEnabled = gesturesEnabled,
-        size = 100.dp
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(appBackground)
     ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
-        }) {
-            println(it)
-            Column(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp, start = 0.dp),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBackIos,
+                contentDescription = "",
+                tint = textColor,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(appBackground)
+                    .padding(start = 15.dp)
+                    .size(25.dp)
+                    .clickable {
+                        navController.popBackStack()
+                    }
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(x = (-10).dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 30.dp, start = 0.dp),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBackIos,
-                        contentDescription = "",
-                        tint = textColor,
-                        modifier = Modifier
-                            .padding(start = 15.dp)
-                            .size(25.dp)
-                            .clickable {
-                                navController.popBackStack()
-                            }
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .offset(x = (-10).dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "Collect Waste",
-                            color = textColor,
-                            fontFamily = monteSB,
-                            fontSize = 25.sp
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(30.dp))
-                WasteItemCard(
-                    locationNo = viewModel.locationNo.value,
-                    address = viewModel.address.value,
-                    distance = viewModel.distance.value,
-                    time = viewModel.time.value,
-                    isCollectedInfo = true,
-                    isEllipsis = false,
-                    onCollected = {
-                        val gmmIntentUri =
-                            Uri.parse(
-                                "google.navigation:q=${viewModel.theirLatitude.value}," +
-                                        "${viewModel.theirLongitude.value}"
-                            )
-                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                        mapIntent.setPackage("com.google.android.apps.maps")
-                        context.startActivity(mapIntent)
-
-                    }
+                Text(
+                    text = "Collect Waste",
+                    color = textColor,
+                    fontFamily = monteSB,
+                    fontSize = 25.sp
                 )
-                Spacer(modifier = Modifier.height(30.dp))
-                var imageUrlState by remember {
-                    mutableStateOf("")
-                }
-                LaunchedEffect(key1 = Unit) {
-                    val imageUrl = withContext(Dispatchers.IO) {
-                        try {
-                            getDownloadUrlFromPath(viewModel.wastePhoto.value)
-                        } catch (e: Exception) {
-                            ""
-                        }
-                    }
-                    imageUrlState = imageUrl
-                }
-                if (imageUrlState != "") {
-                    AsyncImage(
-                        model = imageUrlState,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
-                            .padding(bottom = 30.dp)
-                            .clip(RoundedCornerShape(30.dp)),
-                    )
-                }
+            }
+        }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        onClick = {
-                            if (!isWithin) {
-                                isDialogVisible = true
-                            } else {
-                                navController.navigate(Screens.CollectedWasteSuccess.route)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CardColor,
-                            contentColor = CardTextColor
-                        ),
-                        shape = RoundedCornerShape(35.dp),
-                        modifier = Modifier.padding(start = 10.dp)
-                    ) {
-                        Text(
-                            text = "Collect Waste",
-                            color = CardTextColor,
-                            fontSize = 12.sp,
-                            fontFamily = monteSB,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                            maxLines = 1,
-                            softWrap = true
-                        )
-                    }
-                }
-                if (!isWithin) {
-                    DialogBox(
-                        isVisible = isDialogVisible,
-                        title = "Are You Sure you reached the location?",
-                        description = "It feels like you aren't at the location yet. " +
-                                "Please make sure you are at the location before you collect the waste.",
-                        successRequest = {
-                            isDialogVisible = false
-                            navController.navigate(Screens.CollectedWasteSuccess.route)
-                        },
-                        dismissRequest = {
-                            isDialogVisible = false
-                        }
+        Spacer(modifier = Modifier.height(30.dp))
+        WasteItemCard(
+            locationNo = viewModel.locationNo.value,
+            address = viewModel.address.value,
+            distance = viewModel.distance.value,
+            time = viewModel.time.value,
+            isCollectedInfo = true,
+            isEllipsis = false,
+            onCollected = {
+                val gmmIntentUri =
+                    Uri.parse(
+                        "google.navigation:q=${viewModel.theirLatitude.value}," +
+                                "${viewModel.theirLongitude.value}"
                     )
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                context.startActivity(mapIntent)
+
+            }
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        var imageUrlState by remember {
+            mutableStateOf("")
+        }
+        LaunchedEffect(key1 = Unit) {
+            val imageUrl = withContext(Dispatchers.IO) {
+                try {
+                    getDownloadUrlFromPath(viewModel.wastePhoto.value)
+                } catch (e: Exception) {
+                    ""
                 }
             }
+            imageUrlState = imageUrl
+        }
+        if (imageUrlState != "") {
+            AsyncImage(
+                model = imageUrlState,
+                contentDescription = "",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(bottom = 30.dp)
+                    .clip(RoundedCornerShape(30.dp)),
+            )
+        }
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                onClick = {
+                    if (!isWithin) {
+                        isDialogVisible = true
+                    } else {
+                        navController.navigate(Screens.CollectedWasteSuccess.route)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = CardColor,
+                    contentColor = CardTextColor
+                ),
+                shape = RoundedCornerShape(35.dp),
+                modifier = Modifier.padding(start = 10.dp)
+            ) {
+                Text(
+                    text = "Collect Waste",
+                    color = CardTextColor,
+                    fontSize = 12.sp,
+                    fontFamily = monteSB,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    maxLines = 1,
+                    softWrap = true
+                )
+            }
+        }
+        if (!isWithin) {
+            DialogBox(
+                isVisible = isDialogVisible,
+                title = "Are You Sure you reached the location?",
+                description = "It feels like you aren't at the location yet. " +
+                        "Please make sure you are at the location before you collect the waste.",
+                successRequest = {
+                    isDialogVisible = false
+                    navController.navigate(Screens.CollectedWasteSuccess.route)
+                },
+                dismissRequest = {
+                    isDialogVisible = false
+                }
+            )
         }
     }
+
 }
 
 suspend fun getDownloadUrlFromPath(path: String): String {

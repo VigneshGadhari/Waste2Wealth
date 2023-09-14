@@ -98,175 +98,163 @@ fun NewProfileScreen(
             .requestEmail().requestProfile()
             .build()
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-        withoutRationaleText = "Location permission required for functionality of this app." +
-                " Please grant the permission.",
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(appBackground)
     ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
+        var profileList by remember {
+            mutableStateOf<List<ProfileInfo>?>(null)
+        }
+        var myPhoneNumber by remember {
+            mutableStateOf("")
+        }
+        JetFirestore(path = {
+            collection("ProfileInfo")
+        }, onRealtimeCollectionFetch = { value, _ ->
+            profileList = value?.getListOfObjects()
         }) {
-            println(it)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(appBackground)
-            ) {
-                var profileList by remember {
-                    mutableStateOf<List<ProfileInfo>?>(null)
-                }
-                var myPhoneNumber by remember {
-                    mutableStateOf("")
-                }
-                JetFirestore(path = {
-                    collection("ProfileInfo")
-                }, onRealtimeCollectionFetch = { value, _ ->
-                    profileList = value?.getListOfObjects()
-                }) {
-                    if (profileList != null) {
-                        for (i in profileList!!) {
-                            if (i.email == email) {
-                                myPhoneNumber = i.phoneNumber ?: ""
-                            }
-                        }
+            if (profileList != null) {
+                for (i in profileList!!) {
+                    if (i.email == email) {
+                        myPhoneNumber = i.phoneNumber ?: ""
                     }
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 35.dp, bottom = 7.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        ProfileImage(
-                            imageUrl = pfp,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = appBackground,
-                                    shape = CircleShape
-                                )
-                                .padding(3.dp)
-                                .clip(CircleShape),
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 7.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = name ?: "User Name",
-                            color = textColor,
-                            fontSize = 20.sp,
-                            fontFamily = monteBold,
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 7.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "${email ?: "User Email"} | $myPhoneNumber",
-                            color = textColor,
-                            fontSize = 12.sp,
-                            fontFamily = monteSB,
-                            softWrap = true,
-                            modifier = Modifier.padding(end = 7.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(30.dp))
-
-                    Card(
-                        backgroundColor = appBackground,
-                        elevation = 10.dp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                    ) {
-                        Column {
-
-                            RepeatedProfileInfo(
-                                icon = Icons.Filled.EditNote,
-                                text = "Edit Profile"
-                            )
-                            RepeatedProfileInfo(
-                                icon = Icons.Filled.Notifications,
-                                text = "Notifications"
-                            )
-                        }
-
-                    }
-
-                    Spacer(modifier = Modifier.height(30.dp))
-
-                    Card(
-                        backgroundColor = appBackground,
-                        elevation = 10.dp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                    ) {
-                        Column {
-
-                            RepeatedProfileInfo(
-                                icon = Icons.Filled.SupportAgent,
-                                text = "Help and Support"
-                            )
-                            RepeatedProfileInfo(
-                                icon = Icons.Filled.ContactPage,
-                                text = "Contact Us"
-                            )
-                            RepeatedProfileInfo(
-                                icon = Icons.Filled.PrivacyTip,
-                                text = "Privacy Policy"
-                            )
-                        }
-
-                    }
-
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                dataStore.saveEmail("")
-                                dataStore.savePfp("")
-                                dataStore.saveName("")
-                            }
-                            Firebase.auth.signOut()
-                            googleSignInClient.signOut()
-                            navController.navigate(Screens.Onboarding.route)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color(0xFFFD5065),
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(35.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(50.dp)
-                    ) {
-                        Text(
-                            text = "Logout",
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontFamily = monteSB,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                            maxLines = 1,
-                            softWrap = true
-                        )
-                    }
-
                 }
             }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 35.dp, bottom = 7.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                ProfileImage(
+                    imageUrl = pfp,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .border(
+                            width = 1.dp,
+                            color = appBackground,
+                            shape = CircleShape
+                        )
+                        .padding(3.dp)
+                        .clip(CircleShape),
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 7.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = name ?: "User Name",
+                    color = textColor,
+                    fontSize = 20.sp,
+                    fontFamily = monteBold,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 7.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "${email ?: "User Email"} | $myPhoneNumber",
+                    color = textColor,
+                    fontSize = 12.sp,
+                    fontFamily = monteSB,
+                    softWrap = true,
+                    modifier = Modifier.padding(end = 7.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Card(
+                backgroundColor = appBackground,
+                elevation = 10.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                Column {
+
+                    RepeatedProfileInfo(
+                        icon = Icons.Filled.EditNote,
+                        text = "Edit Profile"
+                    )
+                    RepeatedProfileInfo(
+                        icon = Icons.Filled.Notifications,
+                        text = "Notifications"
+                    )
+                }
+
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Card(
+                backgroundColor = appBackground,
+                elevation = 10.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                Column {
+
+                    RepeatedProfileInfo(
+                        icon = Icons.Filled.SupportAgent,
+                        text = "Help and Support"
+                    )
+                    RepeatedProfileInfo(
+                        icon = Icons.Filled.ContactPage,
+                        text = "Contact Us"
+                    )
+                    RepeatedProfileInfo(
+                        icon = Icons.Filled.PrivacyTip,
+                        text = "Privacy Policy"
+                    )
+                }
+
+            }
+
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        dataStore.saveEmail("")
+                        dataStore.savePfp("")
+                        dataStore.saveName("")
+                    }
+                    Firebase.auth.signOut()
+                    googleSignInClient.signOut()
+                    navController.navigate(Screens.Onboarding.route)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFFFD5065),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(35.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(50.dp)
+            ) {
+                Text(
+                    text = "Logout",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontFamily = monteSB,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    maxLines = 1,
+                    softWrap = true
+                )
+            }
+
         }
     }
 }
+
 
 @Composable
 fun RepeatedProfileInfo(

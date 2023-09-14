@@ -73,11 +73,12 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @OptIn(
-    ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class,
+    ExperimentalPermissionsApi::class,
     ExperimentalMaterialApi::class
 )
 @Composable
 fun CollectWaste(
+    paddingValues: PaddingValues,
     navController: NavHostController,
     viewModel: LocationViewModel
 ) {
@@ -93,166 +94,150 @@ fun CollectWaste(
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Waste2Wealth to access your device's camera" +
-                ". Tap Settings > Permission, and turn \"Access Camera On\" on.",
-        withoutRationaleText = "Camera permission required for this feature to be available." +
-                " Please grant the permission.",
-        model = R.drawable.camera,
-        gesturesEnabled = gesturesEnabled,
-        size = 100.dp
-    ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
-        }) {
-            JetFirestore(path = {
-                collection("AllWastes")
-            }, onRealtimeCollectionFetch = { values, _ ->
-                allWastes = values?.getListOfObjects()
 
-            }) {
-                println(it)
-                Column(
+    JetFirestore(path = {
+        collection("AllWastes")
+    }, onRealtimeCollectionFetch = { values, _ ->
+        allWastes = values?.getListOfObjects()
+
+    }) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(appBackground)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp, start = 0.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBackIos,
+                    contentDescription = "",
+                    tint = textColor,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(appBackground)
+                        .padding(start = 15.dp)
+                        .size(25.dp)
+                        .clickable {
+                            navController.popBackStack()
+                        }
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(x = (-10).dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 30.dp, start = 0.dp),
-                        horizontalArrangement = Arrangement.Start
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBackIos,
-                            contentDescription = "",
-                            tint = textColor,
-                            modifier = Modifier
-                                .padding(start = 15.dp)
-                                .size(25.dp)
-                                .clickable {
-                                    navController.popBackStack()
-                                }
+                    Text(
+                        text = "Collect Waste",
+                        color = textColor,
+                        fontFamily = monteBold,
+                        fontSize = 25.sp
+                    )
+                }
+            }
+
+            val cList = listOf("List View", "Map View (Beta)")
+            var tabIndex by remember { mutableStateOf(0) }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 35.dp, end = 35.dp)
+            ) {
+                TabRow(
+                    selectedTabIndex = tabIndex,
+                    backgroundColor = appBackground,
+                    contentColor = textColor,
+                    divider = {
+                        TabRowDefaults.Divider(
+                            color = Color(0xFFF37952),
+                            thickness = 1.dp
                         )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .offset(x = (-10).dp),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
+                    },
+                ) {
+                    cList.forEachIndexed { index, title ->
+                        Tab(text = {
                             Text(
-                                text = "Collect Waste",
-                                color = textColor,
-                                fontFamily = monteBold,
-                                fontSize = 25.sp
+                                title,
+                                softWrap = false,
+                                fontSize = 13.sp,
                             )
-                        }
-                    }
-
-                    val cList = listOf("List View", "Map View (Beta)")
-                    var tabIndex by remember { mutableStateOf(0) }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 35.dp, end = 35.dp)
-                    ) {
-                        TabRow(
-                            selectedTabIndex = tabIndex,
-                            backgroundColor = appBackground,
-                            contentColor = textColor,
-                            divider = {
-                                TabRowDefaults.Divider(
-                                    color = Color(0xFFF37952),
-                                    thickness = 1.dp
-                                )
-                            },
-                        ) {
-                            cList.forEachIndexed { index, title ->
-                                Tab(text = {
-                                    Text(
-                                        title,
-                                        softWrap = false,
-                                        fontSize = 13.sp,
-                                    )
-                                },
-                                    selected = tabIndex == index,
-                                    onClick = { tabIndex = index }
-                                )
-                            }
-
-                        }
-
-                    }
-                    if (tabIndex == 0) {
-                        Spacer(modifier = Modifier.height(30.dp))
-                        if (allWastes != null) {
-                            LazyColumn(
-                                contentPadding = PaddingValues(
-                                    bottom = 150.dp,
-                                    top = 40.dp
-                                )
-                            ) {
-                                allWastes = allWastes?.sortedBy {
-                                    distance(
-                                        viewModel.latitude,
-                                        viewModel.longitude,
-                                        it.latitude,
-                                        it.longitude
-                                    )
-                                }
-                                itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
-                                    WasteItemCard(
-                                        locationNo = "Location ${index + 1}",
-                                        address = wasteItem.address,
-                                        distance = "${
-                                            convertDistance(
-                                                distance(
-                                                    viewModel.latitude,
-                                                    viewModel.longitude,
-                                                    wasteItem.latitude,
-                                                    wasteItem.longitude
-                                                )
-                                            )
-                                        } away",
-                                        time = getTimeAgo(wasteItem.timeStamp),
-                                    ) {
-                                        viewModel.locationNo.value = "Location ${index + 1}"
-                                        viewModel.address.value = wasteItem.address
-                                        viewModel.distance.value = "${
-                                            convertDistance(
-                                                distance(
-                                                    viewModel.latitude,
-                                                    viewModel.longitude,
-                                                    wasteItem.latitude,
-                                                    wasteItem.longitude
-                                                )
-                                            )
-                                        } away"
-                                        viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
-                                        viewModel.wastePhoto.value = wasteItem.imagePath
-                                        viewModel.theirLatitude.value = wasteItem.latitude
-                                        viewModel.theirLongitude.value = wasteItem.longitude
-                                        println("Collected time ${viewModel.time.value}")
-                                        navController.navigate(Screens.CollectWasteInfo.route)
-                                    }
-
-                                }
-                            }
-                        }
-                    } else {
-                        MapScreen(
-                            navController = navController,
-                            viewModel = viewModel,
+                        },
+                            selected = tabIndex == index,
+                            onClick = { tabIndex = index }
                         )
                     }
 
                 }
 
-
             }
+            if (tabIndex == 0) {
+                Spacer(modifier = Modifier.height(30.dp))
+                if (allWastes != null) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(
+                            bottom = 150.dp,
+                            top = 40.dp
+                        )
+                    ) {
+                        allWastes = allWastes?.sortedBy {
+                            distance(
+                                viewModel.latitude,
+                                viewModel.longitude,
+                                it.latitude,
+                                it.longitude
+                            )
+                        }
+                        itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
+                            WasteItemCard(
+                                locationNo = "Location ${index + 1}",
+                                address = wasteItem.address,
+                                distance = "${
+                                    convertDistance(
+                                        distance(
+                                            viewModel.latitude,
+                                            viewModel.longitude,
+                                            wasteItem.latitude,
+                                            wasteItem.longitude
+                                        )
+                                    )
+                                } away",
+                                time = getTimeAgo(wasteItem.timeStamp),
+                            ) {
+                                viewModel.locationNo.value = "Location ${index + 1}"
+                                viewModel.address.value = wasteItem.address
+                                viewModel.distance.value = "${
+                                    convertDistance(
+                                        distance(
+                                            viewModel.latitude,
+                                            viewModel.longitude,
+                                            wasteItem.latitude,
+                                            wasteItem.longitude
+                                        )
+                                    )
+                                } away"
+                                viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
+                                viewModel.wastePhoto.value = wasteItem.imagePath
+                                viewModel.theirLatitude.value = wasteItem.latitude
+                                viewModel.theirLongitude.value = wasteItem.longitude
+                                println("Collected time ${viewModel.time.value}")
+                                navController.navigate(Screens.CollectWasteInfo.route)
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                MapScreen(
+                    paddingValues = paddingValues,
+                    viewModel = viewModel,
+                )
+            }
+
         }
+
+
     }
 }
 
