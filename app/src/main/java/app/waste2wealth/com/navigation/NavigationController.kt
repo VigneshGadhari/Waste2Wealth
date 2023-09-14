@@ -17,31 +17,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import app.waste2wealth.com.UserDatastore
-import app.waste2wealth.com.activity.AllActivities
-import app.waste2wealth.com.activity.MyRecordings
-import app.waste2wealth.com.activity.StopRecording
-import app.waste2wealth.com.challenges.Community
 import app.waste2wealth.com.collectwaste.CollectWaste
 import app.waste2wealth.com.collectwaste.CollectWasteInfo
 import app.waste2wealth.com.collectwaste.SuccessfullyCollected
 import app.waste2wealth.com.communities.ui.CommunitiesSection
 import app.waste2wealth.com.dashboard.NewDashboard
-import app.waste2wealth.com.failuretask.TaskUndelivered
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.CompleteProfile
 import app.waste2wealth.com.login.LoginPage
 import app.waste2wealth.com.login.onboarding.Onboarding
 import app.waste2wealth.com.login.onboarding.SettingUp
-import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.profile.NewProfileScreen
-import app.waste2wealth.com.qrcode.ui.ScanQr
 import app.waste2wealth.com.reportwaste.ReportWaste
 import app.waste2wealth.com.rewards.ClaimedRewardsScreen
 import app.waste2wealth.com.rewards.NewRewardsScreen
 import app.waste2wealth.com.rewards.RewardDetails
-import app.waste2wealth.com.successtask.DeliveryDetailsScreen
-import app.waste2wealth.com.tasksDetail.TasksDetails
-import app.waste2wealth.com.tasksList.TasksLists
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -141,9 +131,6 @@ fun NavigationController(
         composable(Screens.Onboarding.route) {
             Onboarding(navHostController = navController)
         }
-        composable(Screens.TasksLists.route) {
-            TasksLists(navHostController = navController)
-        }
         composable(Screens.CompleteProfile.route) {
             CompleteProfile(navHostController = navController)
         }
@@ -166,7 +153,11 @@ fun NavigationController(
             )
         }
         composable(Screens.CollectWasteLists.route) {
-            CollectWaste(navController = navController, viewModel = viewModel, paddingValues = paddingValues)
+            CollectWaste(
+                navController = navController,
+                viewModel = viewModel,
+                paddingValues = paddingValues
+            )
         }
         composable(Screens.CollectWasteInfo.route) {
             CollectWasteInfo(navController = navController, viewModel = viewModel)
@@ -177,25 +168,6 @@ fun NavigationController(
                 email = email.value,
                 name = name.value,
                 pfp = profile.value
-            )
-        }
-        composable(Screens.AllActivities.route) {
-            AllActivities(
-                navController = navController, viewModel = viewModel,
-                email = email.value,
-                name = name.value,
-                pfp = profile.value
-            )
-        }
-        composable(Screens.MyRecordings.route) {
-            MyRecordings(navController = navController, viewModel = viewModel)
-        }
-        composable(Screens.StopRecording.route) {
-            StopRecording(
-                navController = navController,
-                viewModel = viewModel,
-                email = email.value,
-                name = name.value
             )
         }
         composable(Screens.Rewards.route) {
@@ -219,77 +191,11 @@ fun NavigationController(
             ClaimedRewardsScreen(
                 navController = navController,
                 email = email.value,
-                name =name.value,
-                pfp =profile.value,
-                viewModel =viewModel
+                name = name.value,
+                pfp = profile.value,
+                viewModel = viewModel
             )
         }
-        composable(
-            Screens.TaskDetail.route
-                .plus(
-                    "?${TaskDetailsConstants.taskCode.value}={taskCode}" +
-                            "?${TaskDetailsConstants.address.value}={address}" +
-                            "?${TaskDetailsConstants.noOfAttempts.value}={noOfKMs}" +
-                            "?${TaskDetailsConstants.taskPrice.value}={image}"
-                ),
-            arguments = listOf(
-                navArgument("taskCode") {
-                    this.type = NavType.StringType
-                },
-                navArgument("noOfKMs") {
-                    this.type = NavType.StringType
-                },
-                navArgument("address") {
-                    this.type = NavType.StringType
-                },
-                navArgument("image") {
-                    this.type = NavType.StringType
-                },
-            ),
-        ) { backStackEntry ->
-            val taskCode = backStackEntry.arguments?.getString("taskCode") ?: ""
-            val address = backStackEntry.arguments?.getString("address") ?: ""
-            val noOfKMs = backStackEntry.arguments?.getString("noOfKMs") ?: ""
-            val image = backStackEntry.arguments?.getString("image") ?: ""
-            TasksDetails(
-                address = address,
-                navHostController = navController,
-                taskCode = taskCode,
-                noOfKms = noOfKMs,
-                image = image
-            )
-        }
-
-        composable(route = Screens.SuccessTask.route.plus(
-            "?${TaskDetailsConstants.taskPrice.value}={taskPrice}"
-        ), arguments = listOf(
-            navArgument("taskPrice") {
-                this.type = NavType.StringType
-            }
-        )
-        ) { backStackEntry ->
-            val taskPrice = backStackEntry.arguments?.getString("taskPrice") ?: ""
-            DeliveryDetailsScreen(
-                navHostController = navController,
-                taskPrice = taskPrice
-            )
-        }
-
-        composable(Screens.FailureTask.route
-            .plus("?${TaskDetailsConstants.phoneNumber.value}={phoneNumber}"),
-            arguments = listOf(
-                navArgument("phoneNumber") {
-                    this.type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
-            TaskUndelivered(navHostController = navController, phoneNumber = phoneNumber)
-        }
-        composable(Screens.QrCodeScanner.route) {
-            ScanQr(viewModel = locationViewModel)
-        }
-
         composable(Screens.Splash.route) {
             SplashScreen(navController = navController, email = email.value)
         }

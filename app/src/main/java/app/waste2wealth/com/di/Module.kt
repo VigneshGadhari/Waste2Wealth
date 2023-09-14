@@ -3,8 +3,6 @@ package app.waste2wealth.com.di
 import android.app.Application
 import app.waste2wealth.com.ktorClient.repository.PlacesRepoImpl
 import app.waste2wealth.com.ktorClient.repository.PlacesRepository
-import app.waste2wealth.com.qrcode.sensors.MeasurableSensors
-import app.waste2wealth.com.qrcode.sensors.Sensors
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -22,13 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object Module {
-
-
-    @Provides
-    @Singleton
-    fun provideLightSensor(app: Application): MeasurableSensors {
-        return Sensors(app)
-    }
 
 
     @Provides
