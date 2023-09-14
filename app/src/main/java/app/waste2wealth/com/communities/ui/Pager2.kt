@@ -55,7 +55,7 @@ import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 
 
-val items = listOf(
+val communitiesItems = listOf(
     DummyCards(
         cardColor = Color(0xFF167EE7),
         date = "23th Monday 2023",
@@ -117,7 +117,7 @@ fun Pager2(
     )
     HorizontalPager(
         verticalAlignment = Alignment.Top,
-        count = items.size,
+        count = communitiesItems.size,
         state = pagerState,
         modifier = Modifier,
         contentPadding = if (viewModel.expandedState.value < 0.5f) {
@@ -170,7 +170,7 @@ fun Pager2(
             Card(
                 backgroundColor =
                 appBackground, border = BorderStroke(
-                    width = 1.dp, color = items[page].cardColor
+                    width = 1.dp, color = communitiesItems[page].cardColor
                 ), shape = RoundedCornerShape(40.dp), modifier = Modifier
                     .layoutId("card")
             ) {
@@ -183,7 +183,7 @@ fun Pager2(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             ProfileImage(
-                                imageUrl = items[page].image,
+                                imageUrl = communitiesItems[page].image,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
@@ -204,7 +204,7 @@ fun Pager2(
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = items[page].title,
+                            text = communitiesItems[page].title,
                             color = textColor,
                             fontSize = 20.sp,
                             fontFamily = monteBold,
@@ -220,7 +220,7 @@ fun Pager2(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = items[page].date,
+                            text = communitiesItems[page].date,
                             color = textColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
@@ -236,7 +236,7 @@ fun Pager2(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = items[page].location,
+                            text = communitiesItems[page].location,
                             color = textColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
@@ -252,7 +252,7 @@ fun Pager2(
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = items[page].time,
+                            text = communitiesItems[page].time,
                             color = textColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
