@@ -24,6 +24,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -76,18 +77,8 @@ fun NewRewardsScreen(
             "Immerse yourself in exceptional audio quality with these headphones," +
                     " designed for ultimate comfort and delivering a truly immersive sound experience. Whether for music, movies, or calls, these headphones will elevate your audio enjoyment to new heights"
         viewModel.rewardNoOfPoints.value = 60
-//        navController.navigate(Screens.RewardsDetails.route)
-        navController.navigate(Screens.ClaimedRewards.route)
+        navController.navigate(Screens.RewardsDetails.route)
     }
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    )
-    val permissionDrawerState = rememberBottomDrawerState(
-        if (permissionState.allPermissionsGranted) BottomDrawerValue.Closed else BottomDrawerValue.Open
-    )
     var profileList by remember {
         mutableStateOf<List<ProfileInfo>?>(null)
     }
@@ -141,385 +132,330 @@ fun NewRewardsScreen(
             }
         }
 
-        PermissionDrawer(
-            drawerState = permissionDrawerState,
-            permissionState = permissionState,
-            rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                    ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-            withoutRationaleText = "Location permission required for functionality of this app." +
-                    " Please grant the permission.",
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(appBackground)
         ) {
-            Scaffold(bottomBar = {
-                BottomBar(navController = navController)
-            }) {
-                println(it)
-                Column(
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 35.dp,
+                        bottom = 35.dp,
+                        start = 10.dp,
+                        end = 20.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(top = 0.dp, start = 0.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBackIos,
+                        contentDescription = "",
+                        tint = textColor,
+                        modifier = Modifier
+                            .padding(start = 10.dp, end = 7.dp)
+                            .size(25.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
+                    )
+                    Column {
+                        Text(
+                            text = "Rewards",
+                            color = textColor,
+                            fontSize = 25.sp,
+                            fontFamily = monteBold,
+                        )
+                        Text(
+                            text = "Grab exciting rewards",
+                            color = Color.LightGray,
+                            fontSize = 13.sp,
+                            fontFamily = monteBold,
+                        )
+                    }
+                }
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(appBackground)
+                        .padding(top = 15.dp, end = 0.dp, start = 20.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
+                        modifier = Modifier.padding(end = 25.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.coins),
+                            contentDescription = "coins",
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(end = 5.dp),
+                            tint = Color.Unspecified
+                        )
+                        Text(
+                            text = pointsEarned.toString(),
+                            color = textColor,
+                            fontSize = 15.sp,
+                            softWrap = true,
+                            fontFamily = monteNormal,
+                        )
+                    }
+
+                }
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(appBackground),
+                contentPadding = PaddingValues(top = 10.dp, bottom = 0.dp)
+            ) {
+                item {
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(
-                                top = 35.dp,
-                                bottom = 35.dp,
-                                start = 20.dp,
-                                end = 20.dp
-                            ),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(20.dp)
                     ) {
-                        Column {
-                            Text(
-                                text = "Rewards",
-                                color = textColor,
-                                fontSize = 25.sp,
-                                fontFamily = monteBold,
-                            )
-                            Text(
-                                text = "Grab exciting rewards",
-                                color = Color.LightGray,
-                                fontSize = 13.sp,
-                                fontFamily = monteBold,
-                            )
-                        }
-                        Row(
+                        Text(
+                            text = "Welcome to Rewards Section",
+                            color = textColor,
+                            fontSize = 15.sp,
+                            fontFamily = monteBold,
+                        )
+                        AsyncImage(
+                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contestpromotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
+                            contentDescription = "",
                             modifier = Modifier
+                                .padding(top = 20.dp)
                                 .fillMaxWidth()
-                                .padding(top = 15.dp, end = 0.dp, start = 20.dp),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
+                                .clickable {
+                                    onClick()
+                                }
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(
+                            text = "New Offers",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteBold,
+                        )
+                        Text(
+                            text = "Check out the latest offers and rewards",
+                            color = Color.LightGray,
+                            fontSize = 10.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .height(300.dp)
+                                .offset(y = (-10).dp),
+                            contentPadding = PaddingValues(top = 30.dp, bottom = 10.dp)
                         ) {
-                            Row(
-                                modifier = Modifier.padding(end = 25.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.coins),
-                                    contentDescription = "coins",
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .padding(end = 5.dp),
-                                    tint = Color.Unspecified
-                                )
-                                Text(
-                                    text = pointsEarned.toString(),
-                                    color = textColor,
-                                    fontSize = 15.sp,
-                                    softWrap = true,
-                                    fontFamily = monteNormal,
-                                )
-                            }
-
-                        }
-                    }
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(appBackground),
-                        contentPadding = PaddingValues(top = 1.dp, bottom = 0.dp)
-                    ) {
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(20.dp)
-                            ) {
-
-//                                Text(
-//                                    text = "New Offers",
-//                                    color = textColor,
-//                                    textAlign = TextAlign.Center,
-//                                    fontSize = 16.sp,
-//                                    fontFamily = monteBold,
-//
-//                                )
-//                                Text(
-//                                    text = "Check out the latest offers and rewards",
-//                                    color = Color.LightGray,
-//                                    fontSize = 10.sp,
-//                                    fontFamily = monteBold,
-//                                    modifier = Modifier.padding(top = 8.dp)
-//                                )
-
-                                Spacer(modifier =Modifier.height(30.dp))
-
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2),
-                                    modifier = Modifier
-                                        .height(200.dp)
-                                        .offset(y = (-55).dp),
-                                    horizontalArrangement = Arrangement.SpaceEvenly,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    items(2) {
-
-                                        Column(modifier = Modifier.padding(5.dp)) {
+                            items(2) {
+                                Column(modifier = Modifier.padding(10.dp)) {
+                                    Card(
+                                        modifier = Modifier.padding(0.dp),
+                                        backgroundColor = Color(0xFF3C3E41),
+                                        shape = RoundedCornerShape(7.dp)
+                                    ) {
+                                        Column {
                                             Card(
                                                 modifier = Modifier.padding(0.dp),
-                                                backgroundColor = Color(0xFF3C3E41),
-                                                shape = RoundedCornerShape(7.dp)
+                                                backgroundColor = Color.White,
+                                                shape = RoundedCornerShape(10.dp)
                                             ) {
-                                                Column {
-                                                    Card(
-                                                        modifier = Modifier.padding(0.dp),
-                                                        backgroundColor = appBackground,
-                                                        shape = RoundedCornerShape(10.dp)
-                                                    ) {
-                                                        AsyncImage(
-                                                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
-                                                                    "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
-                                                            contentDescription = "",
-                                                            modifier = Modifier
-                                                                .padding(0.dp)
-                                                                .clickable {
-                                                                    onClick()
-                                                                },
-                                                            contentScale = ContentScale.Fit
-                                                        )
-                                                    }
-                                                    Row(
-                                                        modifier = Modifier.fillMaxWidth(),
-                                                        horizontalArrangement = Arrangement.Center
-                                                    ) {
-                                                        Text(
-                                                            text = "Ends in 2 days",
-                                                            color = Color.White,
-                                                            fontSize = 10.sp,
-                                                            fontFamily = monteBold,
-                                                            modifier = Modifier.padding(
-                                                                horizontal = 20.dp,
-                                                                vertical = 9.dp
-                                                            )
-                                                        )
-                                                    }
-
-                                                }
+                                                AsyncImage(
+                                                    model = "https://img.freepik.com/premium-psd/headphone-giveaway-contestpromotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
+                                                    contentDescription = "",
+                                                    modifier = Modifier
+                                                        .padding(0.dp)
+                                                        .clickable {
+                                                            onClick()
+                                                        },
+                                                    contentScale = ContentScale.Fit
+                                                )
+                                            }
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.Center
+                                            ) {
+                                                Text(
+                                                    text = "Ends in 2 days",
+                                                    color = Color.White,
+                                                    fontSize = 10.sp,
+                                                    fontFamily = monteBold,
+                                                    modifier = Modifier.padding(
+                                                        horizontal = 20.dp,
+                                                        vertical = 9.dp
+                                                    )
+                                                )
                                             }
 
-
                                         }
-
                                     }
+
+
                                 }
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2),
-                                    modifier = Modifier
-                                        .height(200.dp)
-                                        .offset(y = (-55).dp),
-                                    horizontalArrangement = Arrangement.SpaceEvenly,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    items(2) {
-
-                                        Column(modifier = Modifier.padding(5.dp)) {
-                                            Card(
-                                                modifier = Modifier.padding(0.dp),
-                                                backgroundColor = Color(0xFF3C3E41),
-                                                shape = RoundedCornerShape(7.dp)
-                                            ) {
-                                                Column {
-                                                    Card(
-                                                        modifier = Modifier.padding(0.dp),
-                                                        backgroundColor = appBackground,
-                                                        shape = RoundedCornerShape(10.dp)
-                                                    ) {
-                                                        AsyncImage(
-                                                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
-                                                                    "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
-                                                            contentDescription = "",
-                                                            modifier = Modifier
-                                                                .padding(0.dp)
-                                                                .clickable {
-                                                                    onClick()
-                                                                },
-                                                            contentScale = ContentScale.Fit
-                                                        )
-                                                    }
-                                                    Row(
-                                                        modifier = Modifier.fillMaxWidth(),
-                                                        horizontalArrangement = Arrangement.Center
-                                                    ) {
-                                                        Text(
-                                                            text = "Ends in 2 days",
-                                                            color = Color.White,
-                                                            fontSize = 10.sp,
-                                                            fontFamily = monteBold,
-                                                            modifier = Modifier.padding(
-                                                                horizontal = 20.dp,
-                                                                vertical = 9.dp
-                                                            )
-                                                        )
-                                                    }
-
-                                                }
-                                            }
-
-
-                                        }
-
-                                    }
-                                }
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(2),
-                                    modifier = Modifier
-                                        .height(200.dp)
-                                        .offset(y = (-55).dp),
-                                    horizontalArrangement = Arrangement.SpaceEvenly,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    items(2) {
-
-                                        Column(modifier = Modifier.padding(5.dp)) {
-                                            Card(
-                                                modifier = Modifier.padding(0.dp),
-                                                backgroundColor = Color(0xFF3C3E41),
-                                                shape = RoundedCornerShape(7.dp)
-                                            ) {
-                                                Column {
-                                                    Card(
-                                                        modifier = Modifier.padding(0.dp),
-                                                        backgroundColor = appBackground,
-                                                        shape = RoundedCornerShape(10.dp)
-                                                    ) {
-                                                        AsyncImage(
-                                                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
-                                                                    "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
-                                                            contentDescription = "",
-                                                            modifier = Modifier
-                                                                .padding(0.dp)
-                                                                .clickable {
-                                                                    onClick()
-                                                                },
-                                                            contentScale = ContentScale.Fit
-                                                        )
-                                                    }
-                                                    Row(
-                                                        modifier = Modifier.fillMaxWidth(),
-                                                        horizontalArrangement = Arrangement.Center
-                                                    ) {
-                                                        Text(
-                                                            text = "Ends in 2 days",
-                                                            color = Color.White,
-                                                            fontSize = 10.sp,
-                                                            fontFamily = monteBold,
-                                                            modifier = Modifier.padding(
-                                                                horizontal = 20.dp,
-                                                                vertical = 9.dp
-                                                            )
-                                                        )
-                                                    }
-
-                                                }
-                                            }
-
-
-                                        }
-
-                                    }
-                                }
-
-
-
-
-
-//                                Text(
-//                                    text = "Jackpot Giveaway",
-//                                    color = textColor,
-//                                    fontSize = 22.sp,
-//                                    fontFamily = monteBold,
-//                                    modifier = Modifier.offset(y = (-100).dp)
-//                                )
-//                                AsyncImage(
-//                                    model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
-//                                            "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
-//                                    contentDescription = "",
-//                                    modifier = Modifier
-//                                        .padding(top = 0.dp)
-//                                        .offset(y = (-80).dp)
-//                                        .fillMaxWidth()
-//                                )
-//                                Spacer(modifier = Modifier.height(20.dp))
-//                                LazyVerticalGrid(
-//                                    columns = GridCells.Fixed(2),
-//                                    modifier = Modifier
-//                                        .height(300.dp)
-//                                        .offset(y = (-80).dp)
-//                                ) {
-//                                    items(2) {
-//                                        Column(modifier = Modifier.padding(10.dp)) {
-//                                            Card(
-//                                                modifier = Modifier.padding(0.dp),
-//                                                backgroundColor = Color(0xFF3C3E41),
-//                                                shape = RoundedCornerShape(7.dp)
-//                                            ) {
-//                                                Column {
-//                                                    Card(
-//                                                        modifier = Modifier.padding(0.dp),
-//                                                        backgroundColor = appBackground,
-//                                                        shape = RoundedCornerShape(10.dp)
-//                                                    ) {
-//                                                        AsyncImage(
-//                                                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
-//                                                                    "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
-//                                                            contentDescription = "",
-//                                                            modifier = Modifier
-//                                                                .padding(0.dp)
-//                                                                .clickable {
-//                                                                    onClick()
-//                                                                },
-//                                                            contentScale = ContentScale.Fit
-//                                                        )
-//                                                    }
-//                                                    Row(
-//                                                        modifier = Modifier.fillMaxWidth(),
-//                                                        horizontalArrangement = Arrangement.Center
-//                                                    ) {
-//                                                        Text(
-//                                                            text = "Ends in 2 days",
-//                                                            color = Color.White,
-//                                                            fontSize = 10.sp,
-//                                                            fontFamily = monteBold,
-//                                                            modifier = Modifier.padding(
-//                                                                horizontal = 20.dp,
-//                                                                vertical = 9.dp
-//                                                            )
-//                                                        )
-//                                                    }
-//
-//                                                }
-//                                            }
-//
-//
-//                                        }
-//
-//                                    }
-//                                }
-                                Spacer(modifier = Modifier.height(80.dp))
-                                Text(
-                                    text = "Keep Reporting",
-                                    color = Color.LightGray,
-                                    fontSize = 35.sp,
-                                    fontFamily = monteBold,
-                                    modifier = Modifier.offset(y = (-130).dp)
-                                )
-                                Text(
-                                    text = "Keep Collecting",
-                                    color = Color.LightGray,
-                                    fontSize = 25.sp,
-                                    fontFamily = monteBold,
-                                    modifier = Modifier.offset(y = (-110).dp)
-                                )
 
                             }
-
                         }
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .height(300.dp)
+                                .offset(y = (-55).dp)
+                        ) {
+                            items(2) {
+
+                                Column(modifier = Modifier.padding(10.dp)) {
+                                    Card(
+                                        modifier = Modifier.padding(0.dp),
+                                        backgroundColor = Color(0xFF3C3E41),
+                                        shape = RoundedCornerShape(7.dp)
+                                    ) {
+                                        Column {
+                                            Card(
+                                                modifier = Modifier.padding(0.dp),
+                                                backgroundColor = appBackground,
+                                                shape = RoundedCornerShape(10.dp)
+                                            ) {
+                                                AsyncImage(
+                                                    model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
+                                                            "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
+                                                    contentDescription = "",
+                                                    modifier = Modifier
+                                                        .padding(0.dp)
+                                                        .clickable {
+                                                            onClick()
+                                                        },
+                                                    contentScale = ContentScale.Fit
+                                                )
+                                            }
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.Center
+                                            ) {
+                                                Text(
+                                                    text = "Ends in 2 days",
+                                                    color = Color.White,
+                                                    fontSize = 10.sp,
+                                                    fontFamily = monteBold,
+                                                    modifier = Modifier.padding(
+                                                        horizontal = 20.dp,
+                                                        vertical = 9.dp
+                                                    )
+                                                )
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+
+                            }
+                        }
+                        Text(
+                            text = "Jackpot Giveaway",
+                            color = textColor,
+                            fontSize = 22.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.offset(y = (-100).dp)
+                        )
+                        AsyncImage(
+                            model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
+                                    "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(top = 0.dp)
+                                .offset(y = (-80).dp)
+                                .fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .height(300.dp)
+                                .offset(y = (-80).dp)
+                        ) {
+                            items(2) {
+                                Column(modifier = Modifier.padding(10.dp)) {
+                                    Card(
+                                        modifier = Modifier.padding(0.dp),
+                                        backgroundColor = Color(0xFF3C3E41),
+                                        shape = RoundedCornerShape(7.dp)
+                                    ) {
+                                        Column {
+                                            Card(
+                                                modifier = Modifier.padding(0.dp),
+                                                backgroundColor = appBackground,
+                                                shape = RoundedCornerShape(10.dp)
+                                            ) {
+                                                AsyncImage(
+                                                    model = "https://img.freepik.com/premium-psd/headphone-giveaway-contest" +
+                                                            "-promotion-instagram-facebook-social-media-post-template_501590-116.jpg?w=2000",
+                                                    contentDescription = "",
+                                                    modifier = Modifier
+                                                        .padding(0.dp)
+                                                        .clickable {
+                                                            onClick()
+                                                        },
+                                                    contentScale = ContentScale.Fit
+                                                )
+                                            }
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.Center
+                                            ) {
+                                                Text(
+                                                    text = "Ends in 2 days",
+                                                    color = Color.White,
+                                                    fontSize = 10.sp,
+                                                    fontFamily = monteBold,
+                                                    modifier = Modifier.padding(
+                                                        horizontal = 20.dp,
+                                                        vertical = 9.dp
+                                                    )
+                                                )
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+
+                            }
+                        }
+                        Text(
+                            text = "Keep Reporting",
+                            color = Color.LightGray,
+                            fontSize = 35.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.offset(y = (-130).dp)
+                        )
+                        Text(
+                            text = "Keep Collecting",
+                            color = Color.LightGray,
+                            fontSize = 25.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.offset(y = (-110).dp)
+                        )
+
                     }
+
                 }
             }
         }
-
     }
 }
