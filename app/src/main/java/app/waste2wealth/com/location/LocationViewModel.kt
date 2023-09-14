@@ -13,7 +13,6 @@ import androidx.lifecycle.viewModelScope
 import app.waste2wealth.com.ktorClient.Resource
 import app.waste2wealth.com.ktorClient.UriPathFinder
 import app.waste2wealth.com.ktorClient.repository.PlacesRepository
-import app.waste2wealth.com.qrcode.sensors.MeasurableSensors
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LocationViewModel @Inject constructor(
     application: Application,
-    private val lightSensors: MeasurableSensors,
     private val repository: PlacesRepository,
     private val locationTracker: LocationTracker,
 ) : AndroidViewModel(application) {
@@ -43,25 +41,11 @@ class LocationViewModel @Inject constructor(
     var distance = mutableStateOf("")
     var time = mutableStateOf("")
     var wastePhoto = mutableStateOf("")
-    var beforeActivityPath = mutableStateOf("")
-    var activityTitle = mutableStateOf("")
     var rewardImage = mutableStateOf("")
     var rewardTitle = mutableStateOf("")
     var rewardDescription = mutableStateOf("")
     var rewardNoOfPoints = mutableStateOf(0)
-    var startActivityTime = mutableStateOf(0L)
     var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
-
-
-    init {
-        lightSensors.startListening()
-        lightSensors.setOnSensorValuesChangedListener { values ->
-            val lux = values[0]
-            println("The values are $lux")
-            isDark = lux == 0f
-            println("what is is Dark $isDark")
-        }
-    }
 
     val result = MutableLiveData<String>()
 
@@ -103,11 +87,4 @@ class LocationViewModel @Inject constructor(
             }
         }
     }
-
-    private fun changeUriToPath(uris: Uri, context: Context) =
-        UriPathFinder().getPath(context, uris)
-
-    fun onFilePathsListChange(list: Uri, context: Context): String? = changeUriToPath(list, context)
-
-
 }
