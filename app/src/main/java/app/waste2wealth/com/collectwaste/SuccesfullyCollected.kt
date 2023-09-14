@@ -187,22 +187,8 @@ fun SuccessfullyCollected(
             }
         }
 
-        PermissionDrawer(
-            drawerState = permissionDrawerState,
-            permissionState = permissionState,
-            rationaleText = "To continue, allow Waste2Wealth to access your device's camera" +
-                    ". Tap Settings > Permission, and turn \"Access Camera On\" on.",
-            withoutRationaleText = "Camera permission required for this feature to be available." +
-                    " Please grant the permission.",
-            model = R.drawable.camera,
-            gesturesEnabled = gesturesEnabled,
-            size = 100.dp
-        ) {
-            Scaffold(bottomBar = {
-                BottomBar(navController = navController)
-            }) {
+
                 Box(modifier = Modifier.fillMaxSize()) {
-                    println(it)
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -574,9 +560,6 @@ fun SuccessfullyCollected(
                 }
             }
         }
-    }
-
-}
 
 fun countWords(text: String): Int {
     val words = text.trim().split("\\s+".toRegex())

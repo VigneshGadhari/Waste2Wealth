@@ -17,6 +17,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,21 +65,11 @@ import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
 
-@OptIn(
-    ExperimentalAnimationApi::class, ExperimentalMaterialApi::class,
-    ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class
-)
 @Composable
-fun CommunitiesSection(navController: NavController, email: String) {
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-    )
-    val permissionDrawerState = rememberBottomDrawerState(
-        if (permissionState.allPermissionsGranted) BottomDrawerValue.Closed else BottomDrawerValue.Open
-    )
+fun CommunitiesSection(
+    paddingValues: PaddingValues,
+    email: String
+) {
     var profileList by remember {
         mutableStateOf<List<ProfileInfo>?>(null)
     }
@@ -129,189 +120,175 @@ fun CommunitiesSection(navController: NavController, email: String) {
                 }
             }
         }
-        PermissionDrawer(
-            drawerState = permissionDrawerState,
-            permissionState = permissionState,
-            rationaleText = "To continue, allow Report Waste2Wealth to access your device's location" +
-                    ". Tap Settings > Permission, and turn \"Access Location On\" on.",
-            withoutRationaleText = "Location permission required for functionality of this app." +
-                    " Please grant the permission.",
+
+        var progress2 = remember { mutableStateOf(0f) }
+        val visible =
+            animateFloatAsState(if (progress2.value > 0.35f) 1f else 0f, label = "").value
+        val inVisible =
+            animateFloatAsState(if (progress2.value > 0.35f) 0f else 1f, label = "").value
+        val color by animateColorAsState(
+            targetValue = if (progress2.value >= 0.5f)
+                Color.Transparent else Color.Unspecified,
+            label = ""
+        )
+
+        val viewModel: CommunitiesViewModel = remember { CommunitiesViewModel() }
+        Column(
+            modifier = Modifier
+                .background(appBackground)
         ) {
-            Scaffold(bottomBar = {
-                BottomBar(navController = navController)
-            }) {
-                println(it)
-
-                var progress2 = remember { mutableStateOf(0f) }
-                val visible =
-                    animateFloatAsState(if (progress2.value > 0.35f) 1f else 0f, label = "").value
-                val inVisible =
-                    animateFloatAsState(if (progress2.value > 0.35f) 0f else 1f, label = "").value
-                val color by animateColorAsState(
-                    targetValue = if (progress2.value >= 0.5f)
-                        Color.Transparent else Color.Unspecified,
-                    label = ""
-                )
-
-                val viewModel: CommunitiesViewModel = remember { CommunitiesViewModel() }
-                Column(
+            AnimatedVisibility(
+                visible = viewModel.expandedState.value < 0.5f,
+                enter = expandVertically(tween(400)) + fadeIn(tween(400)),
+                exit = shrinkVertically(tween(400)) + fadeOut(tween(400)),
+                modifier = Modifier.background(Color.Transparent)
+            ) {
+                Row(
                     modifier = Modifier
-                        .background(appBackground)
+                        .fillMaxWidth()
+                        .padding(
+                            top = 35.dp,
+                            bottom = 35.dp,
+                            start = 20.dp,
+                            end = 20.dp
+                        ),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(
+                        text = "Community",
+                        color = textColor,
+                        fontSize = 35.sp,
+                        fontFamily = monteBold,
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp, end = 0.dp, start = 20.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(end = 25.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.coins),
+                                contentDescription = "coins",
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(end = 5.dp),
+                                tint = Color.Unspecified
+                            )
+                            Text(
+                                text = pointsEarned.toString(),
+                                color = textColor,
+                                fontSize = 15.sp,
+                                softWrap = true,
+                                fontFamily = monteNormal,
+                            )
+                        }
+
+                    }
+                }
+            }
+            AnimatedVisibility(
+                visible = viewModel.expandedState.value > 0.5f,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut(),
+                modifier = Modifier.background(Color.Transparent)
+            ) {
+                if (progress2.value > 0.5f) {
                     AnimatedVisibility(
-                        visible = viewModel.expandedState.value < 0.5f,
-                        enter = expandVertically(tween(400)) + fadeIn(tween(400)),
-                        exit = shrinkVertically(tween(400)) + fadeOut(tween(400)),
-                        modifier = Modifier.background(Color.Transparent)
+                        visible = visible > 0f,
+                        enter = fadeIn() + slideInHorizontally(),
+                        exit = fadeOut() + slideOutHorizontally(),
                     ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = 35.dp,
-                                    bottom = 35.dp,
-                                    start = 20.dp,
-                                    end = 20.dp
-                                ),
+                                    top = 30.dp,
+                                    end = 25.dp
+                                )
+                                .graphicsLayer {
+                                    alpha = visible
+                                },
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Card(
+                                backgroundColor =
+                                communitiesItems[viewModel.currentPage.value].cardColor,
+                                border = BorderStroke(
+                                    width = 4.dp, color = communitiesItems[0].borderColor
+                                ),
+                                shape = RoundedCornerShape(30.dp),
+                                modifier = Modifier
+                                    .width(160.dp)
+                                    .height(100.dp)
+                            ) {
+                                ProfileImage(
+                                    imageUrl = communitiesItems[viewModel.currentPage.value].image,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(RoundedCornerShape(30.dp)),
+                                )
+                            }
                             Text(
-                                text = "Community",
+                                text = communitiesItems[viewModel.currentPage.value].title,
+                                fontSize = 21.sp,
+                                fontWeight = FontWeight.Bold,
+                                softWrap = true,
+                                modifier = Modifier.padding(start = 0.dp),
                                 color = textColor,
-                                fontSize = 35.sp,
-                                fontFamily = monteBold,
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 15.dp, end = 0.dp, start = 20.dp),
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(end = 25.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.End
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.coins),
-                                        contentDescription = "coins",
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .padding(end = 5.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Text(
-                                        text = pointsEarned.toString(),
-                                        color = textColor,
-                                        fontSize = 15.sp,
-                                        softWrap = true,
-                                        fontFamily = monteNormal,
-                                    )
-                                }
 
-                            }
+                                )
+
                         }
                     }
-                    AnimatedVisibility(
-                        visible = viewModel.expandedState.value > 0.5f,
-                        enter = expandVertically() + fadeIn(),
-                        exit = shrinkVertically() + fadeOut(),
-                        modifier = Modifier.background(Color.Transparent)
+
+
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+
                     ) {
-                        if (progress2.value > 0.5f) {
-                            AnimatedVisibility(
-                                visible = visible > 0f,
-                                enter = fadeIn() + slideInHorizontally(),
-                                exit = fadeOut() + slideOutHorizontally(),
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(
-                                            top = 30.dp,
-                                            end = 25.dp
-                                        )
-                                        .graphicsLayer {
-                                            alpha = visible
-                                        },
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Card(
-                                        backgroundColor =
-                                        communitiesItems[viewModel.currentPage.value].cardColor,
-                                        border = BorderStroke(
-                                            width = 4.dp, color = communitiesItems[0].borderColor
-                                        ),
-                                        shape = RoundedCornerShape(30.dp),
-                                        modifier = Modifier
-                                            .width(160.dp)
-                                            .height(100.dp)
-                                    ) {
-                                        ProfileImage(
-                                            imageUrl = communitiesItems[viewModel.currentPage.value].image,
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .clip(RoundedCornerShape(30.dp)),
-                                        )
-                                    }
-                                    Text(
-                                        text =  communitiesItems[viewModel.currentPage.value].title,
-                                        fontSize = 21.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        softWrap = true,
-                                        modifier = Modifier.padding(start = 0.dp),
-                                        color = textColor,
-
-                                    )
-
-                                }
-                            }
-
-
-                        } else {
-                            Column(
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = 30.dp,
+                                    start = 10.dp,
+                                    end = 25.dp
+                                ),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = communitiesItems[viewModel.currentPage.value].title,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold,
+                                softWrap = true,
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .graphicsLayer {
+                                        alpha = inVisible
+                                    },
+                                color = textColor,
 
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(
-                                            top = 30.dp,
-                                            start = 10.dp,
-                                            end = 25.dp
-                                        ),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text(
-                                        text =  communitiesItems[viewModel.currentPage.value].title,
-                                        fontSize = 25.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        softWrap = true,
-                                        modifier = Modifier
-                                            .graphicsLayer {
-                                                alpha = inVisible
-                                            },
-                                        color = textColor,
+                                )
 
-                                    )
-
-                                }
-                                Spacer(modifier = Modifier.height(20.dp))
-                            }
                         }
-
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
-                    Pager2(viewModel, progress2, it)
                 }
-                Log.i("ExpandedState", "HomeScreen: ${viewModel.expandedState.value}")
 
             }
+            Pager2(viewModel, progress2, paddingValues)
         }
+        Log.i("ExpandedState", "HomeScreen: ${viewModel.expandedState.value}")
+
     }
 }
 

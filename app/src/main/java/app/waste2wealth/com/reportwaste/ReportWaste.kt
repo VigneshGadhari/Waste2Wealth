@@ -202,381 +202,375 @@ fun ReportWaste(
             gesturesEnabled = gesturesEnabled,
             size = 100.dp
         ) {
-            Scaffold(bottomBar = {
-                BottomBar(navController = navController)
-            }) {
 
-                var isCOinVisible by remember {
-                    mutableStateOf(false)
+
+            var isCOinVisible by remember {
+                mutableStateOf(false)
+            }
+
+
+            val context = LocalContext.current
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.TakePicturePreview(),
+                onResult = {
+                    println("Bitmaps is ${it?.asImageBitmap()}")
+                    imageBitmap = it?.asImageBitmap()
+                    viewModel.getPlaces()
+                    bitmap = it
+
+
                 }
-
-
-                val context = LocalContext.current
-                val launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.TakePicturePreview(),
-                    onResult = {
-                        println("Bitmaps is ${it?.asImageBitmap()}")
-                        imageBitmap = it?.asImageBitmap()
-                        viewModel.getPlaces()
-                        bitmap = it
-
-
-                    }
-                )
-                println(it)
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(appBackground)
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 30.dp, start = 0.dp)
-                                .clickable {
-                                    navController.popBackStack()
-                                },
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBackIos,
-                                contentDescription = "",
-                                tint = textColor,
-                                modifier = Modifier
-                                    .padding(start = 15.dp)
-                                    .size(25.dp)
-                            )
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .offset(x = (-10).dp),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "Report Waste",
-                                    color = textColor,
-                                    fontFamily = monteBold,
-                                    fontSize = 25.sp
-                                )
-                            }
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, top = 30.dp)
-                        ) {
-                            Text(
-                                text = "Waste Photograph",
-                                color = textColor,
-                                fontSize = 15.sp,
-                                fontFamily = monteSB
-                            )
-                        }
-                        Card(
-                            backgroundColor = appBackground,
-                            shape = RoundedCornerShape(7.dp),
-                            elevation = 5.dp,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 7.dp, vertical = 10.dp)
-
-                                .clickable {
-                                    if (imageBitmap == null) {
-                                        coroutineScope.launch {
-                                            if (!permissionState.allPermissionsGranted) {
-                                                permissionDrawerState.open()
-                                            } else {
-                                                launcher.launch(
-                                                    ActivityOptionsCompat.makeBasic()
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                        ) {
-                            if (imageBitmap == null) {
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.UploadFile,
-                                        contentDescription = "",
-                                        tint = Color(0xFFCFDCFE),
-                                        modifier = Modifier.size(100.dp)
-                                    )
-                                    Text(
-                                        text = "Upload Photo of Waste",
-                                        color = textColor,
-                                        fontSize = 16.sp,
-                                        fontFamily = monteSB
-                                    )
-                                    Spacer(modifier = Modifier.height(30.dp))
-                                }
-                            } else {
-                                Image(
-                                    bitmap = imageBitmap!!,
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(200.dp),
-                                    contentScale = ContentScale.Fit
-                                )
-
-                            }
-
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, top = 30.dp)
-                                .clickable {
-                                }
-                        ) {
-                            Text(
-                                text = "Type Your Location",
-                                color = textColor,
-                                fontSize = 15.sp,
-                                fontFamily = monteSB
-                            )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, top = 10.dp)
-                        ) {
-                            ExposedDropdownMenuBox(
-                                expanded = isExpanded,
-                                onExpandedChange = {
-                                    isExpanded = it
-                                }
-                            ) {
-                                OutlinedTextField(
-                                    value = address,
-                                    onValueChange = {
-                                        if (it.length <= 200) {
-                                            address = it
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Maximum 200 words",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    },
-                                    colors = TextFieldDefaults.textFieldColors(
-                                        textColor = textColor, backgroundColor = appBackground
-                                    ),
-                                    textStyle = TextStyle(
-                                        color = textColor,
-                                        fontFamily = monteSB,
-                                        fontSize = 16.sp
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(15.dp)
-                                        .onFocusEvent { focusState ->
-                                            if (focusState.isFocused) {
-                                                coroutineScope.launch {
-                                                    bringIntoViewRequester.bringIntoView()
-                                                }
-                                            }
-                                        }
-                                        .border(1.dp, textColor),
-
-                                    )
-                                ExposedDropdownMenu(
-                                    expanded = isExpanded,
-                                    onDismissRequest = {
-                                        isExpanded = false
-                                    }) {
-                                    viewModel.listOfAddresses.forEach {
-                                        if (it != null) {
-                                            DropdownMenuItem(onClick = {
-                                                address = it
-                                                isExpanded = false
-                                            }) {
-                                                Text(text = it)
-                                            }
-                                        }
-                                    }
-
-
-                                }
-
-                            }
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 15.dp),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Points you can Earn",
-                                color = textColor,
-                                fontSize = 16.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(start = 45.dp, end = 60.dp)
-                            )
-                            Row(modifier = Modifier.padding(end = 25.dp)) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.coins),
-                                    contentDescription = "coins",
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .padding(end = 5.dp),
-                                    tint = Color.Unspecified
-                                )
-                                Text(
-                                    text = "20",
-                                    color = textColor,
-                                    fontSize = 15.sp,
-                                    fontFamily = monteNormal,
-                                )
-                            }
-
-                        }
-
-                        Spacer(modifier = Modifier.height(100.dp))
-                    }
+            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(appBackground)
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Row(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(bottom = 100.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.Bottom
+                            .fillMaxWidth()
+                            .padding(top = 30.dp, start = 0.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            },
+                        horizontalArrangement = Arrangement.Start
                     ) {
-                        Button(
-                            onClick = {
-                                isDialogVisible = true
-                            }, colors = ButtonDefaults.buttonColors(
-                                backgroundColor = CardColor,
-                                contentColor = CardTextColor
-                            ),
-                            shape = RoundedCornerShape(35.dp),
-                            modifier = Modifier.padding(start = 0.dp)
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBackIos,
+                            contentDescription = "",
+                            tint = textColor,
+                            modifier = Modifier
+                                .padding(start = 15.dp)
+                                .size(25.dp)
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .offset(x = (-10).dp),
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Text(
                                 text = "Report Waste",
-                                color = Color.White,
-                                fontFamily = monteNormal,
-                                fontSize = 15.sp
+                                color = textColor,
+                                fontFamily = monteBold,
+                                fontSize = 25.sp
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, top = 30.dp)
+                    ) {
+                        Text(
+                            text = "Waste Photograph",
+                            color = textColor,
+                            fontSize = 15.sp,
+                            fontFamily = monteSB
+                        )
+                    }
+                    Card(
+                        backgroundColor = appBackground,
+                        shape = RoundedCornerShape(7.dp),
+                        elevation = 5.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 7.dp, vertical = 10.dp)
+
+                            .clickable {
+                                if (imageBitmap == null) {
+                                    coroutineScope.launch {
+                                        if (!permissionState.allPermissionsGranted) {
+                                            permissionDrawerState.open()
+                                        } else {
+                                            launcher.launch(
+                                                ActivityOptionsCompat.makeBasic()
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                    ) {
+                        if (imageBitmap == null) {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.UploadFile,
+                                    contentDescription = "",
+                                    tint = Color(0xFFCFDCFE),
+                                    modifier = Modifier.size(100.dp)
+                                )
+                                Text(
+                                    text = "Upload Photo of Waste",
+                                    color = textColor,
+                                    fontSize = 16.sp,
+                                    fontFamily = monteSB
+                                )
+                                Spacer(modifier = Modifier.height(30.dp))
+                            }
+                        } else {
+                            Image(
+                                bitmap = imageBitmap!!,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                contentScale = ContentScale.Fit
                             )
 
                         }
+
                     }
-                    DialogBox(
-                        isVisible = isDialogVisible,
-                        successRequest = {
-                            Toast.makeText(context, "Please Wait", Toast.LENGTH_SHORT)
-                                .show()
-                            if (bitmap != null) {
-                                val storageRef = FirebaseStorage.getInstance().reference
-                                val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-                                var imageName = (1..10)
-                                    .map { allowedChars.random() }
-                                    .joinToString("")
-                                imageName = "Reported/${email}/${imageName}.jpg"
-
-                                val imageRef =
-                                    storageRef.child(imageName) // Set desired storage location
-
-                                val baos = ByteArrayOutputStream()
-                                bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                                val imageData = baos.toByteArray()
-
-                                val uploadTask = imageRef.putBytes(imageData)
-                                uploadTask.addOnSuccessListener { taskSnapshot ->
-                                }.addOnFailureListener { exception ->
-                                    println("Firebase storage exception $exception")
-                                }.addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        imageRef.downloadUrl.addOnSuccessListener {
-                                            println("Download url is $it")
-                                            updateWasteToFirebase(
-                                                context = context,
-                                                address = address,
-                                                latitude = viewModel.latitude,
-                                                longitude = viewModel.longitude,
-                                                imagePath = imageName,
-                                                timeStamp = System.currentTimeMillis(),
-                                                userEmail = email ?: "",
-                                            )
-                                            updateInfoToFirebase(
-                                                context,
-                                                name = name,
-                                                email = email,
-                                                phoneNumber = phoneNumber,
-                                                gender = gender,
-                                                organization = organization,
-                                                address = userAddress,
-                                                pointsEarned = pointsEarned + calculatePointsEarned(
-                                                    noOfTimesReported,
-                                                    noOfTimesCollected,
-                                                    noOfTimesActivity
-                                                ),
-                                                pointsRedeemed = pointsRedeemed,
-                                                noOfTimesReported = noOfTimesReported + 1,
-                                                noOfTimesCollected = noOfTimesCollected,
-                                                noOfTimesActivity = noOfTimesActivity,
-                                            )
-                                            isCOinVisible = true
-
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, top = 30.dp)
+                            .clickable {
+                            }
+                    ) {
+                        Text(
+                            text = "Type Your Location",
+                            color = textColor,
+                            fontSize = 15.sp,
+                            fontFamily = monteSB
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, top = 10.dp)
+                    ) {
+                        ExposedDropdownMenuBox(
+                            expanded = isExpanded,
+                            onExpandedChange = {
+                                isExpanded = it
+                            }
+                        ) {
+                            OutlinedTextField(
+                                value = address,
+                                onValueChange = {
+                                    if (it.length <= 200) {
+                                        address = it
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Maximum 200 words",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                },
+                                colors = TextFieldDefaults.textFieldColors(
+                                    textColor = textColor, backgroundColor = appBackground
+                                ),
+                                textStyle = TextStyle(
+                                    color = textColor,
+                                    fontFamily = monteSB,
+                                    fontSize = 16.sp
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(15.dp)
+                                    .onFocusEvent { focusState ->
+                                        if (focusState.isFocused) {
+                                            coroutineScope.launch {
+                                                bringIntoViewRequester.bringIntoView()
+                                            }
                                         }
                                     }
+                                    .border(1.dp, textColor),
 
+                                )
+                            ExposedDropdownMenu(
+                                expanded = isExpanded,
+                                onDismissRequest = {
+                                    isExpanded = false
+                                }) {
+                                viewModel.listOfAddresses.forEach {
+                                    if (it != null) {
+                                        DropdownMenuItem(onClick = {
+                                            address = it
+                                            isExpanded = false
+                                        }) {
+                                            Text(text = it)
+                                        }
+                                    }
+                                }
+
+
+                            }
+
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Points you can Earn",
+                            color = textColor,
+                            fontSize = 16.sp,
+                            fontFamily = monteBold,
+                            modifier = Modifier.padding(start = 45.dp, end = 60.dp)
+                        )
+                        Row(modifier = Modifier.padding(end = 25.dp)) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.coins),
+                                contentDescription = "coins",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(end = 5.dp),
+                                tint = Color.Unspecified
+                            )
+                            Text(
+                                text = "20",
+                                color = textColor,
+                                fontSize = 15.sp,
+                                fontFamily = monteNormal,
+                            )
+                        }
+
+                    }
+
+                    Spacer(modifier = Modifier.height(100.dp))
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 100.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Button(
+                        onClick = {
+                            isDialogVisible = true
+                        }, colors = ButtonDefaults.buttonColors(
+                            backgroundColor = CardColor,
+                            contentColor = CardTextColor
+                        ),
+                        shape = RoundedCornerShape(35.dp),
+                        modifier = Modifier.padding(start = 0.dp)
+                    ) {
+                        Text(
+                            text = "Report Waste",
+                            color = Color.White,
+                            fontFamily = monteNormal,
+                            fontSize = 15.sp
+                        )
+
+                    }
+                }
+                DialogBox(
+                    isVisible = isDialogVisible,
+                    successRequest = {
+                        Toast.makeText(context, "Please Wait", Toast.LENGTH_SHORT)
+                            .show()
+                        if (bitmap != null) {
+                            val storageRef = FirebaseStorage.getInstance().reference
+                            val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+                            var imageName = (1..10)
+                                .map { allowedChars.random() }
+                                .joinToString("")
+                            imageName = "Reported/${email}/${imageName}.jpg"
+
+                            val imageRef =
+                                storageRef.child(imageName) // Set desired storage location
+
+                            val baos = ByteArrayOutputStream()
+                            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                            val imageData = baos.toByteArray()
+
+                            val uploadTask = imageRef.putBytes(imageData)
+                            uploadTask.addOnSuccessListener { taskSnapshot ->
+                            }.addOnFailureListener { exception ->
+                                println("Firebase storage exception $exception")
+                            }.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    imageRef.downloadUrl.addOnSuccessListener {
+                                        println("Download url is $it")
+                                        updateWasteToFirebase(
+                                            context = context,
+                                            address = address,
+                                            latitude = viewModel.latitude,
+                                            longitude = viewModel.longitude,
+                                            imagePath = imageName,
+                                            timeStamp = System.currentTimeMillis(),
+                                            userEmail = email ?: "",
+                                        )
+                                        updateInfoToFirebase(
+                                            context,
+                                            name = name,
+                                            email = email,
+                                            phoneNumber = phoneNumber,
+                                            gender = gender,
+                                            organization = organization,
+                                            address = userAddress,
+                                            pointsEarned = pointsEarned + calculatePointsEarned(
+                                                noOfTimesReported,
+                                                noOfTimesCollected,
+                                                noOfTimesActivity
+                                            ),
+                                            pointsRedeemed = pointsRedeemed,
+                                            noOfTimesReported = noOfTimesReported + 1,
+                                            noOfTimesCollected = noOfTimesCollected,
+                                            noOfTimesActivity = noOfTimesActivity,
+                                        )
+                                        isCOinVisible = true
+
+                                    }
                                 }
 
                             }
 
-                            isDialogVisible = false
-                        }) {
-                        isDialogVisible = !isDialogVisible
-                    }
-                }
-
-                if (isCOinVisible) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomCenter
-                    ) {
-                        val currenanim by rememberLottieComposition(
-                            spec = LottieCompositionSpec.Asset("coins.json")
-                        )
-                        LottieAnimation(
-                            composition = currenanim,
-                            iterations = 1,
-                            contentScale = ContentScale.Crop,
-                            speed = 1f,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .size(250.dp)
-                        )
-                    }
-                    LaunchedEffect(key1 = isCOinVisible) {
-                        if (isCOinVisible) {
-                            delay(4000)
-                            navController.navigate(Screens.Dashboard.route)
                         }
-                    }
 
+                        isDialogVisible = false
+                    }) {
+                    isDialogVisible = !isDialogVisible
                 }
+            }
 
+            if (isCOinVisible) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    val currenanim by rememberLottieComposition(
+                        spec = LottieCompositionSpec.Asset("coins.json")
+                    )
+                    LottieAnimation(
+                        composition = currenanim,
+                        iterations = 1,
+                        contentScale = ContentScale.Crop,
+                        speed = 1f,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .size(250.dp)
+                    )
+                }
+                LaunchedEffect(key1 = isCOinVisible) {
+                    if (isCOinVisible) {
+                        delay(4000)
+                        navController.navigate(Screens.Dashboard.route)
+                    }
+                }
 
             }
 
+
         }
 
-
     }
-}
 
+}
 
 @Composable
 fun DialogBox(

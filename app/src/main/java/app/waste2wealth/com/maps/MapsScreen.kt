@@ -66,11 +66,10 @@ import com.mapbox.geojson.*
 
 @OptIn(
     ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class,
-    ExperimentalComposeUiApi::class
 )
 @Composable
-fun MapScreen(viewModel: LocationViewModel, navController: NavController) {
-    LaunchedEffect(key1 = Unit){
+fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
 
@@ -109,180 +108,164 @@ fun MapScreen(viewModel: LocationViewModel, navController: NavController) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
-    PermissionDrawer(
-        drawerState = permissionDrawerState,
-        permissionState = permissionState,
-        rationaleText = "To continue, allow Waste2Wealth to access your device's camera" +
-                ". Tap Settings > Permission, and turn \"Access Camera On\" on.",
-        withoutRationaleText = "Camera permission required for this feature to be available." +
-                " Please grant the permission.",
-        model = R.drawable.camera,
-        gesturesEnabled = gesturesEnabled,
-        size = 100.dp
-    ) {
-        Scaffold(bottomBar = {
-            BottomBar(navController = navController)
-        }) {
-            JetFirestore(path = {
-                collection("AllWastes")
-            }, onRealtimeCollectionFetch = { values, _ ->
-                allWastes = values?.getListOfObjects()
 
-            }) {
-                println(it)
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
+    JetFirestore(path = {
+        collection("AllWastes")
+    }, onRealtimeCollectionFetch = { values, _ ->
+        allWastes = values?.getListOfObjects()
+
+    }) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                if (mapsItems != null) {
+                    MapBoxMap(
+                        onPointChange = { point = it },
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        isClicked = isClicked,
+                        points = mapsItems,
+                        currentPoint = currentPoint,
+                        isReset = isReset,
+                        currentLocation = Point.fromLngLat(
+                            viewModel.longitude, viewModel.latitude
+                        )
+                    )
+                }
+            }
+            AnimatedVisibility(
+                visible = !isClicked.value,
+                enter = slideInVertically(tween(1000), initialOffsetY = {
+                    it
+                }),
+                exit = slideOutVertically(tween(1000), targetOffsetY = {
+                    it
+                })
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(30.dp)
                     ) {
-                        if (mapsItems != null) {
-                            MapBoxMap(
-                                onPointChange = { point = it },
+                        items(mapsItems ?: emptyList()) { item ->
+                            Card(
                                 modifier = Modifier
-                                    .fillMaxSize(),
-                                isClicked = isClicked,
-                                points = mapsItems,
-                                currentPoint = currentPoint,
-                                isReset = isReset,
-                                currentLocation = Point.fromLngLat(
-                                    viewModel.longitude, viewModel.latitude
-                                )
-                            )
-                        }
-                    }
-                    AnimatedVisibility(
-                        visible = !isClicked.value,
-                        enter = slideInVertically(tween(1000), initialOffsetY = {
-                            it
-                        }),
-                        exit = slideOutVertically(tween(1000), targetOffsetY = {
-                            it
-                        })
-                    ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.BottomCenter
-                        ) {
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentPadding = PaddingValues(30.dp)
+                                    .width(300.dp)
+                                    .height(230.dp)
+                                    .padding(
+                                        end = 10.dp, bottom =
+                                        paddingValues.calculateBottomPadding() + 10.dp
+                                    ),
+                                shape = RoundedCornerShape(10.dp),
+                                elevation = 10.dp,
+                                backgroundColor = appBackground
                             ) {
-                                items(mapsItems ?: emptyList()) { item ->
-                                    Card(
-                                        modifier = Modifier
-                                            .width(300.dp)
-                                            .height(230.dp)
-                                            .padding(
-                                                end = 10.dp, bottom =
-                                                it.calculateBottomPadding() + 10.dp
-                                            ),
-                                        shape = RoundedCornerShape(10.dp),
-                                        elevation = 10.dp,
-                                        backgroundColor = appBackground
-                                    ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(horizontal = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Column(modifier = Modifier.fillMaxWidth()) {
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        Text(
+                                            text = item.location,
+                                            color = textColor,
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis,
+                                            softWrap = true
+                                        )
+                                        Spacer(modifier = Modifier.height(10.dp))
                                         Row(
                                             modifier = Modifier
-                                                .fillMaxSize()
-                                                .padding(horizontal = 10.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.Center
+                                                .fillMaxWidth()
+                                                .padding(end = 10.dp),
+                                            horizontalArrangement = Arrangement.End
                                         ) {
-                                            Column(modifier = Modifier.fillMaxWidth()) {
-                                                Spacer(modifier = Modifier.height(10.dp))
-                                                Text(
-                                                    text = item.location,
-                                                    color = textColor,
-                                                    fontSize = 15.sp,
-                                                    fontWeight = FontWeight.Bold,
-                                                    maxLines = 2,
-                                                    overflow = TextOverflow.Ellipsis,
-                                                    softWrap = true
+                                            Text(
+                                                text = getTimeAgo(item.time),
+                                                color = textColor,
+                                                fontSize = 10.sp,
+                                                fontWeight = FontWeight.Normal,
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        Button(
+                                            onClick = {
+                                                isReset.value = false
+                                                isClicked.value = true
+                                                currentPoint.value = item.point
+                                            },
+                                            shape = RoundedCornerShape(10.dp),
+                                            colors = ButtonDefaults.buttonColors(
+                                                backgroundColor = appBackground,
+                                            )
+                                        ) {
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Icon(
+                                                    imageVector = Icons.Filled.LocationOn,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(20.dp),
+                                                    tint = textColor
                                                 )
-                                                Spacer(modifier = Modifier.height(10.dp))
-                                                Row(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(end = 10.dp),
-                                                    horizontalArrangement = Arrangement.End
-                                                ) {
-                                                    Text(
-                                                        text = getTimeAgo(item.time),
-                                                        color = textColor,
-                                                        fontSize = 10.sp,
-                                                        fontWeight = FontWeight.Normal,
-                                                    )
-                                                }
-                                                Spacer(modifier = Modifier.height(10.dp))
-                                                Button(
-                                                    onClick = {
-                                                        isReset.value = false
-                                                        isClicked.value = true
-                                                        currentPoint.value = item.point
-                                                    },
-                                                    shape = RoundedCornerShape(10.dp),
-                                                    colors = ButtonDefaults.buttonColors(
-                                                        backgroundColor = appBackground,
-                                                    )
-                                                ) {
-                                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                                        Icon(
-                                                            imageVector = Icons.Filled.LocationOn,
-                                                            contentDescription = null,
-                                                            modifier = Modifier.size(20.dp),
-                                                            tint = textColor
-                                                        )
-                                                        Spacer(modifier = Modifier.width(10.dp))
-                                                        Text(
-                                                            text = "Navigate",
-                                                            color = textColor,
-                                                            fontSize = 10.sp,
-                                                            fontWeight = FontWeight.Normal
-                                                        )
-                                                    }
-                                                }
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Navigate",
+                                                    color = textColor,
+                                                    fontSize = 10.sp,
+                                                    fontWeight = FontWeight.Normal
+                                                )
                                             }
-                                            Spacer(modifier = Modifier.width(10.dp))
                                         }
                                     }
+                                    Spacer(modifier = Modifier.width(10.dp))
                                 }
-
                             }
                         }
+
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 10.dp, vertical = 25.dp),
-                    contentAlignment = Alignment.TopEnd
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 25.dp),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            Card(
+                modifier = Modifier
+                    .padding(end = 10.dp),
+                shape = RoundedCornerShape(10.dp),
+                elevation = 10.dp
+            ) {
+                Button(
+                    onClick = {
+                        isReset.value = true
+                        isClicked.value = false
+
+                    },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = CardColor,
+                        contentColor = CardTextColor
+                    )
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .padding(end = 10.dp),
-                        shape = RoundedCornerShape(10.dp),
-                        elevation = 10.dp
-                    ) {
-                        Button(
-                            onClick = {
-                                isReset.value = true
-                                isClicked.value = false
-
-                            },
-                            shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = CardColor,
-                                contentColor = CardTextColor
-                            )
-                        ) {
-                            Text(
-                                text = "Reset",
-                                color = CardTextColor,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Normal
-                            )
-                        }
-
-                    }
+                    Text(
+                        text = "Reset",
+                        color = CardTextColor,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
+
             }
         }
     }
