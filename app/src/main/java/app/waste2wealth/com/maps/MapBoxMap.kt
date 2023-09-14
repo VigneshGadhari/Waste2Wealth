@@ -65,9 +65,9 @@ fun MapBoxMap(
         factory = { context ->
             val cameraOptions = CameraOptions.Builder()
                 .center(currentLocation)
-                .zoom(19.0)
-                .pitch(0.0)
-                .bearing(0.0)
+                .zoom(15.0)
+                .pitch(10.0)
+                .bearing(1.0)
                 .build()
             MapView(context).also { mapView ->
                 mapView.getMapboxMap().loadStyle(
@@ -116,7 +116,7 @@ fun MapBoxMap(
             }
             val cameraOptions = if (isReset.value) CameraOptions.Builder()
                 .center(currentLocation)
-                .zoom(19.5)
+                .zoom(15.0)
                 .pitch(0.0)
                 .bearing(0.0)
                 .build()
