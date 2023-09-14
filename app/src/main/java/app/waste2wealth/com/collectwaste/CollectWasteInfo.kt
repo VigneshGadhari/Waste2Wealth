@@ -48,6 +48,8 @@ import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.reportwaste.DialogBox
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
@@ -213,15 +215,15 @@ fun CollectWasteInfo(
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = textColor,
-                            contentColor = Color.White
+                            backgroundColor = CardColor,
+                            contentColor = CardTextColor
                         ),
                         shape = RoundedCornerShape(35.dp),
                         modifier = Modifier.padding(start = 10.dp)
                     ) {
                         Text(
                             text = "Collect Waste",
-                            color = Color.White,
+                            color = CardTextColor,
                             fontSize = 12.sp,
                             fontFamily = monteSB,
                             modifier = Modifier.padding(bottom = 4.dp),

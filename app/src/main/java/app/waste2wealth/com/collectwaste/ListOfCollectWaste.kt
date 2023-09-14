@@ -58,6 +58,7 @@ import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
@@ -311,7 +312,7 @@ fun WasteItemCard(
             ) {
                 Text(
                     text = address,
-                    color = textColor,
+                    color = CardTextColor,
                     fontFamily = monteSB,
                     fontSize = 15.sp,
                     maxLines = if (isEllipsis) 1 else Int.MAX_VALUE,
@@ -328,15 +329,15 @@ fun WasteItemCard(
                         if (isCollectedInfo) onCollected() else onClick()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = textColor,
-                        contentColor = Color.White
+                        backgroundColor = appBackground,
+                        contentColor = textColor
                     ),
                     shape = RoundedCornerShape(15.dp),
                     modifier = Modifier.padding(start = 10.dp)
                 ) {
                     Text(
                         text = if (isCollectedInfo) "Navigate" else "Collect",
-                        color = Color.White,
+                        color = textColor,
                         fontFamily = monteSB,
                         fontSize = 10.sp
                     )
@@ -350,7 +351,7 @@ fun WasteItemCard(
                 ) {
                     Text(
                         text = "$distance, Reported $time",
-                        color = textColor,
+                        color = CardTextColor.copy(0.75f),
                         fontFamily = monteBold,
                         fontSize = 10.sp
                     )

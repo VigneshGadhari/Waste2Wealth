@@ -82,6 +82,8 @@ import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.firebase.firestore.updateWasteToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteBold
@@ -454,8 +456,8 @@ fun ReportWaste(
                             onClick = {
                                 isDialogVisible = true
                             }, colors = ButtonDefaults.buttonColors(
-                                backgroundColor = textColor,
-                                contentColor = Color.White
+                                backgroundColor = CardColor,
+                                contentColor = CardTextColor
                             ),
                             shape = RoundedCornerShape(35.dp),
                             modifier = Modifier.padding(start = 0.dp)

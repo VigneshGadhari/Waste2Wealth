@@ -79,6 +79,7 @@ import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
@@ -202,7 +203,7 @@ fun NewDashboard(
                                     )
                                     Text(
                                         text = name,
-                                        color = textColor,
+                                        color = CardTextColor,
                                         fontSize = 20.sp,
                                         fontFamily = monteBold,
                                         modifier = Modifier.padding(bottom = 7.dp)
@@ -247,7 +248,7 @@ fun NewDashboard(
                                     ) {
                                         Text(
                                             text = "Points Earned",
-                                            color = textColor,
+                                            color = CardTextColor,
                                             fontSize = 14.sp,
                                             fontFamily = monteBold,
                                             softWrap = true,
@@ -264,7 +265,7 @@ fun NewDashboard(
                                             )
                                             Text(
                                                 text = pointsEarned,
-                                                color = textColor,
+                                                color = CardTextColor,
                                                 fontSize = 15.sp,
                                                 fontFamily = monteNormal,
                                             )
@@ -282,7 +283,7 @@ fun NewDashboard(
                                     ) {
                                         Text(
                                             text = "Points Redeemed",
-                                            color = textColor,
+                                            color = CardTextColor,
                                             fontSize = 14.sp,
                                             fontFamily = monteBold,
                                             softWrap = true,
@@ -299,7 +300,7 @@ fun NewDashboard(
                                             )
                                             Text(
                                                 text = pointsRedeemed,
-                                                color = textColor,
+                                                color = CardTextColor,
                                                 fontSize = 15.sp,
                                                 fontFamily = monteNormal,
                                             )
@@ -518,7 +519,7 @@ fun NewDashboard(
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Text(
                                             text = item.title,
-                                            color = Color.Black,
+                                            color = CardTextColor,
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.Bold,
                                             softWrap = true
@@ -526,7 +527,7 @@ fun NewDashboard(
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Text(
                                             text = item.time,
-                                            color = Color.Black,
+                                            color = CardTextColor,
                                             fontSize = 10.sp,
                                             fontWeight = FontWeight.Normal
                                         )
@@ -545,12 +546,12 @@ fun NewDashboard(
                                                     imageVector = Icons.Filled.LocationOn,
                                                     contentDescription = null,
                                                     modifier = Modifier.size(20.dp),
-                                                    tint = Color.Black
+                                                    tint = CardColor
                                                 )
                                                 Spacer(modifier = Modifier.width(10.dp))
                                                 Text(
                                                     text = "Register",
-                                                    color = Color.Black,
+                                                    color = textColor,
                                                     fontSize = 10.sp,
                                                     fontWeight = FontWeight.Normal
                                                 )
@@ -568,75 +569,6 @@ fun NewDashboard(
 
                 }
             }
-        }
-    }
-
-    @Composable
-    fun RepeatingCard(
-        type: String,
-        emoji: String,
-        title: String,
-        date: String
-    ) {
-        Card(
-            backgroundColor = CardColor,
-            shape = RoundedCornerShape(
-                topStart = 10.dp,
-                topEnd = 10.dp,
-                bottomEnd = 10.dp,
-                bottomStart = 50.dp
-            ),
-            modifier = Modifier.padding(end = 10.dp)
-        ) {
-            var register by remember { mutableStateOf("Register") }
-            Column(modifier = Modifier.padding(15.dp)) {
-                Text(
-                    text = type,
-                    color = Color.Gray,
-                    fontSize = 13.sp,
-                    fontFamily = monteSB,
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-                Text(
-                    text = title,
-                    color = textColor,
-                    fontSize = 18.sp,
-                    fontFamily = monteSB,
-                    modifier = Modifier.padding(bottom = 10.dp),
-                    softWrap = true
-                )
-                Text(
-                    text = date,
-                    color = Color.Gray,
-                    fontSize = 16.sp,
-                    fontFamily = monteSB,
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-
-                Button(
-                    onClick = {
-                        register = "Registered"
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = textColor,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(35.dp),
-                    modifier = Modifier.padding(start = 10.dp)
-                ) {
-                    Text(
-                        text = register,
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontFamily = monteSB,
-                        modifier = Modifier.padding(bottom = 4.dp),
-                        maxLines = 1,
-                        softWrap = true
-                    )
-                }
-
-            }
-
         }
     }
 }
