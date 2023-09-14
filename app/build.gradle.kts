@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "app.waste2wealth.com"
-    compileSdk = 33
+    compileSdk = 34
 
     lint {
         abortOnError = false
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "app.waste2wealth.com"
         minSdk = 27
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -131,6 +131,16 @@ dependencies {
 
     //Compose ConstraintLayout
     implementation(libs.androidx.constraintlayout.compose)
+
+    implementation("com.mapbox.maps:android:10.14.0")
+
+//    // Maps
+//    implementation("com.google.android.gms:play-services-location:21.0.1")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+//    implementation("com.mapbox.maps:android:10.14.0")
+//    implementation("com.mapbox.mapboxsdk:mapbox-android-gestures:0.8.0")
+//    implementation("com.mapbox.navigation:ui-dropin:2.14.2")
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
 
     //Ktor-Client
     implementation("io.ktor:ktor-client-core:1.6.3")
