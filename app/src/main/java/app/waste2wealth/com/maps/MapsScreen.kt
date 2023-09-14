@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -54,6 +55,7 @@ import app.waste2wealth.com.collectwaste.getTimeAgo
 import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
+import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -233,40 +235,41 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                     }
                 }
             }
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 25.dp),
-            contentAlignment = Alignment.TopEnd
-        ) {
-            Card(
+            Box(
                 modifier = Modifier
-                    .padding(end = 10.dp),
-                shape = RoundedCornerShape(10.dp),
-                elevation = 10.dp
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp, vertical = 25.dp),
+                contentAlignment = Alignment.TopEnd
             ) {
-                Button(
-                    onClick = {
-                        isReset.value = true
-                        isClicked.value = false
-
-                    },
+                Card(
+                    modifier = Modifier
+                        .padding(end = 10.dp),
                     shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = CardColor,
-                        contentColor = CardTextColor
-                    )
+                    elevation = 10.dp
                 ) {
-                    Text(
-                        text = "Reset",
-                        color = CardTextColor,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
+                    Button(
+                        onClick = {
+                            isReset.value = true
+                            isClicked.value = false
 
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = CardColor,
+                            contentColor = CardTextColor
+                        )
+                    ) {
+                        Text(
+                            text = "Reset",
+                            color = CardTextColor,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
+
+                }
             }
         }
+
     }
 }

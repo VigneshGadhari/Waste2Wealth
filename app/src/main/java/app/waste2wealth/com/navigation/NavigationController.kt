@@ -35,7 +35,7 @@ import app.waste2wealth.com.rewards.RewardDetails
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavigationController(
     scaffoldState: ScaffoldState,
