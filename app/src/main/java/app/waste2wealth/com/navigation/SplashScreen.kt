@@ -30,7 +30,7 @@ fun SplashScreen(navController: NavController, email: String) {
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 0.9f,
+            targetValue = 1.2f,
             animationSpec = tween(
                 durationMillis = 800,
                 easing = {
