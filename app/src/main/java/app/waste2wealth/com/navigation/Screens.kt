@@ -1,6 +1,9 @@
 package app.waste2wealth.com.navigation
 
+import androidx.navigation.NavHostController
+
 sealed class Screens(val route: String) {
+
 
     object Onboarding : Screens("onboarding")
     object CompleteProfile : Screens("completeProfile")
@@ -15,6 +18,7 @@ sealed class Screens(val route: String) {
     object StopRecording : Screens("stopRecording")
     object Rewards : Screens("rewards")
     object RewardsDetails : Screens("rewardsDetails")
+    object ClaimedRewards : Screens("claimedRewards")
     object LoginScreen : Screens("login")
     object Dashboard : Screens("dashboard")
     object Profile : Screens("profile")

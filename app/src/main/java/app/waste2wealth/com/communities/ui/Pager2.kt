@@ -2,8 +2,6 @@ package app.waste2wealth.com.communities.ui
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -39,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
@@ -49,7 +45,7 @@ import app.waste2wealth.com.R
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import app.waste2wealth.com.communities.MainViewModel
+import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.components.permissions.Grapple
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
@@ -109,7 +105,7 @@ val items = listOf(
 @OptIn(ExperimentalPagerApi::class, ExperimentalMotionApi::class)
 @Composable
 fun Pager2(
-    viewModel: MainViewModel,
+    viewModel: CommunitiesViewModel,
     progress2: MutableState<Float>,
     padding: PaddingValues,
 ) {
