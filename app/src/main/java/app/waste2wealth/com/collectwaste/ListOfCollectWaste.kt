@@ -47,12 +47,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.BottomBar
-import app.waste2wealth.com.challenges.Challenges
-import app.waste2wealth.com.challenges.Clubs
-import app.waste2wealth.com.challenges.Posts
-import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
