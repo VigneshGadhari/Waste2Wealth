@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.communities.data.Drives
+import app.waste2wealth.com.ui.theme.CardTextColor
 
 val cleanlinessDrives = listOf(
     Drives("2023-09-15 09:00 AM", "City Park", "Park Cleanup Drive"),
@@ -75,14 +76,14 @@ fun CardItem(drives: Drives? = null) {
             Text(
                 text = drives?.title ?: "",
                 fontSize = 15.sp,
-                color = Color.DarkGray,
+                color = CardTextColor,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
                 text = drives?.location ?: "",
                 fontSize = 13.sp,
-                color = Color.DarkGray,
+                color = CardTextColor,
                 fontWeight = FontWeight.Normal,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
@@ -90,7 +91,7 @@ fun CardItem(drives: Drives? = null) {
         Text(
             text = drives?.time.toString(),
             fontSize = 10.sp,
-            color = Color.DarkGray,
+            color = CardTextColor,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 4.dp),
             softWrap = true

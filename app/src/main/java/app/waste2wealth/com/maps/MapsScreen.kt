@@ -54,6 +54,8 @@ import app.waste2wealth.com.collectwaste.getTimeAgo
 import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -226,12 +228,12 @@ fun MapScreen(viewModel: LocationViewModel, navController: NavController) {
                                                             imageVector = Icons.Filled.LocationOn,
                                                             contentDescription = null,
                                                             modifier = Modifier.size(20.dp),
-                                                            tint = Color.Black
+                                                            tint = textColor
                                                         )
                                                         Spacer(modifier = Modifier.width(10.dp))
                                                         Text(
                                                             text = "Navigate",
-                                                            color = Color.Black,
+                                                            color = textColor,
                                                             fontSize = 10.sp,
                                                             fontWeight = FontWeight.Normal
                                                         )
@@ -265,11 +267,15 @@ fun MapScreen(viewModel: LocationViewModel, navController: NavController) {
                                 isClicked.value = false
 
                             },
-                            shape = RoundedCornerShape(10.dp)
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = CardColor,
+                                contentColor = CardTextColor
+                            )
                         ) {
                             Text(
                                 text = "Reset",
-                                color = Color.White,
+                                color = CardTextColor,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Normal
                             )

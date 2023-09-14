@@ -15,6 +15,5 @@ sealed class BottomBarScreens(val route: String?, val title: String?, val icon: 
 
 val items = listOf(
     BottomBarScreens.HomeScreen,
-    BottomBarScreens.RewardsScreen,
     BottomBarScreens.CommunityScreen
 )

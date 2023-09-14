@@ -1,6 +1,7 @@
 package app.waste2wealth.com.bottombar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
@@ -34,21 +37,25 @@ fun BottomBar(navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        backgroundColor = appBackground,
+        backgroundColor = CardColor,
         elevation = 5.dp,
         shape = RoundedCornerShape(17.dp)
     ) {
         BottomNavigation(
             modifier = Modifier
-                .padding(12.dp, 0.dp, 12.dp, 0.dp)
                 .height(80.dp),
             elevation = 0.dp,
-            backgroundColor = appBackground
+            backgroundColor = CardColor
         ) {
             items.forEach {
                 val isYellow = currentRoute?.hierarchy?.any { nav ->
                     nav.route == it.route
                 } == true
+                val myTextColor = if (isSystemInDarkTheme()) {
+                    if (isYellow) Color.Black else Color.White
+                } else {
+                    if (isYellow) Color.White else Color.Black
+                }
                 BottomNavigationItem(
                     icon = {
                         it.icon?.let {
@@ -58,7 +65,7 @@ fun BottomBar(navController: NavController) {
                                 modifier = Modifier
                                     .size(35.dp)
                                     .padding(bottom = 5.dp),
-                                tint = if (isYellow) Color.White else textColor
+                                tint = if (isYellow) myTextColor else CardTextColor
                             )
                         }
                     },
@@ -66,7 +73,7 @@ fun BottomBar(navController: NavController) {
                         it.title?.let {
                             Text(
                                 text = it,
-                                color = if (isYellow) Color.White else textColor,
+                                color = if (isYellow) myTextColor else CardTextColor,
                                 softWrap = true,
                                 fontFamily = monteSB,
                                 fontSize = 10.sp
@@ -75,9 +82,9 @@ fun BottomBar(navController: NavController) {
                     },
                     selected = isYellow,
                     selectedContentColor = Color.Yellow,
-                    unselectedContentColor = Color.White.copy(alpha = 0.4f),
+                    unselectedContentColor = CardColor,
                     modifier = Modifier
-                        .background(if (isYellow) textColor else Color.White)
+                        .background(if (isYellow) textColor else myTextColor)
                         .clip(RoundedCornerShape(17.dp)),
                     onClick = {
                         it.route?.let { it1 ->

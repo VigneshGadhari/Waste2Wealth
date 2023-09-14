@@ -49,6 +49,7 @@ import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.components.permissions.Grapple
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
@@ -169,7 +170,7 @@ fun Pager2(
         ) {
             Card(
                 backgroundColor =
-                appBackground, border = BorderStroke(
+                CardColor, border = BorderStroke(
                     width = 1.dp, color = communitiesItems[page].cardColor
                 ), shape = RoundedCornerShape(40.dp), modifier = Modifier
                     .layoutId("card")
@@ -205,7 +206,7 @@ fun Pager2(
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = communitiesItems[page].title,
-                            color = textColor,
+                            color = CardTextColor,
                             fontSize = 20.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -221,7 +222,7 @@ fun Pager2(
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = communitiesItems[page].date,
-                            color = textColor,
+                            color = CardTextColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -237,7 +238,7 @@ fun Pager2(
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = communitiesItems[page].location,
-                            color = textColor,
+                            color = CardTextColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -253,7 +254,7 @@ fun Pager2(
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = communitiesItems[page].time,
-                            color = textColor,
+                            color = CardTextColor,
                             fontSize = 15.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -265,14 +266,14 @@ fun Pager2(
                             },
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color(0xFFFD5065),
-                                contentColor = Color.White
+                                contentColor = appBackground
                             ),
                             shape = RoundedCornerShape(35.dp),
                             modifier = Modifier.padding(start = 10.dp)
                         ) {
                             Text(
                                 text = "Register",
-                                color = Color.White,
+                                color = textColor,
                                 fontSize = 12.sp,
                                 fontFamily = monteSB,
                                 modifier = Modifier.padding(bottom = 4.dp),
@@ -349,7 +350,7 @@ fun Pager2(
                                     .padding(bottom = 0.dp)
                                     .requiredHeight(20.dp)
                                     .requiredWidth(55.dp)
-                                    .alpha(0.22f), color = Color.DarkGray
+                                    .alpha(0.22f), color = CardTextColor
                             )
                         }
 
@@ -367,7 +368,7 @@ fun Pager2(
                             Text(
                                 text = "Drives Conducted",
                                 fontSize = 21.sp,
-                                color = Color.DarkGray,
+                                color = CardTextColor,
                                 fontWeight = FontWeight.Normal,
                                 modifier = Modifier.padding(start = 14.dp)
                             )
