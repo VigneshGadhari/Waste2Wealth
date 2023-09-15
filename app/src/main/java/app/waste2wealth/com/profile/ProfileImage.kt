@@ -24,6 +24,7 @@ fun ProfileImage(
     modifier: Modifier = Modifier,
     imageUrl: Any? = null,
     initial: Char? = null,
+    contentScale: ContentScale = ContentScale.Crop,
     onClick: (() -> Unit)? = null,
 ) {
     if (imageUrl != null) {
@@ -41,7 +42,7 @@ fun ProfileImage(
                         Modifier
                     }
                 ),
-            contentScale = ContentScale.Crop
+            contentScale = contentScale
         )
     } else {
         BoxWithConstraints(

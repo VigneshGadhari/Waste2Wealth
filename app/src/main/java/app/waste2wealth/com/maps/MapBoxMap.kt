@@ -68,16 +68,16 @@ fun MapBoxMap(
                 .build()
             MapView(context).also { mapView ->
                 mapView.getMapboxMap().loadStyle(
-                    style("mapbox://styles/thekaailashsharma/clm8xkddo014m01pe5mfjfj8p") {
+                    style("mapbox://styles/thekaailashsharma/clmk6u38j01tn01r74ejhgk4p") {
                         val zoom = zoom()
                         Log.i("Zoommmmmmmm", "${zoom.literalValue}")
                         +terrain("terrain-enable")
                         +projection(ProjectionName.GLOBE)
-                        +atmosphere {
-                            color(rgb(220.0, 159.0, 159.0)) // Pink fog / lower atmosphere
-                            highColor(rgb(220.0, 159.0, 159.0)) // Blue sky / upper atmosphere
-                            horizonBlend(0.4) // Exaggerate atmosphere (default is .1)
-                        }
+//                        +atmosphere {
+//                            color(rgb(220.0, 159.0, 159.0)) // Pink fog / lower atmosphere
+//                            highColor(rgb(220.0, 159.0, 159.0)) // Blue sky / upper atmosphere
+//                            horizonBlend(0.4) // Exaggerate atmosphere (default is .1)
+//                        }
                         +rasterDemSource("raster-dem") {
                             url("mapbox://mapbox.terrain-rgb")
                         }
