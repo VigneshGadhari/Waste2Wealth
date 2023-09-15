@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -160,6 +162,7 @@ fun NewDashboard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(appBackground)
+                .verticalScroll(rememberScrollState())
         ) {
             Card(
                 modifier = Modifier
@@ -220,81 +223,78 @@ fun NewDashboard(
                                 }
                         )
                     }
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 20.dp)
+                            .padding(bottom = 20.dp, start = 25.dp, end = 15.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "Points Earned",
-                                    color = CardTextColor,
-                                    fontSize = 14.sp,
-                                    fontFamily = monteBold,
-                                    softWrap = true,
-                                    modifier = Modifier.padding(start = 7.dp)
+                        Column(
+                            modifier = Modifier
+                                .padding(top = 15.dp)
+                                .offset(x = (-15).dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Points Earned",
+                                color = CardTextColor,
+                                fontSize = 14.sp,
+                                fontFamily = monteBold,
+                                softWrap = true,
+                                modifier = Modifier.padding(start = 7.dp)
+                            )
+                            Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.coins),
+                                    contentDescription = "coins",
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .padding(end = 5.dp),
+                                    tint = Color.Unspecified
                                 )
-                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.coins),
-                                        contentDescription = "coins",
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                            .padding(end = 5.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Text(
-                                        text = pointsEarned,
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteNormal,
-                                    )
-                                }
-
+                                Text(
+                                    text = pointsEarned,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteNormal,
+                                )
                             }
+
                         }
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "Points Redeemed",
-                                    color = CardTextColor,
-                                    fontSize = 14.sp,
-                                    fontFamily = monteBold,
-                                    softWrap = true,
-                                    modifier = Modifier.padding(start = 7.dp)
+                        Column(
+                            modifier = Modifier
+                                .padding(top = 15.dp)
+                                .offset(x = (-15).dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Points Redeemed",
+                                color = CardTextColor,
+                                fontSize = 14.sp,
+                                fontFamily = monteBold,
+                                softWrap = true,
+                                modifier = Modifier.padding(start = 7.dp)
+                            )
+                            Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.coins),
+                                    contentDescription = "coins",
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .padding(end = 5.dp),
+                                    tint = Color.Unspecified
                                 )
-                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.coins),
-                                        contentDescription = "coins",
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                            .padding(end = 5.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Text(
-                                        text = pointsRedeemed,
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteNormal,
-                                    )
-                                }
-
+                                Text(
+                                    text = pointsRedeemed,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteNormal,
+                                )
                             }
+
+
                         }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
@@ -554,7 +554,38 @@ fun NewDashboard(
 
             }
 
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            val lastTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+            ) {
+                Spacer(modifier = Modifier.height(25.dp))
+                Text(
+                    text = "Waste Wise",
+                    color = lastTextColor.copy(0.75f),
+                    fontSize = 33.sp,
+                    fontFamily = monteSB,
+                )
+                Spacer(modifier = Modifier.height(0.dp))
+                Text(
+                    text = "Rewards Rise",
+                    color = lastTextColor.copy(0.5f),
+                    fontSize = 23.sp,
+                    fontFamily = monteSB,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Crafted with ❤️ by The Centennials",
+                    color = lastTextColor.copy(0.75f),
+                    fontSize = 10.sp,
+                    fontFamily = monteSB,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(130.dp))
 
         }
     }
