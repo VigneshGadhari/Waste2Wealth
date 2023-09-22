@@ -209,13 +209,12 @@ fun NewDashboard(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 20.dp, start = 25.dp, end = 15.dp),
+                                .padding(bottom = 20.dp, start = 25.dp, end = 25.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Column(
                                 modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
+                                    .padding(top = 15.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
@@ -247,8 +246,7 @@ fun NewDashboard(
                             }
                             Column(
                                 modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
+                                    .padding(top = 15.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
@@ -323,10 +321,9 @@ fun NewDashboard(
 
                 Row(
                     modifier = Modifier
-                        .padding(horizontal = 40.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
-
                 ) {
                     Card(
                         modifier = Modifier
@@ -455,7 +452,7 @@ fun NewDashboard(
                     )
 
                     AutoResizedText(
-                        text = "All Events",
+                        text = "View All",
                         color = textColor,
                         fontSize = 15.sp,
                         modifier = Modifier.clickable {
