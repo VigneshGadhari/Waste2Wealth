@@ -395,7 +395,8 @@ fun ReportWaste(
                                 expanded = isExpanded,
                                 onDismissRequest = {
                                     isExpanded = false
-                                }) {
+                                },
+                                modifier = Modifier.background(appBackground)) {
                                 viewModel.listOfAddresses.forEach {
                                     if (it != null) {
                                         DropdownMenuItem(onClick = {

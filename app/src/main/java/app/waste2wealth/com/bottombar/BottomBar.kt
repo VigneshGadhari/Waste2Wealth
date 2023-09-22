@@ -79,7 +79,7 @@ fun BottomBar(
                                         modifier = Modifier
                                             .size(35.dp)
                                             .padding(bottom = 5.dp),
-                                        tint = if (isYellow) myTextColor else CardTextColor
+                                        tint = Color.Black
                                     )
                                 }
                             },
@@ -87,7 +87,7 @@ fun BottomBar(
                                 it.title?.let {
                                     AutoResizedText(
                                         text = it,
-                                        color = if (isYellow) myTextColor else CardTextColor,
+                                        color = Color.Black,
                                         softWrap = true,
                                         fontFamily = monteSB,
                                         fontSize = 10.sp
@@ -98,7 +98,7 @@ fun BottomBar(
                             selectedContentColor = Color.Yellow,
                             unselectedContentColor = CardColor,
                             modifier = Modifier
-                                .background(if (isYellow) textColor else myTextColor)
+                                .background(if (isYellow) textColor else Color.White)
                                 .clip(RoundedCornerShape(17.dp)),
                             onClick = {
                                 it.route?.let { it1 ->

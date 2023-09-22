@@ -35,7 +35,7 @@ fun Waste2WealthTheme(
     val colors = if (darkTheme) {
         DarkColors
     } else {
-        LightColors
+        DarkColors
     }
 
     MaterialTheme(
