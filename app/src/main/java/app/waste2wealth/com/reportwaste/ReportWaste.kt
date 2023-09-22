@@ -90,6 +90,7 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -252,7 +253,7 @@ fun ReportWaste(
                                 .offset(x = (-10).dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(
+                            AutoResizedText(
                                 text = "Report Waste",
                                 color = textColor,
                                 fontFamily = monteBold,
@@ -265,7 +266,7 @@ fun ReportWaste(
                             .fillMaxWidth()
                             .padding(start = 10.dp, top = 30.dp)
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Waste Photograph",
                             color = textColor,
                             fontSize = 15.sp,
@@ -306,7 +307,7 @@ fun ReportWaste(
                                     tint = Color(0xFFCFDCFE),
                                     modifier = Modifier.size(100.dp)
                                 )
-                                Text(
+                                AutoResizedText(
                                     text = "Upload Photo of Waste",
                                     color = textColor,
                                     fontSize = 16.sp,
@@ -334,7 +335,7 @@ fun ReportWaste(
                             .clickable {
                             }
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Type Your Location",
                             color = textColor,
                             fontSize = 15.sp,
@@ -397,7 +398,7 @@ fun ReportWaste(
                                             address = it
                                             isExpanded = false
                                         }) {
-                                            Text(text = it)
+                                            AutoResizedText(text = it)
                                         }
                                     }
                                 }
@@ -414,7 +415,7 @@ fun ReportWaste(
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Points you can Earn",
                             color = textColor,
                             fontSize = 16.sp,
@@ -430,7 +431,7 @@ fun ReportWaste(
                                     .padding(end = 5.dp),
                                 tint = Color.Unspecified
                             )
-                            Text(
+                            AutoResizedText(
                                 text = "20",
                                 color = textColor,
                                 fontSize = 15.sp,
@@ -459,7 +460,7 @@ fun ReportWaste(
                         shape = RoundedCornerShape(35.dp),
                         modifier = Modifier.padding(start = 0.dp)
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Report Waste",
                             color = Color.White,
                             fontFamily = monteNormal,
@@ -610,7 +611,7 @@ fun DialogBox(
                         )
 
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
+                        AutoResizedText(
                             text = title,
                             textAlign = TextAlign.Center,
                             color = textColor,
@@ -622,7 +623,7 @@ fun DialogBox(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Text(
+                        AutoResizedText(
                             text = description,
                             textAlign = TextAlign.Center,
                             fontFamily = monteNormal,
@@ -642,7 +643,7 @@ fun DialogBox(
                     ) {
 
                         TextButton(onClick = dismissRequest) {
-                            Text(
+                            AutoResizedText(
                                 "NO",
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -650,7 +651,7 @@ fun DialogBox(
                             )
                         }
                         TextButton(onClick = successRequest) {
-                            Text(
+                            AutoResizedText(
                                 "YES",
                                 fontWeight = FontWeight.ExtraBold,
                                 color = Color.White,

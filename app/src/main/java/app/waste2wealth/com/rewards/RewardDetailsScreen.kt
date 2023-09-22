@@ -55,6 +55,7 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -165,13 +166,13 @@ fun RewardDetails(
                                     }
                             )
                             Column {
-                                Text(
+                                AutoResizedText(
                                     text = "Rewards",
                                     color = textColor,
                                     fontSize = 25.sp,
                                     fontFamily = monteBold,
                                 )
-                                Text(
+                                AutoResizedText(
                                     text = "Grab exciting rewards",
                                     color = Color.LightGray,
                                     fontSize = 13.sp,
@@ -199,7 +200,7 @@ fun RewardDetails(
                                         .padding(end = 5.dp),
                                     tint = Color.Unspecified
                                 )
-                                Text(
+                                AutoResizedText(
                                     text = pointsEarned.toString(),
                                     color = textColor,
                                     fontSize = 15.sp,
@@ -219,7 +220,7 @@ fun RewardDetails(
                             .height(300.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    Text(
+                    AutoResizedText(
                         text = viewModel.rewardTitle.value,
                         color = textColor,
                         fontSize = 15.sp,
@@ -227,7 +228,7 @@ fun RewardDetails(
                         modifier = Modifier.padding(start = 20.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    Text(
+                    AutoResizedText(
                         text = viewModel.rewardDescription.value,
                         color = textColor,
                         fontSize = 15.sp,
@@ -251,7 +252,7 @@ fun RewardDetails(
                 ) {
                     val context = LocalContext.current
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
+                        AutoResizedText(
                             text = "Points : ${viewModel.rewardNoOfPoints.value}",
                             color = textColor,
                             fontSize = 15.sp,
@@ -303,7 +304,7 @@ fun RewardDetails(
                                 shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier.padding(start = 10.dp)
                             ) {
-                                Text(
+                                AutoResizedText(
                                     text = "Claim Now",
                                     color = Color.Black,
                                     fontSize = 12.sp,
