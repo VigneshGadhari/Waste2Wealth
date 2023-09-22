@@ -141,7 +141,8 @@ fun NavigationController(
         composable(Screens.Community.route) {
             CommunitiesSection(
                 paddingValues = paddingValues,
-                email = email.value
+                email = email.value,
+                name = name.value,
             )
         }
         composable(Screens.ReportWaste.route) {
