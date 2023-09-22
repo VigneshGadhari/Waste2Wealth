@@ -67,6 +67,7 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseException
@@ -190,7 +191,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                         .size(25.dp)
                 )
 
-                Text(
+                AutoResizedText(
                     text = "Complete Profile",
                     color = textColor,
                     fontSize = 20.sp,
@@ -247,7 +248,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                             organization = TextFieldValue(it)
                             isExpanded = false
                         }) {
-                            Text(text = it)
+                            AutoResizedText(text = it)
                         }
                     }
 
@@ -356,7 +357,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                             gender = TextFieldValue(it)
                             isGenderExpansded = false
                         }) {
-                            Text(text = it)
+                            AutoResizedText(text = it)
                         }
                     }
 
@@ -458,7 +459,7 @@ fun CompleteProfile(navHostController: NavHostController) {
                         .fillMaxWidth()
                         .padding(horizontal = 70.dp, vertical = 20.dp),
                 ) {
-                    Text(
+                    AutoResizedText(
                         text = "Submit",
                         color = Color.White,
                         modifier = Modifier,
@@ -521,7 +522,7 @@ fun TextFieldWithIcons(
                         shape = RoundedCornerShape(35.dp),
                         modifier = Modifier.padding(start = 10.dp)
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Get OTP",
                             color = Color.Black,
                             fontSize = 12.sp,
@@ -535,8 +536,8 @@ fun TextFieldWithIcons(
             }
         },
         onValueChange = onValueChanged,
-        label = { Text(text = textValue, color = textColor) },
-        placeholder = { Text(text = placeholder, color = textColor) },
+        label = { AutoResizedText(text = textValue, color = textColor) },
+        placeholder = { AutoResizedText(text = placeholder, color = textColor) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
