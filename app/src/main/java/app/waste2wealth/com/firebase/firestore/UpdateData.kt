@@ -2,6 +2,7 @@ package app.waste2wealth.com.firebase.firestore
 
 import android.content.Context
 import android.widget.Toast
+import app.waste2wealth.com.communities.ui.DummyCards
 import com.google.firebase.firestore.FirebaseFirestore
 
 fun updateInfoToFirebase(
@@ -17,6 +18,7 @@ fun updateInfoToFirebase(
     noOfTimesReported: Int = 0,
     noOfTimesCollected: Int = 0,
     noOfTimesActivity: Int = 0,
+    communities: List<String> = emptyList()
 ) {
     val profile = ProfileInfo(
         name,
@@ -29,7 +31,8 @@ fun updateInfoToFirebase(
         pointsRedeemed,
         noOfTimesReported,
         noOfTimesCollected,
-        noOfTimesActivity
+        noOfTimesActivity,
+        communities
     )
 
     val db = FirebaseFirestore.getInstance()
@@ -128,78 +131,18 @@ fun updateCollectedWasteToFirebase(
 
 }
 
-fun updateTemporaryActivityToFirebase(
-    context: Context,
-    startTime: Long,
-    endTime: Long = 0L,
-    beforeTaskPath: String,
-    title: String,
-    email: String
+fun updateCommunitiesToFirebase(
+    communities: List<DummyCards>
 ) {
-    val temporaryActivityItem = TemporaryActivityItem(
-        startTime = startTime,
-        endTime = endTime,
-        title = title,
-        beforeTaskPath = beforeTaskPath,
-        email = email
-    )
-
     val db = FirebaseFirestore.getInstance()
-    startTime.let {
-        db.collection("TemporaryActivities").document(it.toString()).set(temporaryActivityItem)
+    communities.forEach {
+        db.collection("Communities").document(it.name).set(it)
             .addOnSuccessListener {
-
-                Toast.makeText(context, "Recording Started Succesfully", Toast.LENGTH_SHORT).show()
+                println("Communities Updated successfully..")
 
             }.addOnFailureListener { exception ->
-                Toast.makeText(
-                    context,
-                    "Something Went Wrong" + exception.message,
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+                println("Fail to update Communities : " + exception.message)
             }
     }
-
-
 }
 
-fun updateActivityToFirebase(
-    context: Context,
-    startTime: Long,
-    endTime: Long = 0L,
-    beforeTaskPath: String,
-    endTaskPath: String,
-    duration: String,
-    title: String,
-    email: String
-) {
-    val allActivityItem = AllActivityItem(
-        startTime = startTime,
-        endTime = endTime,
-        title = title,
-        beforeTaskPath = beforeTaskPath,
-        endTaskPath = endTaskPath,
-        email = email,
-        duration = duration
-    )
-    val db = FirebaseFirestore.getInstance()
-    startTime.let { time ->
-        db.collection("AllActivities").document(time.toString()).set(allActivityItem)
-            .addOnSuccessListener {
-                db.collection("TemporaryActivities").document(time.toString()).delete()
-
-                Toast.makeText(context, "Activity Updated Succesfully", Toast.LENGTH_SHORT).show()
-
-            }.addOnFailureListener { exception ->
-                Toast.makeText(
-                    context,
-                    "Something Went Wrong" + exception.message,
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-    }
-
-
-}

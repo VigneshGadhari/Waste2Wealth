@@ -169,6 +169,9 @@ fun ReportWaste(
         mutableStateOf<Bitmap?>(null)
     }
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    var communities by remember {
+        mutableStateOf(mutableListOf(""))
+    }
 
     JetFirestore(path = {
         collection("ProfileInfo")
@@ -187,6 +190,7 @@ fun ReportWaste(
                     noOfTimesReported = i.noOfTimesReported
                     noOfTimesCollected = i.noOfTimesCollected
                     noOfTimesActivity = i.noOfTimesActivity
+                    communities = i.communities.toMutableList()
                 }
             }
         }
@@ -504,7 +508,7 @@ fun ReportWaste(
                                             longitude = viewModel.longitude,
                                             imagePath = imageName,
                                             timeStamp = System.currentTimeMillis(),
-                                            userEmail = email ?: "",
+                                            userEmail = email,
                                         )
                                         updateInfoToFirebase(
                                             context,
@@ -523,6 +527,7 @@ fun ReportWaste(
                                             noOfTimesReported = noOfTimesReported + 1,
                                             noOfTimesCollected = noOfTimesCollected,
                                             noOfTimesActivity = noOfTimesActivity,
+                                            communities = communities
                                         )
                                         isCOinVisible = true
 
@@ -611,7 +616,7 @@ fun DialogBox(
                         )
 
                     Column(modifier = Modifier.padding(16.dp)) {
-                        AutoResizedText(
+                        Text(
                             text = title,
                             textAlign = TextAlign.Center,
                             color = textColor,
@@ -623,7 +628,7 @@ fun DialogBox(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        AutoResizedText(
+                        Text(
                             text = description,
                             textAlign = TextAlign.Center,
                             fontFamily = monteNormal,

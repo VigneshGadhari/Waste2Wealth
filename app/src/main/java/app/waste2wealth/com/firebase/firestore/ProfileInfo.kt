@@ -12,6 +12,7 @@ data class ProfileInfo(
     val noOfTimesReported: Int = 0,
     val noOfTimesCollected: Int = 0,
     val noOfTimesActivity: Int = 0,
+    val communities: List<String> = emptyList()
 ) {
     constructor() : this(
         "",
@@ -24,7 +25,8 @@ data class ProfileInfo(
         0,
         0,
         0,
-        0
+        0,
+        emptyList()
     )
 }
 

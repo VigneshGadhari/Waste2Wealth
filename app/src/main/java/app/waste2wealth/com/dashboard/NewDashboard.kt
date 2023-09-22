@@ -3,9 +3,7 @@ package app.waste2wealth.com.dashboard
 import android.Manifest
 import android.app.Activity
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,9 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,10 +34,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.rememberBottomDrawerState
@@ -55,28 +46,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.BottomBar
-import app.waste2wealth.com.communities.ui.communitiesItems
-import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.com.communities.ui.listOfCommunities
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
-import app.waste2wealth.com.firebase.firestore.challengesList
+import app.waste2wealth.com.firebase.firestore.updateCommunitiesToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
@@ -483,7 +467,7 @@ fun NewDashboard(
             }
 
             LazyRow(contentPadding = PaddingValues(10.dp)) {
-                items(communitiesItems.take(3)) { item ->
+                items(listOfCommunities.take(3)) { item ->
                     Card(
                         modifier = Modifier
                             .width(300.dp)
@@ -508,7 +492,7 @@ fun NewDashboard(
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 AutoResizedText(
-                                    text = item.title,
+                                    text = item.name,
                                     color = CardTextColor,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
@@ -516,7 +500,7 @@ fun NewDashboard(
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                                 AutoResizedText(
-                                    text = item.time,
+                                    text = item.dateOfEstablishment,
                                     color = CardTextColor,
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Normal
