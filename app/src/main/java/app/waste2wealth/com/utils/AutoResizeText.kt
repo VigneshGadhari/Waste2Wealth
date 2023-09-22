@@ -55,7 +55,7 @@ fun AutoResizedText(
                 drawContent()
             }
         },
-        softWrap = false,
+        softWrap = softWrap,
         style = resizedTextStyle,
         onTextLayout = { result ->
             onTextLayout(result)

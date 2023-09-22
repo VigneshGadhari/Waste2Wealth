@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -42,7 +44,7 @@ val cleanlinessDrives = listOf(
 
 @Composable
 fun LazyCard(
-    list: List<Drives?>?,
+    list: List<Drive>,
     viewModel: CommunitiesViewModel
 ) {
     LazyColumn(
@@ -53,14 +55,14 @@ fun LazyCard(
             end = 10.dp
         )
     ) {
-        items(list ?: emptyList()) {
+        items(list) {
             CardItem(it)
         }
     }
 }
 
 @Composable
-fun CardItem(drives: Drives? = null) {
+fun CardItem(drives: Drive? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,19 +77,29 @@ fun CardItem(drives: Drives? = null) {
     ) {
         Column(horizontalAlignment = Alignment.Start) {
             AutoResizedText(
-                text = drives?.title ?: "",
+                text = drives?.name ?: "",
                 fontSize = 15.sp,
                 color = CardTextColor,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
-            AutoResizedText(
-                text = drives?.location ?: "",
-                fontSize = 13.sp,
-                color = CardTextColor,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+            Row {
+                AutoResizedText(
+                    text = drives?.location ?: "",
+                    fontSize = 13.sp,
+                    color = CardTextColor,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Spacer(modifier = Modifier.width(7.dp))
+                AutoResizedText(
+                    text = "• ${drives?.status?.name}",
+                    fontSize = 13.sp,
+                    color = if (drives?.status == DriveStatus.UPCOMING) Color(0xFF022722) else Color(0xFFD50000),
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            }
         }
         AutoResizedText(
             text = drives?.time.toString(),

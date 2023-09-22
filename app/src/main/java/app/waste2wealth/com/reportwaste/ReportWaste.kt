@@ -169,6 +169,9 @@ fun ReportWaste(
         mutableStateOf<Bitmap?>(null)
     }
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    var communities by remember {
+        mutableStateOf(mutableListOf(""))
+    }
 
     JetFirestore(path = {
         collection("ProfileInfo")
@@ -187,6 +190,7 @@ fun ReportWaste(
                     noOfTimesReported = i.noOfTimesReported
                     noOfTimesCollected = i.noOfTimesCollected
                     noOfTimesActivity = i.noOfTimesActivity
+                    communities = i.communities.toMutableList()
                 }
             }
         }
@@ -504,7 +508,7 @@ fun ReportWaste(
                                             longitude = viewModel.longitude,
                                             imagePath = imageName,
                                             timeStamp = System.currentTimeMillis(),
-                                            userEmail = email ?: "",
+                                            userEmail = email,
                                         )
                                         updateInfoToFirebase(
                                             context,
@@ -523,6 +527,7 @@ fun ReportWaste(
                                             noOfTimesReported = noOfTimesReported + 1,
                                             noOfTimesCollected = noOfTimesCollected,
                                             noOfTimesActivity = noOfTimesActivity,
+                                            communities = communities
                                         )
                                         isCOinVisible = true
 
@@ -576,6 +581,7 @@ fun ReportWaste(
 @Composable
 fun DialogBox(
     isVisible: Boolean,
+    tint: Color = Color.Red.copy(0.6f),
     icon: ImageVector = Icons.Filled.QuestionMark,
     title: String = "Are you sure you want to report this waste?",
     description: String = "Reporting a wrong location will result in a penalty of 100 points " +
@@ -601,7 +607,7 @@ fun DialogBox(
                         contentDescription = null, // decorative
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(
-                            color = Color.Red.copy(0.6f)
+                            color = tint
                         ),
                         modifier = Modifier
                             .padding(top = 35.dp)
@@ -611,7 +617,7 @@ fun DialogBox(
                         )
 
                     Column(modifier = Modifier.padding(16.dp)) {
-                        AutoResizedText(
+                        Text(
                             text = title,
                             textAlign = TextAlign.Center,
                             color = textColor,
@@ -623,7 +629,7 @@ fun DialogBox(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        AutoResizedText(
+                        Text(
                             text = description,
                             textAlign = TextAlign.Center,
                             fontFamily = monteNormal,

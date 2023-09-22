@@ -152,6 +152,9 @@ fun SuccessfullyCollected(
     var noOfTimesActivity by remember {
         mutableStateOf(0)
     }
+    var communities by remember {
+        mutableStateOf(mutableListOf(""))
+    }
     val context = LocalContext.current
     var isCOinVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -184,6 +187,7 @@ fun SuccessfullyCollected(
                     noOfTimesReported = i.noOfTimesReported
                     noOfTimesCollected = i.noOfTimesCollected
                     noOfTimesActivity = i.noOfTimesActivity
+                    communities = i.communities.toMutableList()
                 }
             }
         }
@@ -495,6 +499,7 @@ fun SuccessfullyCollected(
                                                     noOfTimesReported = noOfTimesReported,
                                                     noOfTimesCollected = noOfTimesCollected + 1,
                                                     noOfTimesActivity = noOfTimesActivity,
+                                                    communities = communities
 
 
                                                     )

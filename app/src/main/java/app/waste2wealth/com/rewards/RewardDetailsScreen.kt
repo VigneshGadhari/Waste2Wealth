@@ -103,6 +103,9 @@ fun RewardDetails(
     var noOfTimesActivity by remember {
         mutableStateOf(0)
     }
+    var communities by remember {
+        mutableStateOf(mutableListOf(""))
+    }
     JetFirestore(path = {
         collection("ProfileInfo")
     }, onRealtimeCollectionFetch = { value, _ ->
@@ -120,6 +123,7 @@ fun RewardDetails(
                     noOfTimesReported = i.noOfTimesReported
                     noOfTimesCollected = i.noOfTimesCollected
                     noOfTimesActivity = i.noOfTimesActivity
+                    communities = i.communities.toMutableList()
                 }
             }
         }
@@ -287,6 +291,7 @@ fun RewardDetails(
                                             noOfTimesReported = noOfTimesReported,
                                             noOfTimesCollected = noOfTimesCollected + 1,
                                             noOfTimesActivity = noOfTimesActivity,
+                                            communities = communities
                                         )
 
                                     } else {
