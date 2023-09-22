@@ -1,6 +1,5 @@
 package app.waste2wealth.com.rewards
 
-import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,22 +17,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -42,8 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.BottomBar
-import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
@@ -51,16 +42,11 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 
-@OptIn(
-    ExperimentalPermissionsApi::class, ExperimentalComposeUiApi::class,
-    ExperimentalMaterialApi::class
-)
 @Composable
 fun NewRewardsScreen(
     navController: NavHostController,
@@ -167,13 +153,13 @@ fun NewRewardsScreen(
                             }
                     )
                     Column {
-                        Text(
+                        AutoResizedText(
                             text = "Rewards",
                             color = textColor,
                             fontSize = 25.sp,
                             fontFamily = monteBold,
                         )
-                        Text(
+                        AutoResizedText(
                             text = "Grab exciting rewards",
                             color = Color.LightGray,
                             fontSize = 13.sp,
@@ -201,7 +187,7 @@ fun NewRewardsScreen(
                                 .padding(end = 5.dp),
                             tint = Color.Unspecified
                         )
-                        Text(
+                        AutoResizedText(
                             text = pointsEarned.toString(),
                             color = textColor,
                             fontSize = 15.sp,
@@ -224,7 +210,7 @@ fun NewRewardsScreen(
                             .fillMaxWidth()
                             .padding(20.dp)
                     ) {
-                        Text(
+                        AutoResizedText(
                             text = "Welcome to Rewards Section",
                             color = textColor,
                             fontSize = 15.sp,
@@ -241,13 +227,13 @@ fun NewRewardsScreen(
                                 }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
-                        Text(
+                        AutoResizedText(
                             text = "New Offers",
                             color = textColor,
                             fontSize = 16.sp,
                             fontFamily = monteBold,
                         )
-                        Text(
+                        AutoResizedText(
                             text = "Check out the latest offers and rewards",
                             color = Color.LightGray,
                             fontSize = 10.sp,
@@ -289,7 +275,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                Text(
+                                                AutoResizedText(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -345,7 +331,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                Text(
+                                                AutoResizedText(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -365,7 +351,7 @@ fun NewRewardsScreen(
 
                             }
                         }
-                        Text(
+                        AutoResizedText(
                             text = "Jackpot Giveaway",
                             color = textColor,
                             fontSize = 22.sp,
@@ -417,7 +403,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                Text(
+                                                AutoResizedText(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -437,14 +423,14 @@ fun NewRewardsScreen(
 
                             }
                         }
-                        Text(
+                        AutoResizedText(
                             text = "Keep Reporting",
                             color = Color.LightGray,
                             fontSize = 35.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.offset(y = (-130).dp)
                         )
-                        Text(
+                        AutoResizedText(
                             text = "Keep Collecting",
                             color = Color.LightGray,
                             fontSize = 25.sp,

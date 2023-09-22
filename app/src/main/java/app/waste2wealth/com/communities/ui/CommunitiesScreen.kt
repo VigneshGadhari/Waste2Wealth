@@ -64,6 +64,7 @@ import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
+import app.waste2wealth.com.utils.AutoResizedText
 
 @Composable
 fun CommunitiesSection(
@@ -155,7 +156,7 @@ fun CommunitiesSection(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
+                    AutoResizedText(
                         text = "Community",
                         color = textColor,
                         fontSize = 35.sp,
@@ -181,7 +182,7 @@ fun CommunitiesSection(
                                     .padding(end = 5.dp),
                                 tint = Color.Unspecified
                             )
-                            Text(
+                            AutoResizedText(
                                 text = pointsEarned.toString(),
                                 color = textColor,
                                 fontSize = 15.sp,
@@ -236,7 +237,7 @@ fun CommunitiesSection(
                                         .clip(RoundedCornerShape(30.dp)),
                                 )
                             }
-                            Text(
+                            AutoResizedText(
                                 text = communitiesItems[viewModel.currentPage.value].title,
                                 fontSize = 21.sp,
                                 fontWeight = FontWeight.Bold,
@@ -266,7 +267,7 @@ fun CommunitiesSection(
                                 ),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(
+                            AutoResizedText(
                                 text = communitiesItems[viewModel.currentPage.value].title,
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,

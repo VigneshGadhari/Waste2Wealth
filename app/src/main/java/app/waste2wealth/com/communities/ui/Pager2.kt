@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +55,7 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 
 
 val communitiesItems = listOf(
@@ -204,7 +206,7 @@ fun Pager2(
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = communitiesItems[page].title,
                             color = CardTextColor,
                             fontSize = 20.sp,
@@ -212,7 +214,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Location",
                             color = Color(0xFFF37952),
                             fontSize = 12.sp,
@@ -220,7 +222,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = communitiesItems[page].date,
                             color = CardTextColor,
                             fontSize = 15.sp,
@@ -228,7 +230,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Since",
                             color = Color(0xFFF37952),
                             fontSize = 12.sp,
@@ -236,7 +238,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = communitiesItems[page].location,
                             color = CardTextColor,
                             fontSize = 15.sp,
@@ -244,7 +246,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Frequency",
                             color = Color(0xFFF37952),
                             fontSize = 12.sp,
@@ -252,7 +254,7 @@ fun Pager2(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(
+                        AutoResizedText(
                             text = communitiesItems[page].time,
                             color = CardTextColor,
                             fontSize = 15.sp,
@@ -271,7 +273,7 @@ fun Pager2(
                             shape = RoundedCornerShape(35.dp),
                             modifier = Modifier.padding(start = 10.dp)
                         ) {
-                            Text(
+                            AutoResizedText(
                                 text = "Register",
                                 color = textColor,
                                 fontSize = 12.sp,
@@ -297,7 +299,7 @@ fun Pager2(
                                 shape = RoundedCornerShape(35.dp),
                                 modifier = Modifier.padding(start = 10.dp)
                             ) {
-                                Text(
+                                AutoResizedText(
                                     text = "Swipe up to know more 🔒",
                                     color = Color.White,
                                     fontSize = 12.sp,
@@ -365,7 +367,7 @@ fun Pager2(
                                     startDragImmediately = true,
                                 ),
                         ) {
-                            Text(
+                            AutoResizedText(
                                 text = "Drives Conducted",
                                 fontSize = 21.sp,
                                 color = CardTextColor,

@@ -57,6 +57,7 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -148,7 +149,7 @@ fun NewProfileScreen(
                     .padding(bottom = 7.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
+                AutoResizedText(
                     text = name ?: "User Name",
                     color = textColor,
                     fontSize = 20.sp,
@@ -161,7 +162,7 @@ fun NewProfileScreen(
                     .padding(bottom = 7.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
+                AutoResizedText(
                     text = "${email ?: "User Email"} | $myPhoneNumber",
                     color = textColor,
                     fontSize = 12.sp,
@@ -240,7 +241,7 @@ fun NewProfileScreen(
                     .fillMaxWidth()
                     .padding(50.dp)
             ) {
-                Text(
+                AutoResizedText(
                     text = "Logout",
                     color = Color.White,
                     fontSize = 18.sp,
@@ -279,7 +280,7 @@ fun RepeatedProfileInfo(
                 .size(40.dp)
                 .padding(end = 13.dp)
         )
-        Text(
+        AutoResizedText(
             text = text,
             color = textColor,
             fontSize = 15.sp,

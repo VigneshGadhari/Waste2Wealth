@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -85,6 +87,7 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -160,6 +163,7 @@ fun NewDashboard(
             modifier = Modifier
                 .fillMaxSize()
                 .background(appBackground)
+                .verticalScroll(rememberScrollState())
         ) {
             Card(
                 modifier = Modifier
@@ -182,21 +186,21 @@ fun NewDashboard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text(
+                            AutoResizedText(
                                 text = "Welcome Back",
                                 color = Color.Gray,
                                 fontSize = 13.sp,
                                 fontFamily = monteSB,
                                 modifier = Modifier.padding(bottom = 7.dp)
                             )
-                            Text(
+                            AutoResizedText(
                                 text = name,
                                 color = CardTextColor,
                                 fontSize = 20.sp,
                                 fontFamily = monteBold,
                                 modifier = Modifier.padding(bottom = 7.dp)
                             )
-                            Text(
+                            AutoResizedText(
                                 text = "Start making a difference today!",
                                 color = Color.Gray,
                                 fontSize = 13.sp,
@@ -220,81 +224,78 @@ fun NewDashboard(
                                 }
                         )
                     }
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 20.dp)
+                            .padding(bottom = 20.dp, start = 25.dp, end = 15.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "Points Earned",
-                                    color = CardTextColor,
-                                    fontSize = 14.sp,
-                                    fontFamily = monteBold,
-                                    softWrap = true,
-                                    modifier = Modifier.padding(start = 7.dp)
+                        Column(
+                            modifier = Modifier
+                                .padding(top = 15.dp)
+                                .offset(x = (-15).dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            AutoResizedText(
+                                text = "Points Earned",
+                                color = CardTextColor,
+                                fontSize = 14.sp,
+                                fontFamily = monteBold,
+                                softWrap = true,
+                                modifier = Modifier.padding(start = 7.dp)
+                            )
+                            Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.coins),
+                                    contentDescription = "coins",
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .padding(end = 5.dp),
+                                    tint = Color.Unspecified
                                 )
-                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.coins),
-                                        contentDescription = "coins",
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                            .padding(end = 5.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Text(
-                                        text = pointsEarned,
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteNormal,
-                                    )
-                                }
-
+                                AutoResizedText(
+                                    text = pointsEarned,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteNormal,
+                                )
                             }
+
                         }
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = 15.dp)
-                                    .offset(x = (-15).dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = "Points Redeemed",
-                                    color = CardTextColor,
-                                    fontSize = 14.sp,
-                                    fontFamily = monteBold,
-                                    softWrap = true,
-                                    modifier = Modifier.padding(start = 7.dp)
+                        Column(
+                            modifier = Modifier
+                                .padding(top = 15.dp)
+                                .offset(x = (-15).dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            AutoResizedText(
+                                text = "Points Redeemed",
+                                color = CardTextColor,
+                                fontSize = 14.sp,
+                                fontFamily = monteBold,
+                                softWrap = true,
+                                modifier = Modifier.padding(start = 7.dp)
+                            )
+                            Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.coins),
+                                    contentDescription = "coins",
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .padding(end = 5.dp),
+                                    tint = Color.Unspecified
                                 )
-                                Row(modifier = Modifier.padding(end = 0.dp, top = 7.dp)) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.coins),
-                                        contentDescription = "coins",
-                                        modifier = Modifier
-                                            .size(20.dp)
-                                            .padding(end = 5.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Text(
-                                        text = pointsRedeemed,
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteNormal,
-                                    )
-                                }
-
+                                AutoResizedText(
+                                    text = pointsRedeemed,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteNormal,
+                                )
                             }
+
+
                         }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
@@ -313,14 +314,14 @@ fun NewDashboard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(horizontalAlignment = Alignment.Start) {
-                    Text(
+                    AutoResizedText(
                         text = "Current Progress",
                         color = textColor,
                         fontSize = 20.sp,
                         fontFamily = monteBold,
                         modifier = Modifier.padding(bottom = 7.dp)
                     )
-                    Text(
+                    AutoResizedText(
                         text = "200 more points to reach weekly target",
                         color = textColor,
                         fontSize = 9.sp,
@@ -371,7 +372,7 @@ fun NewDashboard(
                                 }
                         )
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Report Waste",
                             color = textColor,
                             fontSize = 13.sp,
@@ -407,7 +408,7 @@ fun NewDashboard(
                                 }
                         )
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Collect Waste",
                             color = textColor,
                             fontSize = 13.sp,
@@ -443,7 +444,7 @@ fun NewDashboard(
                                 }
                         )
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(
+                        AutoResizedText(
                             text = "Rewards",
                             color = textColor,
                             fontSize = 13.sp,
@@ -465,13 +466,13 @@ fun NewDashboard(
                     .padding(start = 20.dp, end = 25.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
+                AutoResizedText(
                     text = "Upcoming Community Events",
                     color = textColor,
                     fontSize = 15.sp
                 )
 
-                Text(
+                AutoResizedText(
                     text = "All Events",
                     color = textColor,
                     fontSize = 15.sp,
@@ -506,7 +507,7 @@ fun NewDashboard(
                             Spacer(modifier = Modifier.width(10.dp))
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Spacer(modifier = Modifier.height(10.dp))
-                                Text(
+                                AutoResizedText(
                                     text = item.title,
                                     color = CardTextColor,
                                     fontSize = 20.sp,
@@ -514,7 +515,7 @@ fun NewDashboard(
                                     softWrap = true
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                Text(
+                                AutoResizedText(
                                     text = item.time,
                                     color = CardTextColor,
                                     fontSize = 10.sp,
@@ -538,7 +539,7 @@ fun NewDashboard(
                                             tint = CardColor
                                         )
                                         Spacer(modifier = Modifier.width(10.dp))
-                                        Text(
+                                        AutoResizedText(
                                             text = "Register",
                                             color = textColor,
                                             fontSize = 10.sp,
@@ -554,7 +555,38 @@ fun NewDashboard(
 
             }
 
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            val lastTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+            ) {
+                Spacer(modifier = Modifier.height(25.dp))
+                AutoResizedText(
+                    text = "Waste Wise",
+                    color = lastTextColor.copy(0.75f),
+                    fontSize = 33.sp,
+                    fontFamily = monteSB,
+                )
+                Spacer(modifier = Modifier.height(0.dp))
+                AutoResizedText(
+                    text = "Rewards Rise",
+                    color = lastTextColor.copy(0.5f),
+                    fontSize = 23.sp,
+                    fontFamily = monteSB,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                AutoResizedText(
+                    text = "Crafted with ❤️ by The Centennials",
+                    color = lastTextColor.copy(0.75f),
+                    fontSize = 10.sp,
+                    fontFamily = monteSB,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(130.dp))
 
         }
     }
@@ -593,7 +625,7 @@ fun ArcComposable(
                 style = Stroke(8.dp.toPx(), cap = StrokeCap.Round)
             )
         }
-        Text(
+        AutoResizedText(
             modifier = Modifier.align(alignment = Alignment.Center),
             text = text,
             color = textColor,

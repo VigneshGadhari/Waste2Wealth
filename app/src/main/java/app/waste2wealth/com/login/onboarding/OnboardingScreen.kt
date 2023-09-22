@@ -59,6 +59,7 @@ import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.com.utils.AutoResizedText
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
@@ -219,14 +220,14 @@ fun Bgresource(
                                         .fillMaxWidth()
                                         .padding(15.dp)
                                 ) {
-                                    Text(
+                                    AutoResizedText(
                                         text = item[page].title,
                                         fontSize = 30.sp,
                                         color = textColor,
                                         softWrap = true,
                                         modifier = Modifier.offset(y = (-20).dp)
                                     )
-                                    Text(
+                                    AutoResizedText(
                                         text = item[page].description,
                                         color = textColor,
                                         modifier = Modifier
@@ -337,7 +338,7 @@ fun Bgresource(
                                                 .size(40.dp)
                                                 .padding(end = 10.dp)
                                         )
-                                        Text(
+                                        AutoResizedText(
                                             "Continue with Google",
                                             color = textColor,
                                             fontFamily = monteSB,

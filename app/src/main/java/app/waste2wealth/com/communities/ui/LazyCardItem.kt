@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.communities.data.Drives
 import app.waste2wealth.com.ui.theme.CardTextColor
+import app.waste2wealth.com.utils.AutoResizedText
 
 val cleanlinessDrives = listOf(
     Drives("2023-09-15 09:00 AM", "City Park", "Park Cleanup Drive"),
@@ -73,14 +74,14 @@ fun CardItem(drives: Drives? = null) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(horizontalAlignment = Alignment.Start) {
-            Text(
+            AutoResizedText(
                 text = drives?.title ?: "",
                 fontSize = 15.sp,
                 color = CardTextColor,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
-            Text(
+            AutoResizedText(
                 text = drives?.location ?: "",
                 fontSize = 13.sp,
                 color = CardTextColor,
@@ -88,7 +89,7 @@ fun CardItem(drives: Drives? = null) {
                 modifier = Modifier.padding(bottom = 4.dp)
             )
         }
-        Text(
+        AutoResizedText(
             text = drives?.time.toString(),
             fontSize = 10.sp,
             color = CardTextColor,

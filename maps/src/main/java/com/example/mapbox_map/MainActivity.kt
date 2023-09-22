@@ -156,7 +156,7 @@ fun MapScreen() {
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Column(modifier = Modifier.fillMaxWidth()) {
                                     Spacer(modifier = Modifier.height(10.dp))
-                                    Text(
+                                    AutoResizedText(
                                         text = item.location,
                                         color = Color.Black,
                                         fontSize = 20.sp,
@@ -164,7 +164,7 @@ fun MapScreen() {
                                         softWrap = true
                                     )
                                     Spacer(modifier = Modifier.height(10.dp))
-                                    Text(
+                                    AutoResizedText(
                                         text = item.time,
                                         color = Color.Black,
                                         fontSize = 10.sp,
@@ -187,7 +187,7 @@ fun MapScreen() {
                                                 tint = Color.Black
                                             )
                                             Spacer(modifier = Modifier.width(10.dp))
-                                            Text(
+                                            AutoResizedText(
                                                 text = "Navigate",
                                                 color = Color.Black,
                                                 fontSize = 10.sp,
@@ -225,7 +225,7 @@ fun MapScreen() {
                 },
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text(
+                AutoResizedText(
                     text = "Reset",
                     color = Color.White,
                     fontSize = 10.sp,
