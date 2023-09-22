@@ -73,6 +73,7 @@ import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.TextFieldWithIcons
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.rewards.levels
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -497,6 +498,25 @@ fun SuccessfullyCollected(
                                                     allWasteCollected = receiver2 == "Yes",
                                                     feedBack = feedback.text,
                                                 )
+                                                viewModel.getCurrentLevel(
+                                                    points = pointsEarned + calculatePointsEarned(
+                                                        noOfTimesReported,
+                                                        noOfTimesCollected,
+                                                        noOfTimesActivity,
+                                                        maxReported,
+                                                        maxCollected,
+                                                        maxCommunity
+                                                    ),
+                                                    levels = levels
+                                                )
+                                                viewModel.pointsEarned = pointsEarned + calculatePointsEarned(
+                                                    noOfTimesReported,
+                                                    noOfTimesCollected,
+                                                    noOfTimesActivity,
+                                                    maxReported,
+                                                    maxCollected,
+                                                    maxCommunity
+                                                )
                                                 updateInfoToFirebase(
                                                     context,
                                                     name = name,
@@ -578,6 +598,7 @@ fun SuccessfullyCollected(
                     LaunchedEffect(key1 = isCOinVisible) {
                         if (isCOinVisible) {
                             delay(4000)
+                            viewModel.showLevelDialog = true
                             navController.navigate(Screens.Dashboard.route)
                         }
                     }

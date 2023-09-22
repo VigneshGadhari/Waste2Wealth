@@ -57,6 +57,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -82,6 +83,9 @@ import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.AutoResizedText
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -121,6 +125,9 @@ fun NewDashboard(
     }
     var pointsRedeemed by remember {
         mutableStateOf(0)
+    }
+    var isCOinVisible by remember {
+        mutableStateOf(false)
     }
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
     val animatedProgress  by animateFloatAsState(
@@ -619,6 +626,11 @@ fun NewDashboard(
                 if (viewModel.showLevelDialog){
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         viewModel.currentLevel.value?.let { currentlevel ->
+                            isCOinVisible = viewModel.isNewLevelUnlocked(
+                                currentlevel,
+                                viewModel.pointsEarned,
+                                levels
+                            )
                             LevelDialogBox(
                                 level = currentlevel,
                                 progress = viewModel.getCurrentLevelProgress(
@@ -636,6 +648,32 @@ fun NewDashboard(
                             }
                         }
                     }
+                }
+                if (isCOinVisible) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        val currenanim by rememberLottieComposition(
+                            spec = LottieCompositionSpec.Asset("confetti.json")
+                        )
+                        LottieAnimation(
+                            composition = currenanim,
+                            iterations = 1,
+                            contentScale = ContentScale.Crop,
+                            speed = 1f,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .size(250.dp)
+                        )
+                    }
+                    LaunchedEffect(key1 = isCOinVisible) {
+                        if (isCOinVisible) {
+                            delay(4000)
+                            navController.popBackStack()
+                        }
+                    }
+
                 }
             }
         }

@@ -548,8 +548,6 @@ fun ReportWaste(
                                             maxCollected,
                                             maxCommunity
                                         )
-                                        Log.i("TAGGGGGGGGG", "ReportWaste: ${viewModel.currentLevel.value}")
-                                        Log.i("TAGGGGGGGGG", "ReportWasteDialog: ${viewModel.showLevelDialog}")
                                         updateInfoToFirebase(
                                             context,
                                             name = name,
