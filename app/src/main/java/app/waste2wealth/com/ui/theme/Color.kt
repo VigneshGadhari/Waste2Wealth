@@ -1,5 +1,6 @@
 package app.waste2wealth.com.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -17,6 +18,7 @@ val backGround = Color(0xFF21c998)
 
 
 
+@SuppressLint("ConflictingOnColor")
 val LightColors = lightColors(
     primary = Palette.md_theme_light_primary,
     onPrimary = Palette.md_theme_light_onPrimary,

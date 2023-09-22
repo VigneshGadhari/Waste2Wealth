@@ -762,7 +762,7 @@ fun Pager2(
                                 Spacer(modifier = Modifier.height(10.dp))
                                 AutoResizedText(
                                     text = "Date of Establishment",
-                                    color = Color(0xFFF37952),
+                                    color = Color.Gray,
                                     fontSize = 12.sp,
                                     fontFamily = monteBold,
                                     modifier = Modifier.padding(horizontal = 10.dp)
@@ -778,7 +778,7 @@ fun Pager2(
                                 Spacer(modifier = Modifier.height(10.dp))
                                 AutoResizedText(
                                     text = "Active Region",
-                                    color = Color(0xFFF37952),
+                                    color = Color.Gray,
                                     fontSize = 12.sp,
                                     fontFamily = monteBold,
                                     modifier = Modifier.padding(horizontal = 10.dp)
@@ -799,7 +799,7 @@ fun Pager2(
                                     Column {
                                         AutoResizedText(
                                             text = "No of Members",
-                                            color = Color(0xFFF37952),
+                                            color = Color.Gray,
                                             fontSize = 12.sp,
                                             fontFamily = monteBold,
                                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -816,7 +816,7 @@ fun Pager2(
                                     Column {
                                         AutoResizedText(
                                             text = "Rating",
-                                            color = Color(0xFFF37952),
+                                            color = Color.Gray,
                                             fontSize = 12.sp,
                                             fontFamily = monteBold,
                                             modifier = Modifier.padding(horizontal = 10.dp)
@@ -838,8 +838,8 @@ fun Pager2(
                                         currentTitle.value = community[page].name
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = Color(0xFFFD5065),
-                                        contentColor = appBackground
+                                        backgroundColor = appBackground,
+                                        contentColor = textColor
                                     ),
                                     shape = RoundedCornerShape(35.dp),
                                     modifier = Modifier.padding(start = 10.dp),

@@ -95,7 +95,8 @@ fun CardItem(drives: Drive? = null) {
                 AutoResizedText(
                     text = "• ${drives?.status?.name}",
                     fontSize = 13.sp,
-                    color = if (drives?.status == DriveStatus.UPCOMING) Color(0xFF022722) else Color(0xFFD50000),
+                    color = if (drives?.status == DriveStatus.UPCOMING) Color(0xFF8BC34A)
+                    else Color(0xFFF05353),
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
