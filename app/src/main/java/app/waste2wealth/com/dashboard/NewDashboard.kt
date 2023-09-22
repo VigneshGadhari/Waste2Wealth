@@ -576,9 +576,7 @@ fun NewDashboard(
                 }
                 if (viewModel.showLevelDialog){
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Log.i("TAGGGGGGGGG", "NewDashboard: ${viewModel.currentLevel.value}")
                         viewModel.currentLevel.value?.let { currentlevel ->
-                            Log.i("TAGGGGGGGGG", "NewDashboard: Inside")
                             LevelDialogBox(
                                 level = currentlevel,
                                 progress = viewModel.getCurrentLevelProgress(
