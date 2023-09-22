@@ -581,6 +581,7 @@ fun ReportWaste(
 @Composable
 fun DialogBox(
     isVisible: Boolean,
+    tint: Color = Color.Red.copy(0.6f),
     icon: ImageVector = Icons.Filled.QuestionMark,
     title: String = "Are you sure you want to report this waste?",
     description: String = "Reporting a wrong location will result in a penalty of 100 points " +
@@ -606,7 +607,7 @@ fun DialogBox(
                         contentDescription = null, // decorative
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(
-                            color = Color.Red.copy(0.6f)
+                            color = tint
                         ),
                         modifier = Modifier
                             .padding(top = 35.dp)

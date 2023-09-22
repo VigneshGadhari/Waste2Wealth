@@ -2,6 +2,7 @@ package app.waste2wealth.com.communities.ui
 
 import android.graphics.RenderEffect
 import android.graphics.Shader
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -22,14 +23,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material.icons.filled.SwipeUp
+import androidx.compose.material.icons.sharp.PrivacyTip
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -54,7 +65,9 @@ import com.google.accompanist.pager.rememberPagerState
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.components.permissions.Grapple
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
+import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
+import app.waste2wealth.com.reportwaste.DialogBox
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -62,6 +75,10 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.AutoResizedText
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
+import kotlinx.coroutines.delay
 
 val listOfCommunities = listOf(
     DummyCards(
@@ -608,7 +625,6 @@ val listOfCommunities = listOf(
 )
 
 
-@RequiresApi(Build.VERSION_CODES.S)
 @OptIn(ExperimentalPagerApi::class, ExperimentalMotionApi::class)
 @Composable
 fun Pager2(
@@ -627,7 +643,8 @@ fun Pager2(
     noOfTimesReported: Int,
     noOfTimesCollected: Int,
     noOfTimesActivity: Int,
-    communities: MutableState<MutableList<String>>
+    communities: MutableState<MutableList<String>>,
+    isMemberships: Boolean
 ) {
     val pagerState = rememberPagerState()
     val selectedItempage = remember { mutableStateOf(0) }
@@ -635,326 +652,372 @@ fun Pager2(
     val contentPadding = PaddingValues(
         start = 40.dp, end = (40.dp), top = 30.dp, bottom = padding.calculateBottomPadding() + 15.dp
     )
+    val register = remember { mutableStateOf(false) }
+    val currentTitle = remember { mutableStateOf("") }
+    val context = LocalContext.current
+    var isCOinVisible by remember {
+        mutableStateOf(false)
+    }
+
     allCommunities?.let { community ->
-        HorizontalPager(
-            verticalAlignment = Alignment.Top,
-            count = community.size,
-            state = pagerState,
-            modifier = Modifier,
-            contentPadding = if (viewModel.expandedState.value < 0.5f) {
-                contentPadding
-            } else {
-                PaddingValues(0.dp)
-            },
-            userScrollEnabled = viewModel.expandedState.value < 0.5f,
-        ) { page: Int ->
-            val progressState = remember { mutableStateOf(0f) }
-            val isRegistered = remember { mutableStateOf(false) }
-            val draggableState = rememberDraggableState(onDelta = { delta ->
-                val dragProgress = -delta / 200
-                val newProgress = progressState.value + dragProgress
-                progressState.value = newProgress.coerceIn(0f, 1f)
-                viewModel.expandedState.value = newProgress.coerceIn(0f, 1f)
-                viewModel.currentPage.value = pagerState.currentPage
-            })
-            val draggableState2 = rememberDraggableState(onDelta = { delta ->
-                val dragProgress = -delta / 200
-                val newProgress = progress2.value + dragProgress
-                progress2.value = newProgress.coerceIn(0f, 1f)
-                viewModel.expandedState2.value = newProgress.coerceIn(0f, 1f)
-                viewModel.currentPage.value = pagerState.currentPage
-            })
-
-            val context = LocalContext.current
-            val motionScene = remember {
-                context.resources.openRawResource(R.raw.motion_scene).readBytes()
-                    .decodeToString()
-            }
-            val motionScene2 = remember {
-                context.resources.openRawResource(R.raw.scene2).readBytes().decodeToString()
-            }
-
-            MotionLayout(
-                motionScene = MotionScene(
-                    content = if (viewModel.expandedState.value < 0.9f) {
-                        motionScene
-                    } else {
-                        motionScene2
-                    }
-                ),
-                progress = if (viewModel.expandedState.value < 0.9f) {
-                    progressState.value
+        Box(modifier = Modifier.fillMaxSize()) {
+            HorizontalPager(
+                verticalAlignment = Alignment.Top,
+                count = community.size,
+                state = pagerState,
+                modifier = Modifier,
+                contentPadding = if (viewModel.expandedState.value < 0.5f) {
+                    contentPadding
                 } else {
-                    progress2.value
+                    PaddingValues(0.dp)
                 },
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Card(
-                    backgroundColor =
-                    CardColor, border = BorderStroke(
-                        width = 1.dp,
-                        color = Color(0xFFE8A87C).fromHex(community[page].cardColor)
-                    ), shape = RoundedCornerShape(40.dp), modifier = Modifier
-                        .layoutId("card")
+                userScrollEnabled = viewModel.expandedState.value < 0.5f,
+            ) { page: Int ->
+                val progressState = remember { mutableStateOf(0f) }
+                val draggableState = rememberDraggableState(onDelta = { delta ->
+                    val dragProgress = -delta / 200
+                    val newProgress = progressState.value + dragProgress
+                    progressState.value = newProgress.coerceIn(0f, 1f)
+                    viewModel.expandedState.value = newProgress.coerceIn(0f, 1f)
+                    viewModel.currentPage.value = pagerState.currentPage
+                })
+                val draggableState2 = rememberDraggableState(onDelta = { delta ->
+                    val dragProgress = -delta / 200
+                    val newProgress = progress2.value + dragProgress
+                    progress2.value = newProgress.coerceIn(0f, 1f)
+                    viewModel.expandedState2.value = newProgress.coerceIn(0f, 1f)
+                    viewModel.currentPage.value = pagerState.currentPage
+                })
+
+
+                val motionScene = remember {
+                    context.resources.openRawResource(R.raw.motion_scene).readBytes()
+                        .decodeToString()
+                }
+                val motionScene2 = remember {
+                    context.resources.openRawResource(R.raw.scene2).readBytes().decodeToString()
+                }
+
+                MotionLayout(
+                    motionScene = MotionScene(
+                        content = if (viewModel.expandedState.value < 0.9f) {
+                            motionScene
+                        } else {
+                            motionScene2
+                        }
+                    ),
+                    progress = if (viewModel.expandedState.value < 0.9f) {
+                        progressState.value
+                    } else {
+                        progress2.value
+                    },
+                    modifier = Modifier.fillMaxSize(),
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 0.dp),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                ProfileImage(
-                                    imageUrl = community[page].image,
+                    Card(
+                        backgroundColor =
+                        CardColor, border = BorderStroke(
+                            width = 1.dp,
+                            color = Color(0xFFE8A87C).fromHex(community[page].cardColor)
+                        ), shape = RoundedCornerShape(40.dp), modifier = Modifier
+                            .layoutId("card")
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Column {
+                                Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .weight(1f)
-                                        .fillMaxHeight(if (viewModel.expandedState.value < 0.9f) 0.35f else 1f)
-                                        .clip(RoundedCornerShape(30.dp))
+                                        .padding(horizontal = 0.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    ProfileImage(
+                                        imageUrl = community[page].image,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .weight(1f)
+                                            .fillMaxHeight(if (viewModel.expandedState.value < 0.9f) 0.35f else 1f)
+                                            .clip(RoundedCornerShape(30.dp))
+                                            .draggable(
+                                                state = draggableState,
+                                                orientation = Orientation.Vertical,
+                                                startDragImmediately = true,
+                                            )
+                                            .then(
+                                                if (viewModel.expandedState.value < 0.9f)
+                                                    Modifier
+                                                else Modifier.rotate(-90f)
+                                            ),
+                                        contentScale = ContentScale.FillBounds,
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AutoResizedText(
+                                    text = community[page].name,
+                                    color = CardTextColor,
+                                    fontSize = 20.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AutoResizedText(
+                                    text = "Date of Establishment",
+                                    color = Color(0xFFF37952),
+                                    fontSize = 12.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AutoResizedText(
+                                    text = community[page].dateOfEstablishment,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AutoResizedText(
+                                    text = "Active Region",
+                                    color = Color(0xFFF37952),
+                                    fontSize = 12.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                AutoResizedText(
+                                    text = community[page].activeRegion,
+                                    color = CardTextColor,
+                                    fontSize = 15.sp,
+                                    fontFamily = monteBold,
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        AutoResizedText(
+                                            text = "No of Members",
+                                            color = Color(0xFFF37952),
+                                            fontSize = 12.sp,
+                                            fontFamily = monteBold,
+                                            modifier = Modifier.padding(horizontal = 10.dp)
+                                        )
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        AutoResizedText(
+                                            text = community[page].members.toString(),
+                                            color = CardTextColor,
+                                            fontSize = 15.sp,
+                                            fontFamily = monteBold,
+                                            modifier = Modifier.padding(horizontal = 10.dp)
+                                        )
+                                    }
+                                    Column {
+                                        AutoResizedText(
+                                            text = "Rating",
+                                            color = Color(0xFFF37952),
+                                            fontSize = 12.sp,
+                                            fontFamily = monteBold,
+                                            modifier = Modifier.padding(horizontal = 10.dp)
+                                        )
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        AutoResizedText(
+                                            text = "${community[page].ratings} / 5",
+                                            color = CardTextColor,
+                                            fontSize = 15.sp,
+                                            fontFamily = monteBold,
+                                            modifier = Modifier.padding(horizontal = 10.dp)
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Button(
+                                    onClick = {
+                                        register.value = true
+                                        currentTitle.value = community[page].name
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color(0xFFFD5065),
+                                        contentColor = appBackground
+                                    ),
+                                    shape = RoundedCornerShape(35.dp),
+                                    modifier = Modifier.padding(start = 10.dp),
+                                    enabled = !isMemberships
+                                ) {
+                                    AutoResizedText(
+                                        text = if(isMemberships) "Registered" else "Register",
+                                        color = textColor,
+                                        fontSize = 12.sp,
+                                        fontFamily = monteSB,
+                                        modifier = Modifier.padding(bottom = 4.dp),
+                                        maxLines = 1,
+                                        softWrap = true,
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .draggable(
                                             state = draggableState,
                                             orientation = Orientation.Vertical,
                                             startDragImmediately = true,
-                                        )
-                                        .then(
-                                            if (viewModel.expandedState.value < 0.9f)
-                                                Modifier
-                                            else Modifier.rotate(-90f)
                                         ),
-                                    contentScale = ContentScale.FillBounds,
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AutoResizedText(
-                                text = community[page].name,
-                                color = CardTextColor,
-                                fontSize = 20.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AutoResizedText(
-                                text = "Date of Establishment",
-                                color = Color(0xFFF37952),
-                                fontSize = 12.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AutoResizedText(
-                                text = community[page].dateOfEstablishment,
-                                color = CardTextColor,
-                                fontSize = 15.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AutoResizedText(
-                                text = "Active Region",
-                                color = Color(0xFFF37952),
-                                fontSize = 12.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            AutoResizedText(
-                                text = community[page].activeRegion,
-                                color = CardTextColor,
-                                fontSize = 15.sp,
-                                fontFamily = monteBold,
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    AutoResizedText(
-                                        text = "No of Members",
-                                        color = Color(0xFFF37952),
-                                        fontSize = 12.sp,
-                                        fontFamily = monteBold,
-                                        modifier = Modifier.padding(horizontal = 10.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    AutoResizedText(
-                                        text = community[page].members.toString(),
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteBold,
-                                        modifier = Modifier.padding(horizontal = 10.dp)
-                                    )
-                                }
-                                Column {
-                                    AutoResizedText(
-                                        text = "Rating",
-                                        color = Color(0xFFF37952),
-                                        fontSize = 12.sp,
-                                        fontFamily = monteBold,
-                                        modifier = Modifier.padding(horizontal = 10.dp)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-                                    AutoResizedText(
-                                        text = "${community[page].ratings} / 5",
-                                        color = CardTextColor,
-                                        fontSize = 15.sp,
-                                        fontFamily = monteBold,
-                                        modifier = Modifier.padding(horizontal = 10.dp)
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Button(
-                                onClick = {
-                                    communities.value.add(community[page].name)
-                                    isRegistered.value = true
-                                    updateInfoToFirebase(
-                                        context,
-                                        name = name,
-                                        email = email,
-                                        phoneNumber = phoneNumber,
-                                        gender = gender,
-                                        organization = organization,
-                                        address = userAddress,
-                                        pointsEarned = pointsEarned,
-                                        pointsRedeemed = pointsRedeemed,
-                                        noOfTimesReported = noOfTimesReported,
-                                        noOfTimesCollected = noOfTimesCollected + 1,
-                                        noOfTimesActivity = noOfTimesActivity,
-                                        communities = communities.value
-                                    )
-
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color(0xFFFD5065),
-                                    contentColor = appBackground
-                                ),
-                                shape = RoundedCornerShape(35.dp),
-                                modifier = Modifier.padding(start = 10.dp)
-                            ) {
-                                AutoResizedText(
-                                    text = "Register",
-                                    color = textColor,
-                                    fontSize = 12.sp,
-                                    fontFamily = monteSB,
-                                    modifier = Modifier.padding(bottom = 4.dp),
-                                    maxLines = 1,
-                                    softWrap = true
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(bottom = 15.dp),
-                                contentAlignment = Alignment.BottomCenter
-                            ) {
-                                Button(
-                                    onClick = { /*TODO*/ },
-                                    colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = Color(0xFFFD5065),
-                                        contentColor = Color.White
-                                    ),
-                                    shape = RoundedCornerShape(35.dp),
-                                    modifier = Modifier.padding(start = 10.dp)
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    AutoResizedText(
-                                        text = "Swipe up to know more 🔒",
-                                        color = Color.White,
-                                        fontSize = 12.sp,
-                                        fontFamily = monteSB,
+                                    Icon(
+                                        imageVector = Icons.Filled.SwipeUp,
+                                        contentDescription = null,
+                                        tint = CardTextColor,
                                         modifier = Modifier
                                             .padding(bottom = 4.dp)
                                             .draggable(
                                                 state = draggableState,
                                                 orientation = Orientation.Vertical,
                                                 startDragImmediately = true,
-                                            ),
-                                        maxLines = 1,
-                                        softWrap = true
+                                            )
+                                            .size(30.dp),
                                     )
+
                                 }
                             }
+
                         }
-
                     }
-                }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .layoutId("bottomSheet")
-                        .draggable(
-                            state = draggableState2,
-                            orientation = Orientation.Vertical,
-                            startDragImmediately = true,
-                        )
-                        .padding(10.dp),
-                    backgroundColor = CardColor,
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
-                ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Column {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .draggable(
-                                        state = draggableState2,
-                                        orientation = Orientation.Vertical,
-                                        startDragImmediately = true,
-                                    ),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Grapple(
-                                    modifier = Modifier
-                                        .padding(bottom = 0.dp)
-                                        .requiredHeight(20.dp)
-                                        .requiredWidth(55.dp)
-                                        .alpha(0.22f), color = CardTextColor
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 10.dp)
-                                    .draggable(
-                                        state = draggableState2,
-                                        orientation = Orientation.Vertical,
-                                        startDragImmediately = true,
-                                    ),
-                            ) {
-                                AutoResizedText(
-                                    text = "Drives Conducted",
-                                    fontSize = 21.sp,
-                                    color = CardTextColor,
-                                    fontWeight = FontWeight.Normal,
-                                    modifier = Modifier.padding(start = 14.dp)
-                                )
-                            }
-                            val sortedDrives = remember {
-                                community[page].drives.sortedWith(compareByDescending<Drive> {
-                                    it.status == DriveStatus.UPCOMING // Sort by upcoming drives first
-                                }.thenByDescending {
-                                    it.status == DriveStatus.PASSED // Then sort by passed drives
-                                })
-                            }
-                            LazyCard(
-                                list = sortedDrives,
-                                viewModel = viewModel,
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .layoutId("bottomSheet")
+                            .draggable(
+                                state = draggableState2,
+                                orientation = Orientation.Vertical,
+                                startDragImmediately = true,
                             )
+                            .padding(10.dp),
+                        backgroundColor = CardColor,
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .draggable(
+                                            state = draggableState2,
+                                            orientation = Orientation.Vertical,
+                                            startDragImmediately = true,
+                                        ),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Grapple(
+                                        modifier = Modifier
+                                            .padding(bottom = 0.dp)
+                                            .requiredHeight(20.dp)
+                                            .requiredWidth(55.dp)
+                                            .alpha(0.22f), color = CardTextColor
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 10.dp)
+                                        .draggable(
+                                            state = draggableState2,
+                                            orientation = Orientation.Vertical,
+                                            startDragImmediately = true,
+                                        ),
+                                ) {
+                                    AutoResizedText(
+                                        text = "Drives Conducted",
+                                        fontSize = 21.sp,
+                                        color = CardTextColor,
+                                        fontWeight = FontWeight.Normal,
+                                        modifier = Modifier.padding(start = 14.dp)
+                                    )
+                                }
+                                val sortedDrives = remember {
+                                    community[page].drives.sortedWith(compareByDescending<Drive> {
+                                        it.status == DriveStatus.UPCOMING // Sort by upcoming drives first
+                                    }.thenByDescending {
+                                        it.status == DriveStatus.PASSED // Then sort by passed drives
+                                    })
+                                }
+                                LazyCard(
+                                    list = sortedDrives,
+                                    viewModel = viewModel,
+                                )
+                            }
                         }
+
+
                     }
 
-
+                }
+                if (register.value) {
+                    DialogBox(
+                        isVisible = register.value,
+                        title = "Do you want to register for this Community?",
+                        description = "We will share your name and contact details with the Community",
+                        tint = textColor,
+                        icon = Icons.Sharp.PrivacyTip,
+                        successRequest = {
+                            isCOinVisible = true
+                            communities.value.add(community[pagerState.currentPage].name)
+                            updateInfoToFirebase(
+                                context,
+                                name = name,
+                                email = email,
+                                phoneNumber = phoneNumber,
+                                gender = gender,
+                                organization = organization,
+                                address = userAddress,
+                                pointsEarned = pointsEarned,
+                                pointsRedeemed = pointsRedeemed,
+                                noOfTimesReported = noOfTimesReported,
+                                noOfTimesCollected = noOfTimesCollected + 1,
+                                noOfTimesActivity = noOfTimesActivity,
+                                communities = communities.value
+                            )
+                            register.value = false
+                        },
+                        dismissRequest = {
+                            register.value = false
+                        }
+                    )
+                }
+            }
+            if (isCOinVisible) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    val currenanim by rememberLottieComposition(
+                        spec = LottieCompositionSpec.Asset("confetti.json")
+                    )
+                    LottieAnimation(
+                        composition = currenanim,
+                        iterations = 1,
+                        contentScale = ContentScale.Crop,
+                        speed = 1f,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .size(250.dp)
+                    )
                 }
 
             }
+            LaunchedEffect(key1 = isCOinVisible){
+                if (isCOinVisible){
+                    delay(2000)
+                    isCOinVisible = false
+                }
+            }
+
         }
     }
 

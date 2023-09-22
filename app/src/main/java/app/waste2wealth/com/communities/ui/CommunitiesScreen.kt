@@ -105,6 +105,7 @@ fun CommunitiesSection(
     }
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
     var allCommunities by remember { mutableStateOf<List<DummyCards>?>(null) }
+    var isMemberShips by remember { mutableStateOf(false) }
     var myCommunities = remember {
         mutableStateOf(mutableListOf(""))
     }
@@ -135,16 +136,23 @@ fun CommunitiesSection(
                         noOfTimesCollected = i.noOfTimesCollected
                         noOfTimesActivity = i.noOfTimesActivity
                         myCommunities.value = i.communities.toMutableList()
+                        allCommunities = communities?.filter {
+                            it.name !in myCommunities.value
+                        }
                     }
                 }
             }
             LaunchedEffect(key1 = selectedType){
                 when(selectedType){
                     TypeOfCommunities.ALL_COMMUNITIES.names -> {
-                        allCommunities = communities
+                        allCommunities = communities?.filter {
+                            it.name !in myCommunities.value
+                        }
+                        isMemberShips = false
                     }
                     TypeOfCommunities.Memberships.names -> {
-                        allCommunities = allCommunities?.filter { it.name in myCommunities.value }
+                        allCommunities = communities?.filter { it.name in myCommunities.value }
+                        isMemberShips = true
                     }
 
                 }
@@ -160,30 +168,33 @@ fun CommunitiesSection(
 
             LaunchedEffect(key1 = allCommunities) {
                 if(allCommunities?.isEmpty() == true || allCommunities == null){
+                    allCommunities = allCommunities?.filter {
+                        it.name !in myCommunities.value
+                    }
                     isLoading.value = true
                 }
             }
             LaunchedEffect(key1 = isLoading.value){
                 if(isLoading.value){
-                    delay(2000)
+                    delay(500)
                     isLoading.value = false
                 }
             }
             if (isLoading.value) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.BottomCenter
+                    contentAlignment = Alignment.Center
                 ) {
                     val currenanim by rememberLottieComposition(
                         spec = LottieCompositionSpec.Asset("loading.json")
                     )
                     LottieAnimation(
                         composition = currenanim,
-                        iterations = 1,
+                        iterations = Int.MAX_VALUE,
                         contentScale = ContentScale.Crop,
                         speed = 1f,
                         modifier = Modifier
-                            .size(70.dp)
+                            .size(300.dp)
                     )
                 }
             } else {
@@ -403,7 +414,8 @@ fun CommunitiesSection(
                             noOfTimesReported,
                             noOfTimesCollected,
                             noOfTimesActivity,
-                            myCommunities
+                            myCommunities,
+                            isMemberShips
 
                         )
                     }
