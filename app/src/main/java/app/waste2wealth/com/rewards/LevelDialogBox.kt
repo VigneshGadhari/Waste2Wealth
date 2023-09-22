@@ -86,6 +86,19 @@ fun LevelDialogBox(
 
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
+                            text = "🎉 ${level.name}  🎉",
+                            textAlign = TextAlign.Center,
+                            color = textColor,
+                            fontFamily = monteSB,
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(top = 0.dp)
+                                .fillMaxWidth(),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
                             text = if (isLevelUp) unlockLevelTaglines
                             else motivateLevelTaglines,
                             textAlign = TextAlign.Center,

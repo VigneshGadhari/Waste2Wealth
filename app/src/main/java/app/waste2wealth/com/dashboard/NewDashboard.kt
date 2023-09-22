@@ -4,6 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,6 +43,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -83,6 +87,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
+import kotlinx.coroutines.delay
 import kotlin.system.exitProcess
 
 
@@ -100,6 +105,9 @@ fun NewDashboard(
     var address by remember {
         mutableStateOf("")
     }
+    var animStart by remember {
+        mutableStateOf(false)
+    }
     var phoneNumber by remember {
         mutableStateOf("")
     }
@@ -110,12 +118,24 @@ fun NewDashboard(
         mutableStateOf("")
     }
     var pointsEarned by remember {
-        mutableStateOf("")
+        mutableStateOf(0)
     }
     var pointsRedeemed by remember {
-        mutableStateOf("")
+        mutableStateOf(0)
     }
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
+    val animatedProgress  by animateFloatAsState(
+        targetValue = if (animStart) 0f else viewModel.currentProgress,
+        label = "",
+        animationSpec = tween(500)
+    )
+    LaunchedEffect(key1 = viewModel.showLevelDialog){
+        if (viewModel.showLevelDialog) {
+            animStart = true
+            delay(1000)
+            animStart = false
+        }
+    }
     val activity = (LocalContext.current as? Activity)
     BackHandler {
         activity?.finishAndRemoveTask()
@@ -138,8 +158,27 @@ fun NewDashboard(
                         gender = i.gender ?: ""
                         phoneNumber = i.phoneNumber ?: ""
                         organization = i.organization ?: ""
-                        pointsEarned = i.pointsEarned.toString()
-                        pointsRedeemed = i.pointsRedeemed.toString()
+                        pointsEarned = i.pointsEarned
+                        pointsRedeemed = i.pointsRedeemed
+                    }
+                }
+            }
+            LaunchedEffect(key1 = pointsEarned){
+                animStart = true
+                if (pointsEarned != 0) {
+                    viewModel.pointsEarned = pointsEarned
+                    viewModel.getCurrentLevel(pointsEarned, levels)
+                    viewModel.currentLevel.value?.let {
+                        viewModel.currentProgress = viewModel.getCurrentLevelProgress(
+                            pointsEarned,
+                            levels
+                        )
+                        viewModel.remainingPoints = viewModel.pointsRemainingForNextLevel(
+                            pointsEarned,
+                            levels
+                        )
+                        delay(1000)
+                        animStart = false
                     }
                 }
             }
@@ -242,7 +281,7 @@ fun NewDashboard(
                                             tint = Color.Unspecified
                                         )
                                         AutoResizedText(
-                                            text = pointsEarned,
+                                            text = pointsEarned.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
                                             fontFamily = monteNormal,
@@ -274,7 +313,7 @@ fun NewDashboard(
                                             tint = Color.Unspecified
                                         )
                                         AutoResizedText(
-                                            text = pointsRedeemed,
+                                            text = pointsRedeemed.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
                                             fontFamily = monteNormal,
@@ -295,7 +334,10 @@ fun NewDashboard(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 15.dp),
+                            .padding(horizontal = 15.dp)
+                            .clickable {
+                                viewModel.showLevelDialog = true
+                            },
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -308,7 +350,7 @@ fun NewDashboard(
                                 modifier = Modifier.padding(bottom = 7.dp)
                             )
                             AutoResizedText(
-                                text = "200 more points to reach weekly target",
+                                text = "${viewModel.remainingPoints} more points to reach next level",
                                 color = textColor,
                                 fontSize = 9.sp,
                                 fontFamily = monteBold,
@@ -318,7 +360,8 @@ fun NewDashboard(
 
                         ArcComposable(
                             modifier = Modifier.padding(end = 25.dp),
-                            text = "50%"
+                            text = "${(viewModel.currentProgress * 100).toInt()}%",
+                            progress = animatedProgress
                         )
                     }
 
@@ -580,7 +623,6 @@ fun NewDashboard(
                             LevelDialogBox(
                                 level = currentlevel,
                                 progress = viewModel.getCurrentLevelProgress(
-                                    currentlevel,
                                     viewModel.pointsEarned,
                                     levels
                                 ),
