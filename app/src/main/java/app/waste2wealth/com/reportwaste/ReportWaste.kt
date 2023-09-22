@@ -133,6 +133,15 @@ fun ReportWaste(
     var profileList by remember {
         mutableStateOf<List<ProfileInfo>?>(null)
     }
+    var maxReported by remember {
+        mutableStateOf(0)
+    }
+    var maxCollected by remember {
+        mutableStateOf(0)
+    }
+    var maxCommunity by remember {
+        mutableStateOf(0)
+    }
     var userAddress by remember {
         mutableStateOf("")
     }
@@ -177,6 +186,13 @@ fun ReportWaste(
         collection("ProfileInfo")
     }, onRealtimeCollectionFetch = { value, _ ->
         profileList = value?.getListOfObjects()
+        maxReported = (profileList?.map { it.noOfTimesReported.toDouble() } ?: emptyList())
+            .max().toInt()
+
+        maxCollected = (profileList?.map { it.noOfTimesCollected.toDouble() } ?: emptyList())
+            .max().toInt()
+        maxCommunity = (profileList?.map { it.communities.size.toDouble() } ?: emptyList())
+            .max().toInt()
     }) {
         if (profileList != null) {
             for (i in profileList!!) {
@@ -421,7 +437,7 @@ fun ReportWaste(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AutoResizedText(
-                            text = "Points you can Earn",
+                            text = "Max Points you can Earn",
                             color = textColor,
                             fontSize = 16.sp,
                             fontFamily = monteBold,
@@ -522,7 +538,10 @@ fun ReportWaste(
                                             pointsEarned = pointsEarned + calculatePointsEarned(
                                                 noOfTimesReported,
                                                 noOfTimesCollected,
-                                                noOfTimesActivity
+                                                noOfTimesActivity,
+                                                maxReported,
+                                                maxCollected,
+                                                maxCommunity
                                             ),
                                             pointsRedeemed = pointsRedeemed,
                                             noOfTimesReported = noOfTimesReported + 1,

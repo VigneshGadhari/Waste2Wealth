@@ -33,52 +33,21 @@ data class ProfileInfo(
 fun calculatePointsEarned(
     noOfTimesReported: Int,
     noOfTimesCollected: Int,
-    noOfTimesActivity: Int,
+    noOfCommunitiesJoined: Int,
+    maxReportedValue: Int,
+    maxCollectedValue: Int,
+    maxCommunitiesJoinedValue: Int,
     isCollectedWaste: Boolean = false
 ): Int {
-    val basePointsPerReport = if (isCollectedWaste) {
-        50
-    } else {
-        20
-    }
+    // Calculate percentiles for each input variable
+    val percentileReported = noOfTimesReported.toDouble() / maxReportedValue.toDouble()
+    val percentileCollected = noOfTimesCollected.toDouble() / maxCollectedValue.toDouble()
+    val percentileCommunitiesJoined = noOfCommunitiesJoined.toDouble() / maxCommunitiesJoinedValue.toDouble()
 
-    val additionalPoints =
-        (noOfTimesReported * 10) +
-                (noOfTimesCollected * 20) +
-                (noOfTimesActivity * 5)
+    // Calculate the overall percentile as the average of the individual percentiles
+    val overallPercentile = (percentileReported + percentileCollected + percentileCommunitiesJoined) / 4.0
 
-    val totalPointsEarned = basePointsPerReport + additionalPoints
-
-    val scaledPoints = if (totalPointsEarned > 250) {
-        250
-    } else {
-        totalPointsEarned
-    }
-
-    return scaledPoints
-}
-
-fun calculateActivityPointsEarned(
-    noOfTimesReported: Int,
-    noOfTimesCollected: Int,
-    noOfTimesActivity: Int,
-    noOfMinutes: Int
-): Int {
-    val basePointsPerHour = 100
-    val minutesInAnHour = 60
-
-    val totalPointsPerHour = basePointsPerHour +
-            (noOfTimesReported * 10) +
-            (noOfTimesCollected * 20) +
-            (noOfTimesActivity * 5)
-
-    val totalPointsEarned = (totalPointsPerHour.toDouble() / minutesInAnHour) * noOfMinutes
-
-    val scaledPoints = if (totalPointsEarned > 250) {
-        250
-    } else {
-        totalPointsEarned
-    }
-
-    return scaledPoints.toInt()
+    // Scale the percentile to points between 5 and 20
+    val scaledPoints = (overallPercentile * 15.0 + 5.0).toInt()
+    return if (isCollectedWaste) scaledPoints.coerceIn(5,20) + 5 else scaledPoints.coerceIn(5, 50)
 }

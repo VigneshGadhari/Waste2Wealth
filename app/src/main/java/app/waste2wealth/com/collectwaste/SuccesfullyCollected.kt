@@ -155,6 +155,15 @@ fun SuccessfullyCollected(
     var communities by remember {
         mutableStateOf(mutableListOf(""))
     }
+    var maxReported by remember {
+        mutableStateOf(0)
+    }
+    var maxCollected by remember {
+        mutableStateOf(0)
+    }
+    var maxCommunity by remember {
+        mutableStateOf(0)
+    }
     val context = LocalContext.current
     var isCOinVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -174,6 +183,13 @@ fun SuccessfullyCollected(
         collection("ProfileInfo")
     }, onRealtimeCollectionFetch = { value, _ ->
         profileList = value?.getListOfObjects()
+        maxReported = (profileList?.map { it.noOfTimesReported.toDouble() } ?: emptyList())
+            .max().toInt()
+
+        maxCollected = (profileList?.map { it.noOfTimesCollected.toDouble() } ?: emptyList())
+            .max().toInt()
+        maxCommunity = (profileList?.map { it.communities.size.toDouble() } ?: emptyList())
+            .max().toInt()
     }) {
         if (profileList != null) {
             for (i in profileList!!) {
@@ -493,7 +509,10 @@ fun SuccessfullyCollected(
                                                         noOfTimesReported,
                                                         noOfTimesCollected,
                                                         noOfTimesActivity,
-                                                        isCollectedWaste = true
+                                                        isCollectedWaste = true,
+                                                        maxReportedValue = maxReported,
+                                                        maxCollectedValue = maxCollected,
+                                                        maxCommunitiesJoinedValue = maxCommunity
                                                     ),
                                                     pointsRedeemed = pointsRedeemed,
                                                     noOfTimesReported = noOfTimesReported,
