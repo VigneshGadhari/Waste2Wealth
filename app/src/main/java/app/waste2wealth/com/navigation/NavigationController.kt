@@ -115,7 +115,8 @@ fun NavigationController(
                 navController = navController,
                 email = email.value,
                 name = name.value,
-                pfp = profile.value
+                pfp = profile.value,
+                viewModel = viewModel
             )
 //            DashBoardPage(navHostController = navController, locationViewModel = locationViewModel)
         }

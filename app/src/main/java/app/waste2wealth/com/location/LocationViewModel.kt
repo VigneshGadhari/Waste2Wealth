@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import app.waste2wealth.com.ktorClient.Resource
 import app.waste2wealth.com.ktorClient.UriPathFinder
 import app.waste2wealth.com.ktorClient.repository.PlacesRepository
+import app.waste2wealth.com.rewards.Level
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,8 @@ class LocationViewModel @Inject constructor(
     )
     var locationState: MutableStateFlow<String> = MutableStateFlow("Location Not Found")
     var isDark by mutableStateOf(false)
+    var showLevelDialog by mutableStateOf(false)
+    var pointsEarned by mutableStateOf(0)
     var latitude by mutableStateOf(0.0)
     var theirLatitude = mutableStateOf(0.0)
     var longitude by mutableStateOf(0.0)
@@ -46,6 +49,7 @@ class LocationViewModel @Inject constructor(
     var rewardDescription = mutableStateOf("")
     var rewardNoOfPoints = mutableStateOf(0)
     var listOfAddresses by mutableStateOf(mutableListOf<String?>(null))
+    var currentLevel = mutableStateOf<Level?>(null)
 
     val result = MutableLiveData<String>()
 
@@ -87,4 +91,41 @@ class LocationViewModel @Inject constructor(
             }
         }
     }
+
+    fun getCurrentLevel(points: Int, levels: List<Level>) {
+        // Sort the levels by their pointOfAchievements in ascending order
+        val sortedLevels = levels.sortedByDescending { it.pointOfAchievements }
+
+        for (level in sortedLevels) {
+            if (points >= level.pointOfAchievements) {
+                // User has enough points to reach this level
+                currentLevel.value = level
+                return
+            }
+        }
+    }
+
+    fun getCurrentLevelProgress(currentLevel: Level, points: Int, levels: List<Level>): Float {
+        val nextLevelIndex = currentLevel.number
+        val nextLevel = if (nextLevelIndex < levels.size) levels[nextLevelIndex] else null
+
+        if (nextLevel != null && points >= currentLevel.pointOfAchievements) {
+            val levelProgress = points - currentLevel.pointOfAchievements
+            val levelRange = nextLevel.pointOfAchievements - currentLevel.pointOfAchievements
+            if (levelRange > 0) {
+                return levelProgress.toFloat() / levelRange.toFloat()
+            }
+        }
+
+        return 0f
+    }
+
+    fun isNewLevelUnlocked(currentLevel: Level, points: Int, levels: List<Level>): Boolean {
+        val nextLevelIndex = currentLevel.number
+        val nextLevel = if (nextLevelIndex < levels.size) levels[nextLevelIndex] else null
+
+        return nextLevel != null && points >= nextLevel.pointOfAchievements
+    }
+
+
 }
