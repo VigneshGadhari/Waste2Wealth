@@ -66,7 +66,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.communities.ui.DummyCards
-import app.waste2wealth.com.communities.ui.listOfCommunities
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.updateCommunitiesToFirebase
 import app.waste2wealth.com.location.LocationViewModel

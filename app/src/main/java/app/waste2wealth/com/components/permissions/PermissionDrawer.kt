@@ -38,7 +38,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.waste2wealth.com.R
+import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteNormal
+import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -76,12 +78,12 @@ fun PermissionDrawer(
                 size = size
             )
         },
-        drawerBackgroundColor = Color.White,
+        drawerBackgroundColor = appBackground,
         drawerElevation = 0.dp,
         drawerShape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
         drawerState = drawerState,
         gesturesEnabled = gesturesEnabled,
-        scrimColor = Color.Black.copy(0.59f),
+        scrimColor = textColor.copy(0.59f),
         drawerContentColor = Color.White,
         content = content
     )
@@ -136,7 +138,7 @@ fun PermissionDrawerContent(
                 modifier = Modifier
                     .rotate(90f)
                     .size(40.dp),
-                tint = Color.Black
+                tint = textColor
             )
             Image(
                 painter = painterResource(R.drawable.appicon),
@@ -149,7 +151,7 @@ fun PermissionDrawerContent(
             AutoResizedText(
                 text = rationaleText,
                 textAlign = TextAlign.Center,
-                color = Color.Black,
+                color = textColor,
                 fontFamily = monteNormal,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp
@@ -158,7 +160,7 @@ fun PermissionDrawerContent(
             AutoResizedText(
                 text = withoutRationaleText,
                 textAlign = TextAlign.Center,
-                color = Color.Black,
+                color = textColor,
                 fontFamily = monteNormal,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp
@@ -181,7 +183,7 @@ fun PermissionDrawerContent(
             if (permissionState.shouldShowRationale)
                 AutoResizedText(
                     text = "Settings",
-                    color = Color.White,
+                    color = textColor,
                     fontFamily = monteNormal,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -189,7 +191,7 @@ fun PermissionDrawerContent(
             else
                 AutoResizedText(
                     text = "Grant Permission",
-                    color = Color.White,
+                    color = textColor,
                     fontFamily = monteNormal,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
