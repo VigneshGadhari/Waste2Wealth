@@ -60,6 +60,8 @@ import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -106,10 +108,14 @@ fun CommunitiesSection(
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
     var allCommunities by remember { mutableStateOf<List<DummyCards>?>(null) }
     var isMemberShips by remember { mutableStateOf(false) }
+    var isLaunched by remember { mutableStateOf(false) }
     var myCommunities = remember {
         mutableStateOf(mutableListOf(""))
     }
     var selectedType by remember { mutableStateOf(TypeOfCommunities.ALL_COMMUNITIES.names) }
+    LaunchedEffect(key1 = Unit){
+        isLaunched = true
+    }
 
     JetFirestore(path = {
         collection("Communities")
@@ -136,8 +142,11 @@ fun CommunitiesSection(
                         noOfTimesCollected = i.noOfTimesCollected
                         noOfTimesActivity = i.noOfTimesActivity
                         myCommunities.value = i.communities.toMutableList()
-                        allCommunities = communities?.filter {
-                            it.name !in myCommunities.value
+                        if (isLaunched){
+                            allCommunities = communities?.filter {
+                                it.name !in myCommunities.value
+                            }
+                            isLaunched = false
                         }
                     }
                 }
@@ -168,9 +177,6 @@ fun CommunitiesSection(
 
             LaunchedEffect(key1 = allCommunities) {
                 if(allCommunities?.isEmpty() == true || allCommunities == null){
-                    allCommunities = allCommunities?.filter {
-                        it.name !in myCommunities.value
-                    }
                     isLoading.value = true
                 }
             }
@@ -255,7 +261,10 @@ fun CommunitiesSection(
 
                                         DropdownMenu(
                                             expanded = expanded,
-                                            onDismissRequest = { expanded = false }
+                                            onDismissRequest = { expanded = false },
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .background(appBackground)
                                         ) {
                                             typeOfCommunities.forEach { type ->
                                                 DropdownMenuItem(
@@ -264,7 +273,10 @@ fun CommunitiesSection(
                                                         expanded = false
                                                     }
                                                 ) {
-                                                    AutoResizedText(text = type)
+                                                    AutoResizedText(
+                                                        text = type,
+                                                        color = textColor
+                                                    )
                                                 }
                                             }
                                         }

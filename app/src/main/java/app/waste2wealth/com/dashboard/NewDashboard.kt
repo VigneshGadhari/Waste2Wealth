@@ -289,7 +289,7 @@ fun NewDashboard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
+                        .padding(horizontal = 15.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -514,8 +514,8 @@ fun NewDashboard(
                                             Icon(
                                                 imageVector = Icons.Filled.LocationOn,
                                                 contentDescription = null,
-                                                modifier = Modifier.size(20.dp),
-                                                tint = CardColor
+                                                modifier = Modifier.size(18.dp),
+                                                tint = textColor
                                             )
                                             Spacer(modifier = Modifier.width(10.dp))
                                             AutoResizedText(
