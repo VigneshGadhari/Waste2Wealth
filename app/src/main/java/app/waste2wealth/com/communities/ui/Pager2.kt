@@ -756,7 +756,8 @@ fun Pager2(
                                     color = CardTextColor,
                                     fontSize = 20.sp,
                                     fontFamily = monteBold,
-                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                    modifier = Modifier.padding(horizontal = 10.dp),
+                                    softWrap = true
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                                 AutoResizedText(
