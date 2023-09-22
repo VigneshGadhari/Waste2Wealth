@@ -2,6 +2,7 @@ package app.waste2wealth.com.reportwaste
 
 import android.Manifest
 import android.graphics.Bitmap
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -82,6 +83,7 @@ import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.firebase.firestore.updateWasteToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.rewards.levels
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -527,6 +529,27 @@ fun ReportWaste(
                                             timeStamp = System.currentTimeMillis(),
                                             userEmail = email,
                                         )
+                                        viewModel.getCurrentLevel(
+                                            points = pointsEarned + calculatePointsEarned(
+                                                noOfTimesReported,
+                                                noOfTimesCollected,
+                                                noOfTimesActivity,
+                                                maxReported,
+                                                maxCollected,
+                                                maxCommunity
+                                            ),
+                                            levels = levels
+                                        )
+                                        viewModel.pointsEarned = pointsEarned + calculatePointsEarned(
+                                            noOfTimesReported,
+                                            noOfTimesCollected,
+                                            noOfTimesActivity,
+                                            maxReported,
+                                            maxCollected,
+                                            maxCommunity
+                                        )
+                                        Log.i("TAGGGGGGGGG", "ReportWaste: ${viewModel.currentLevel.value}")
+                                        Log.i("TAGGGGGGGGG", "ReportWasteDialog: ${viewModel.showLevelDialog}")
                                         updateInfoToFirebase(
                                             context,
                                             name = name,
@@ -585,6 +608,7 @@ fun ReportWaste(
                 LaunchedEffect(key1 = isCOinVisible) {
                     if (isCOinVisible) {
                         delay(4000)
+                        viewModel.showLevelDialog = true
                         navController.navigate(Screens.Dashboard.route)
                     }
                 }
