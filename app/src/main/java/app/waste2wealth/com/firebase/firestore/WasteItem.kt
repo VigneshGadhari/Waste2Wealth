@@ -1,6 +1,8 @@
 package app.waste2wealth.com.firebase.firestore
 
+import app.waste2wealth.com.collectwaste.getTimeAgo
 import app.waste2wealth.com.tags.TagWithoutTips
+import java.util.Locale
 
 data class WasteItem(
     val latitude: Double,
@@ -20,6 +22,18 @@ data class WasteItem(
         "",
         emptyList()
     )
+
+    fun doesMatchSearchQuery(query: String): Boolean {
+        val matchingCombinations = listOf(
+            address.lowercase(Locale.ROOT),
+            tag.joinToString(separator = " ") { it.name.lowercase(Locale.ROOT) },
+            getTimeAgo(timeStamp)
+        )
+
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
 }
 
 data class CollectedWasteItem(
