@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import app.waste2wealth.com.ktorClient.Resource
 import app.waste2wealth.com.ktorClient.repository.PlacesRepository
 import app.waste2wealth.com.rewards.Level
+import app.waste2wealth.com.tags.Tag
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +43,7 @@ class LocationViewModel @Inject constructor(
     var address = mutableStateOf("")
     var distance = mutableStateOf("")
     var time = mutableStateOf("")
+    var tags = mutableStateOf(listOf<Tag>())
     var wastePhoto = mutableStateOf("")
     var rewardImage = mutableStateOf("")
     var rewardTitle = mutableStateOf("")

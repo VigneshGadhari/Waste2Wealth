@@ -154,7 +154,6 @@ fun NavigationController(
                 email = email.value,
                 name = name.value,
                 pfp = profile.value,
-                reportWasteViewModel = reportWasteViewModel
             )
         }
         composable(Screens.CollectWasteLists.route) {

@@ -3,6 +3,7 @@ package app.waste2wealth.com.collectwaste
 import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomDrawerValue
@@ -47,10 +50,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.bottombar.items
+import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.tags.Tag
+import app.waste2wealth.com.tags.TagItem
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -77,15 +84,8 @@ fun CollectWaste(
     navController: NavHostController,
     viewModel: LocationViewModel
 ) {
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        )
-    )
-    val permissionDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
-    val gesturesEnabled by remember { derivedStateOf { permissionDrawerState.isOpen } }
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
+    var profileInfo by remember { mutableStateOf<List<ProfileInfo>?>(null) }
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
@@ -96,140 +96,152 @@ fun CollectWaste(
         allWastes = values?.getListOfObjects()
 
     }) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(appBackground)
-        ) {
-            Row(
+        JetFirestore(path = {
+            collection("ProfileInfo")
+        }, onRealtimeCollectionFetch = { values, _ ->
+            profileInfo = values?.getListOfObjects()
+        }) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp, start = 0.dp),
-                horizontalArrangement = Arrangement.Start
+                    .fillMaxSize()
+                    .background(appBackground)
             ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBackIos,
-                    contentDescription = "",
-                    tint = textColor,
-                    modifier = Modifier
-                        .padding(start = 15.dp)
-                        .size(25.dp)
-                        .clickable {
-                            navController.popBackStack()
-                        }
-                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(x = (-10).dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(top = 30.dp, start = 0.dp),
+                    horizontalArrangement = Arrangement.Start
                 ) {
-                    AutoResizedText(
-                        text = "Collect Waste",
-                        color = textColor,
-                        fontFamily = monteBold,
-                        fontSize = 25.sp
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBackIos,
+                        contentDescription = "",
+                        tint = textColor,
+                        modifier = Modifier
+                            .padding(start = 15.dp)
+                            .size(25.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
                     )
-                }
-            }
-
-            val cList = listOf("List View", "Map View (Beta)")
-            var tabIndex by remember { mutableStateOf(0) }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 35.dp, end = 35.dp)
-            ) {
-                TabRow(
-                    selectedTabIndex = tabIndex,
-                    backgroundColor = appBackground,
-                    contentColor = textColor,
-                    divider = {
-                        TabRowDefaults.Divider(
-                            color = Color(0xFFF37952),
-                            thickness = 1.dp
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(x = (-10).dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        AutoResizedText(
+                            text = "Collect Waste",
+                            color = textColor,
+                            fontFamily = monteBold,
+                            fontSize = 25.sp
                         )
-                    },
+                    }
+                }
+
+                val cList = listOf("List View", "Map View (Beta)")
+                var tabIndex by remember { mutableStateOf(0) }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 35.dp, end = 35.dp)
                 ) {
-                    cList.forEachIndexed { index, title ->
-                        Tab(text = {
-                            AutoResizedText(
-                                title,
-                                softWrap = false,
-                                fontSize = 13.sp,
+                    TabRow(
+                        selectedTabIndex = tabIndex,
+                        backgroundColor = appBackground,
+                        contentColor = textColor,
+                        divider = {
+                            TabRowDefaults.Divider(
+                                color = Color(0xFFF37952),
+                                thickness = 1.dp
                             )
                         },
-                            selected = tabIndex == index,
-                            onClick = { tabIndex = index }
-                        )
-                    }
-
-                }
-
-            }
-            if (tabIndex == 0) {
-                Spacer(modifier = Modifier.height(30.dp))
-                if (allWastes != null) {
-                    LazyColumn(
-                        contentPadding = PaddingValues(
-                            bottom = 150.dp,
-                            top = 40.dp
-                        )
                     ) {
-                        allWastes = allWastes?.sortedBy {
-                            distance(
-                                viewModel.latitude,
-                                viewModel.longitude,
-                                it.latitude,
-                                it.longitude
+                        cList.forEachIndexed { index, title ->
+                            Tab(text = {
+                                AutoResizedText(
+                                    title,
+                                    softWrap = false,
+                                    fontSize = 13.sp,
+                                )
+                            },
+                                selected = tabIndex == index,
+                                onClick = { tabIndex = index }
                             )
                         }
-                        itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
-                            WasteItemCard(
-                                locationNo = "Location ${index + 1}",
-                                address = wasteItem.address,
-                                distance = "${
-                                    convertDistance(
-                                        distance(
-                                            viewModel.latitude,
-                                            viewModel.longitude,
-                                            wasteItem.latitude,
-                                            wasteItem.longitude
-                                        )
-                                    )
-                                } away",
-                                time = getTimeAgo(wasteItem.timeStamp),
-                            ) {
-                                viewModel.locationNo.value = "Location ${index + 1}"
-                                viewModel.address.value = wasteItem.address
-                                viewModel.distance.value = "${
-                                    convertDistance(
-                                        distance(
-                                            viewModel.latitude,
-                                            viewModel.longitude,
-                                            wasteItem.latitude,
-                                            wasteItem.longitude
-                                        )
-                                    )
-                                } away"
-                                viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
-                                viewModel.wastePhoto.value = wasteItem.imagePath
-                                viewModel.theirLatitude.value = wasteItem.latitude
-                                viewModel.theirLongitude.value = wasteItem.longitude
-                                println("Collected time ${viewModel.time.value}")
-                                navController.navigate(Screens.CollectWasteInfo.route)
-                            }
 
+                    }
+
+                }
+                if (tabIndex == 0) {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    if (allWastes != null) {
+                        LazyColumn(
+                            contentPadding = PaddingValues(
+                                bottom = 150.dp,
+                                top = 40.dp
+                            )
+                        ) {
+                            allWastes = allWastes?.sortedBy {
+                                distance(
+                                    viewModel.latitude,
+                                    viewModel.longitude,
+                                    it.latitude,
+                                    it.longitude
+                                )
+                            }
+                            itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
+                                WasteItemCard(
+                                    locationNo = "Location ${index + 1}",
+                                    address = wasteItem.address,
+                                    distance = "${
+                                        convertDistance(
+                                            distance(
+                                                viewModel.latitude,
+                                                viewModel.longitude,
+                                                wasteItem.latitude,
+                                                wasteItem.longitude
+                                            )
+                                        )
+                                    } away",
+                                    time = getTimeAgo(wasteItem.timeStamp),
+                                    tags = wasteItem.tag.map {
+                                        it.mapWithTips()
+                                    },
+                                ) {
+                                    viewModel.locationNo.value = "Location ${index + 1}"
+                                    viewModel.address.value = wasteItem.address
+                                    viewModel.distance.value = "${
+                                        convertDistance(
+                                            distance(
+                                                viewModel.latitude,
+                                                viewModel.longitude,
+                                                wasteItem.latitude,
+                                                wasteItem.longitude
+                                            )
+                                        )
+                                    } away"
+                                    viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
+                                    viewModel.wastePhoto.value = wasteItem.imagePath
+                                    viewModel.theirLatitude.value = wasteItem.latitude
+                                    viewModel.theirLongitude.value = wasteItem.longitude
+                                    viewModel.tags.value = wasteItem.tag.map {
+                                        it.mapWithTips()
+                                    }
+                                    println("Collected time ${viewModel.time.value}")
+                                    navController.navigate(Screens.CollectWasteInfo.route)
+                                }
+
+                            }
                         }
                     }
+                } else {
+                    MapScreen(
+                        paddingValues = paddingValues,
+                        viewModel = viewModel,
+                    )
                 }
-            } else {
-                MapScreen(
-                    paddingValues = paddingValues,
-                    viewModel = viewModel,
-                )
-            }
 
+            }
         }
 
 
@@ -239,6 +251,7 @@ fun CollectWaste(
 
 @Composable
 fun WasteItemCard(
+    tags: List<Tag> = emptyList(),
     locationNo: String,
     address: String,
     distance: String,
@@ -300,6 +313,29 @@ fun WasteItemCard(
                     overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
                 )
             }
+            if (tags.isNotEmpty()) {
+                AutoResizedText(
+                    text = "Tags",
+                    color = textColor,
+                    fontSize = 15.sp,
+                    fontFamily = monteSB,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                LazyRow(
+                    contentPadding = PaddingValues(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(tags) { tag ->
+                        TagItem(
+                            item = tag,
+                            modifier = Modifier,
+                            isSelected = false
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom

@@ -20,6 +20,11 @@ data class TagWithoutTips(
     val image: Int,
 ) {
     constructor() : this("", 0)
+
+    fun mapWithTips() = Tag(
+        name = name,
+        image = image
+    )
 }
 
 data class Groups(

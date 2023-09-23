@@ -88,6 +88,7 @@ fun CollectWasteInfo(
         viewModel.wastePhoto.value = ""
         viewModel.theirLongitude.value = 0.0
         viewModel.theirLatitude.value = 0.0
+        viewModel.tags.value = listOf()
         navController.popBackStack()
     }
     LaunchedEffect(key1 = Unit) {
@@ -139,6 +140,7 @@ fun CollectWasteInfo(
             time = viewModel.time.value,
             isCollectedInfo = true,
             isEllipsis = false,
+            tags = viewModel.tags.value,
             onCollected = {
                 val gmmIntentUri =
                     Uri.parse(
@@ -149,7 +151,7 @@ fun CollectWasteInfo(
                 mapIntent.setPackage("com.google.android.apps.maps")
                 context.startActivity(mapIntent)
 
-            }
+            },
         )
         Spacer(modifier = Modifier.height(30.dp))
         var imageUrlState by remember {

@@ -70,6 +70,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -100,6 +101,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityOptionsCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.bottombar.BottomBar
@@ -114,6 +116,7 @@ import app.waste2wealth.com.rewards.levels
 import app.waste2wealth.com.tags.TagItem
 import app.waste2wealth.com.tags.TagWithoutTips
 import app.waste2wealth.com.tags.TagsScreen
+import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -132,6 +135,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.replay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import kotlin.math.roundToInt
@@ -148,7 +152,7 @@ fun ReportWaste(
     email: String,
     name: String,
     pfp: String,
-    reportWasteViewModel: ReportWasteViewModel
+    reportWasteViewModel: ReportWasteViewModel = hiltViewModel()
 ) {
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -237,7 +241,7 @@ fun ReportWaste(
                 modalSheetState.hide()
             } else {
                 // Show the bottom sheet
-                modalSheetState.show()
+                navController.popBackStack()
             }
         }
     }

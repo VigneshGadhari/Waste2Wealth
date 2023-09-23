@@ -43,6 +43,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -64,6 +65,8 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.AutoResizedText
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.retry
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
@@ -71,7 +74,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
     val searchText by reportWasteViewModel.searchText.collectAsState()
     val tags by reportWasteViewModel.tags.collectAsState()
     val isSearching by reportWasteViewModel.isSearching.collectAsState()
-    val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "00")
+    val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
 
     Column(
         modifier = Modifier
@@ -124,7 +127,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                             animationSpec = tween(durationMillis = 500)
                         ) + fadeOut()
                         ) {
-                        if (reportWasteViewModel.tagsList.isNotEmpty()) {
+                        if (reportWasteViewModel.tagsList.size > 0) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Image(
                                     painter = painterResource(id = reportWasteViewModel.tagsList[0].image),
@@ -182,7 +185,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                         }, label = ""
                     ) { targetCount ->
                         AutoResizedText(
-                            text = "Search '$targetCount'",
+                            text = "Search $targetCount",
                             color = textColor,
                             fontSize = 15.sp,
                             modifier = Modifier
