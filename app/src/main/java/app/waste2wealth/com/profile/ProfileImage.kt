@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,7 @@ fun ProfileImage(
     imageUrl: Any? = null,
     initial: Char? = null,
     contentScale: ContentScale = ContentScale.Crop,
+    colorFilter: ColorFilter? = null,
     onClick: (() -> Unit)? = null,
 ) {
     if (imageUrl != null) {
@@ -43,7 +45,8 @@ fun ProfileImage(
                         Modifier
                     }
                 ),
-            contentScale = contentScale
+            contentScale = contentScale,
+            colorFilter = colorFilter
         )
     } else {
         BoxWithConstraints(

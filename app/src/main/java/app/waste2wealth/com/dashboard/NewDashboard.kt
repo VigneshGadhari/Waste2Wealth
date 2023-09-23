@@ -69,12 +69,14 @@ import app.waste2wealth.com.R
 import app.waste2wealth.com.communities.ui.DummyCards
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.updateCommunitiesToFirebase
+import app.waste2wealth.com.firebase.firestore.updateTagsToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.rewards.Level
 import app.waste2wealth.com.rewards.LevelDialogBox
 import app.waste2wealth.com.rewards.levels
+import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -130,12 +132,12 @@ fun NewDashboard(
         mutableStateOf(false)
     }
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
-    val animatedProgress  by animateFloatAsState(
+    val animatedProgress by animateFloatAsState(
         targetValue = if (animStart) 0f else viewModel.currentProgress,
         label = "",
         animationSpec = tween(500)
     )
-    LaunchedEffect(key1 = viewModel.showLevelDialog){
+    LaunchedEffect(key1 = viewModel.showLevelDialog) {
         if (viewModel.showLevelDialog) {
             animStart = true
             delay(1000)
@@ -169,7 +171,7 @@ fun NewDashboard(
                     }
                 }
             }
-            LaunchedEffect(key1 = pointsEarned){
+            LaunchedEffect(key1 = pointsEarned) {
                 animStart = true
                 if (pointsEarned != 0) {
                     viewModel.pointsEarned = pointsEarned
@@ -558,7 +560,7 @@ fun NewDashboard(
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Button(
                                             onClick = {
-
+                                                updateTagsToFirebase(wasteGroups)
                                             },
                                             shape = RoundedCornerShape(10.dp),
                                             colors = ButtonDefaults.buttonColors(
@@ -623,7 +625,7 @@ fun NewDashboard(
                     Spacer(modifier = Modifier.height(130.dp))
 
                 }
-                if (viewModel.showLevelDialog){
+                if (viewModel.showLevelDialog) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         viewModel.currentLevel.value?.let { currentlevel ->
                             isCOinVisible = viewModel.isNewLevelUnlocked(

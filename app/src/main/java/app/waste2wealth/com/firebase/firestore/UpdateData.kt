@@ -3,6 +3,10 @@ package app.waste2wealth.com.firebase.firestore
 import android.content.Context
 import android.widget.Toast
 import app.waste2wealth.com.communities.ui.DummyCards
+import app.waste2wealth.com.tags.Groups
+import app.waste2wealth.com.tags.Tag
+import app.waste2wealth.com.tags.TagWithoutTips
+import coil.request.Tags
 import com.google.firebase.firestore.FirebaseFirestore
 
 fun updateInfoToFirebase(
@@ -62,9 +66,10 @@ fun updateWasteToFirebase(
     timeStamp: Long,
     userEmail: String,
     address: String,
+    tags: List<TagWithoutTips> = emptyList(),
 ) {
     val wasteItem = WasteItem(
-        latitude, longitude, imagePath, timeStamp, userEmail, address
+        latitude, longitude, imagePath, timeStamp, userEmail, address, tags
     )
 
     val db = FirebaseFirestore.getInstance()
@@ -137,6 +142,21 @@ fun updateCommunitiesToFirebase(
     val db = FirebaseFirestore.getInstance()
     communities.forEach {
         db.collection("Communities").document(it.name).set(it)
+            .addOnSuccessListener {
+                println("Communities Updated successfully..")
+
+            }.addOnFailureListener { exception ->
+                println("Fail to update Communities : " + exception.message)
+            }
+    }
+}
+
+fun updateTagsToFirebase(
+    tags: List<Groups>
+) {
+    val db = FirebaseFirestore.getInstance()
+    tags.forEach {
+        db.collection("TagGroups").document(it.name).set(it)
             .addOnSuccessListener {
                 println("Communities Updated successfully..")
 
