@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.Composable
@@ -153,13 +154,13 @@ fun NewRewardsScreen(
                             }
                     )
                     Column {
-                        AutoResizedText(
+                        Text(
                             text = "Rewards",
                             color = textColor,
                             fontSize = 25.sp,
                             fontFamily = monteBold,
                         )
-                        AutoResizedText(
+                        Text(
                             text = "Grab exciting rewards",
                             color = Color.LightGray,
                             fontSize = 13.sp,
@@ -210,7 +211,7 @@ fun NewRewardsScreen(
                             .fillMaxWidth()
                             .padding(20.dp)
                     ) {
-                        AutoResizedText(
+                        Text(
                             text = "Welcome to Rewards Section",
                             color = textColor,
                             fontSize = 15.sp,
@@ -227,13 +228,13 @@ fun NewRewardsScreen(
                                 }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
-                        AutoResizedText(
+                        Text(
                             text = "New Offers",
                             color = textColor,
                             fontSize = 16.sp,
                             fontFamily = monteBold,
                         )
-                        AutoResizedText(
+                        Text(
                             text = "Check out the latest offers and rewards",
                             color = Color.LightGray,
                             fontSize = 10.sp,
@@ -275,7 +276,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                AutoResizedText(
+                                                Text(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -331,7 +332,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                AutoResizedText(
+                                                Text(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -351,7 +352,7 @@ fun NewRewardsScreen(
 
                             }
                         }
-                        AutoResizedText(
+                        Text(
                             text = "Jackpot Giveaway",
                             color = textColor,
                             fontSize = 22.sp,
@@ -403,7 +404,7 @@ fun NewRewardsScreen(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 horizontalArrangement = Arrangement.Center
                                             ) {
-                                                AutoResizedText(
+                                                Text(
                                                     text = "Ends in 2 days",
                                                     color = Color.White,
                                                     fontSize = 10.sp,
@@ -423,14 +424,14 @@ fun NewRewardsScreen(
 
                             }
                         }
-                        AutoResizedText(
+                        Text(
                             text = "Keep Reporting",
                             color = Color.LightGray,
                             fontSize = 35.sp,
                             fontFamily = monteBold,
                             modifier = Modifier.offset(y = (-130).dp)
                         )
-                        AutoResizedText(
+                        Text(
                             text = "Keep Collecting",
                             color = Color.LightGray,
                             fontSize = 25.sp,

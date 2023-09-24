@@ -32,6 +32,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
@@ -243,7 +244,7 @@ fun CommunitiesSection(
                                             verticalAlignment = Alignment.Bottom,
                                             modifier = Modifier,
                                         ) {
-                                            AutoResizedText(
+                                            Text(
                                                 text = selectedType,
                                                 color = textColor,
                                                 fontSize = 30.sp,
@@ -273,7 +274,7 @@ fun CommunitiesSection(
                                                         expanded = false
                                                     }
                                                 ) {
-                                                    AutoResizedText(
+                                                    Text(
                                                         text = type,
                                                         color = textColor
                                                     )
@@ -361,7 +362,7 @@ fun CommunitiesSection(
                                                     .clip(RoundedCornerShape(30.dp)),
                                             )
                                         }
-                                        AutoResizedText(
+                                        Text(
                                             text = community[viewModel.currentPage.value].name,
                                             fontSize = 21.sp,
                                             fontWeight = FontWeight.Bold,
@@ -391,7 +392,7 @@ fun CommunitiesSection(
                                             ),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        AutoResizedText(
+                                        Text(
                                             text = community[viewModel.currentPage.value].name,
                                             fontSize = 25.sp,
                                             fontWeight = FontWeight.Bold,

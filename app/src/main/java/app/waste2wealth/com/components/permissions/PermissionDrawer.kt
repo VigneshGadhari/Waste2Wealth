@@ -41,7 +41,6 @@ import app.waste2wealth.com.R
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
@@ -148,7 +147,7 @@ fun PermissionDrawerContent(
             )
         }
         if (permissionState.shouldShowRationale)
-            AutoResizedText(
+            Text(
                 text = rationaleText,
                 textAlign = TextAlign.Center,
                 color = textColor,
@@ -157,7 +156,7 @@ fun PermissionDrawerContent(
                 fontSize = 16.sp
             )
         else
-            AutoResizedText(
+            Text(
                 text = withoutRationaleText,
                 textAlign = TextAlign.Center,
                 color = textColor,
@@ -181,7 +180,7 @@ fun PermissionDrawerContent(
             shape = CircleShape
         ) {
             if (permissionState.shouldShowRationale)
-                AutoResizedText(
+                Text(
                     text = "Settings",
                     color = textColor,
                     fontFamily = monteNormal,
@@ -189,7 +188,7 @@ fun PermissionDrawerContent(
                     fontSize = 16.sp
                 )
             else
-                AutoResizedText(
+                Text(
                     text = "Grant Permission",
                     color = textColor,
                     fontFamily = monteNormal,

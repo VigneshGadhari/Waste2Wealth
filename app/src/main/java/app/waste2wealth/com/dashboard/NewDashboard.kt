@@ -69,12 +69,14 @@ import app.waste2wealth.com.R
 import app.waste2wealth.com.communities.ui.DummyCards
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.updateCommunitiesToFirebase
+import app.waste2wealth.com.firebase.firestore.updateTagsToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.rewards.Level
 import app.waste2wealth.com.rewards.LevelDialogBox
 import app.waste2wealth.com.rewards.levels
+import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -82,7 +84,6 @@ import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -130,12 +131,12 @@ fun NewDashboard(
         mutableStateOf(false)
     }
     var communities by remember { mutableStateOf<List<DummyCards>?>(null) }
-    val animatedProgress  by animateFloatAsState(
+    val animatedProgress by animateFloatAsState(
         targetValue = if (animStart) 0f else viewModel.currentProgress,
         label = "",
         animationSpec = tween(500)
     )
-    LaunchedEffect(key1 = viewModel.showLevelDialog){
+    LaunchedEffect(key1 = viewModel.showLevelDialog) {
         if (viewModel.showLevelDialog) {
             animStart = true
             delay(1000)
@@ -169,7 +170,7 @@ fun NewDashboard(
                     }
                 }
             }
-            LaunchedEffect(key1 = pointsEarned){
+            LaunchedEffect(key1 = pointsEarned) {
                 animStart = true
                 if (pointsEarned != 0) {
                     viewModel.pointsEarned = pointsEarned
@@ -219,21 +220,21 @@ fun NewDashboard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Column {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Welcome Back",
                                         color = Color.Gray,
                                         fontSize = 13.sp,
                                         fontFamily = monteSB,
                                         modifier = Modifier.padding(bottom = 7.dp)
                                     )
-                                    AutoResizedText(
+                                    Text(
                                         text = name,
                                         color = CardTextColor,
                                         fontSize = 20.sp,
                                         fontFamily = monteBold,
                                         modifier = Modifier.padding(bottom = 7.dp)
                                     )
-                                    AutoResizedText(
+                                    Text(
                                         text = "Start making a difference today!",
                                         color = Color.Gray,
                                         fontSize = 13.sp,
@@ -269,7 +270,7 @@ fun NewDashboard(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Points Earned",
                                         color = CardTextColor,
                                         fontSize = 14.sp,
@@ -286,7 +287,7 @@ fun NewDashboard(
                                                 .padding(end = 5.dp),
                                             tint = Color.Unspecified
                                         )
-                                        AutoResizedText(
+                                        Text(
                                             text = pointsEarned.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -301,7 +302,7 @@ fun NewDashboard(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Points Redeemed",
                                         color = CardTextColor,
                                         fontSize = 14.sp,
@@ -318,7 +319,7 @@ fun NewDashboard(
                                                 .padding(end = 5.dp),
                                             tint = Color.Unspecified
                                         )
-                                        AutoResizedText(
+                                        Text(
                                             text = pointsRedeemed.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -348,14 +349,14 @@ fun NewDashboard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(horizontalAlignment = Alignment.Start) {
-                            AutoResizedText(
+                            Text(
                                 text = "Current Progress",
                                 color = textColor,
                                 fontSize = 20.sp,
                                 fontFamily = monteBold,
                                 modifier = Modifier.padding(bottom = 7.dp)
                             )
-                            AutoResizedText(
+                            Text(
                                 text = "${viewModel.remainingPoints} more points to reach next level",
                                 color = textColor,
                                 fontSize = 9.sp,
@@ -406,7 +407,7 @@ fun NewDashboard(
                                         }
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Report Waste",
                                     color = textColor,
                                     fontSize = 13.sp,
@@ -442,7 +443,7 @@ fun NewDashboard(
                                         }
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Collect Waste",
                                     color = textColor,
                                     fontSize = 13.sp,
@@ -478,7 +479,7 @@ fun NewDashboard(
                                         }
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Rewards",
                                     color = textColor,
                                     fontSize = 13.sp,
@@ -500,13 +501,13 @@ fun NewDashboard(
                             .padding(start = 20.dp, end = 25.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        AutoResizedText(
+                        Text(
                             text = "Join Communities",
                             color = textColor,
                             fontSize = 15.sp
                         )
 
-                        AutoResizedText(
+                        Text(
                             text = "View All",
                             color = textColor,
                             fontSize = 15.sp,
@@ -541,7 +542,7 @@ fun NewDashboard(
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Column(modifier = Modifier.fillMaxWidth()) {
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = item.name,
                                             color = CardTextColor,
                                             fontSize = 20.sp,
@@ -549,7 +550,7 @@ fun NewDashboard(
                                             softWrap = true
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = item.dateOfEstablishment,
                                             color = CardTextColor,
                                             fontSize = 10.sp,
@@ -558,7 +559,7 @@ fun NewDashboard(
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Button(
                                             onClick = {
-
+                                                updateTagsToFirebase(wasteGroups)
                                             },
                                             shape = RoundedCornerShape(10.dp),
                                             colors = ButtonDefaults.buttonColors(
@@ -573,7 +574,7 @@ fun NewDashboard(
                                                     tint = textColor
                                                 )
                                                 Spacer(modifier = Modifier.width(10.dp))
-                                                AutoResizedText(
+                                                Text(
                                                     text = "Register",
                                                     color = textColor,
                                                     fontSize = 10.sp,
@@ -598,21 +599,21 @@ fun NewDashboard(
                             .padding(start = 10.dp)
                     ) {
                         Spacer(modifier = Modifier.height(25.dp))
-                        AutoResizedText(
+                        Text(
                             text = "Waste Wise",
                             color = lastTextColor.copy(0.75f),
                             fontSize = 33.sp,
                             fontFamily = monteSB,
                         )
                         Spacer(modifier = Modifier.height(0.dp))
-                        AutoResizedText(
+                        Text(
                             text = "Rewards Rise",
                             color = lastTextColor.copy(0.5f),
                             fontSize = 23.sp,
                             fontFamily = monteSB,
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        AutoResizedText(
+                        Text(
                             text = "Crafted with ❤️ by The Centennials",
                             color = lastTextColor.copy(0.75f),
                             fontSize = 10.sp,
@@ -623,7 +624,7 @@ fun NewDashboard(
                     Spacer(modifier = Modifier.height(130.dp))
 
                 }
-                if (viewModel.showLevelDialog){
+                if (viewModel.showLevelDialog) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         viewModel.currentLevel.value?.let { currentlevel ->
                             isCOinVisible = viewModel.isNewLevelUnlocked(
@@ -714,7 +715,7 @@ fun ArcComposable(
                 style = Stroke(8.dp.toPx(), cap = StrokeCap.Round)
             )
         }
-        AutoResizedText(
+        Text(
             modifier = Modifier.align(alignment = Alignment.Center),
             text = text,
             color = textColor,
