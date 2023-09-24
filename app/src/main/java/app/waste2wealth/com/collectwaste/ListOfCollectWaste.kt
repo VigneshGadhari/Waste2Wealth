@@ -3,12 +3,14 @@ package app.waste2wealth.com.collectwaste
 import android.Manifest
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,6 +25,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -49,6 +52,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,10 +65,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.bottombar.items
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
@@ -72,8 +79,10 @@ import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.reportwaste.ReportWasteViewModel
 import app.waste2wealth.com.tags.Tag
 import app.waste2wealth.com.tags.TagItem
+import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -99,8 +108,10 @@ import kotlin.math.sin
 fun CollectWaste(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    viewModel: LocationViewModel
+    viewModel: LocationViewModel,
+    reportWasteViewModel: ReportWasteViewModel = hiltViewModel()
 ) {
+    val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
@@ -212,7 +223,6 @@ fun CollectWaste(
             if (tabIndex == 0) {
                 Spacer(modifier = Modifier.height(30.dp))
                 if (allWastes != null) {
-
                     TextField(
                         value = searchText,
                         onValueChange = {
@@ -234,7 +244,7 @@ fun CollectWaste(
                         ),
                         label = {
                             AnimatedContent(
-                                targetState = "",
+                                targetState = seconds,
                                 transitionSpec = {
                                     slideIntoContainer(
                                         towards = AnimatedContentScope.SlideDirection.Up,
