@@ -60,7 +60,6 @@ import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -176,7 +175,7 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                                 ) {
                                     Column(modifier = Modifier.fillMaxWidth()) {
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = item.location,
                                             color = textColor,
                                             fontSize = 15.sp,
@@ -192,7 +191,7 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                                                 .padding(end = 10.dp),
                                             horizontalArrangement = Arrangement.End
                                         ) {
-                                            AutoResizedText(
+                                            Text(
                                                 text = getTimeAgo(item.time),
                                                 color = textColor,
                                                 fontSize = 10.sp,
@@ -219,7 +218,7 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                                                     tint = textColor
                                                 )
                                                 Spacer(modifier = Modifier.width(10.dp))
-                                                AutoResizedText(
+                                                Text(
                                                     text = "Navigate",
                                                     color = textColor,
                                                     fontSize = 10.sp,
@@ -260,7 +259,7 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                             contentColor = CardTextColor
                         )
                     ) {
-                        AutoResizedText(
+                        Text(
                             text = "Reset",
                             color = CardTextColor,
                             fontSize = 10.sp,

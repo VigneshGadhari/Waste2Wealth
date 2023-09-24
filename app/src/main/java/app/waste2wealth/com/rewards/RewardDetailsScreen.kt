@@ -170,13 +170,13 @@ fun RewardDetails(
                                     }
                             )
                             Column {
-                                AutoResizedText(
+                                Text(
                                     text = "Rewards",
                                     color = textColor,
                                     fontSize = 25.sp,
                                     fontFamily = monteBold,
                                 )
-                                AutoResizedText(
+                                Text(
                                     text = "Grab exciting rewards",
                                     color = Color.LightGray,
                                     fontSize = 13.sp,
@@ -224,7 +224,7 @@ fun RewardDetails(
                             .height(300.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    AutoResizedText(
+                    Text(
                         text = viewModel.rewardTitle.value,
                         color = textColor,
                         fontSize = 15.sp,
@@ -232,7 +232,7 @@ fun RewardDetails(
                         modifier = Modifier.padding(start = 20.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    AutoResizedText(
+                    Text(
                         text = viewModel.rewardDescription.value,
                         color = textColor,
                         fontSize = 15.sp,
@@ -256,7 +256,7 @@ fun RewardDetails(
                 ) {
                     val context = LocalContext.current
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        AutoResizedText(
+                        Text(
                             text = "Points : ${viewModel.rewardNoOfPoints.value}",
                             color = textColor,
                             fontSize = 15.sp,
@@ -309,7 +309,7 @@ fun RewardDetails(
                                 shape = RoundedCornerShape(10.dp),
                                 modifier = Modifier.padding(start = 10.dp)
                             ) {
-                                AutoResizedText(
+                                Text(
                                     text = "Claim Now",
                                     color = Color.Black,
                                     fontSize = 12.sp,

@@ -29,6 +29,7 @@ import app.waste2wealth.com.login.onboarding.Onboarding
 import app.waste2wealth.com.login.onboarding.SettingUp
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.reportwaste.ReportWaste
+import app.waste2wealth.com.reportwaste.ReportWasteViewModel
 import app.waste2wealth.com.rewards.ClaimedRewardsScreen
 import app.waste2wealth.com.rewards.NewRewardsScreen
 import app.waste2wealth.com.rewards.RewardDetails
@@ -44,6 +45,7 @@ fun NavigationController(
     paddingValues: PaddingValues
 ) {
     val viewModel: LocationViewModel = hiltViewModel()
+    val reportWasteViewModel: ReportWasteViewModel = hiltViewModel()
     val context = LocalContext.current
     val store = UserDatastore(context)
     val email = store.getEmail.collectAsState(initial = "")
@@ -151,7 +153,7 @@ fun NavigationController(
                 navController = navController, viewModel = viewModel,
                 email = email.value,
                 name = name.value,
-                pfp = profile.value
+                pfp = profile.value,
             )
         }
         composable(Screens.CollectWasteLists.route) {

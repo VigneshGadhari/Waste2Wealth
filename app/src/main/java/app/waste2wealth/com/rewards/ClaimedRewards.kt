@@ -61,7 +61,6 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -182,13 +181,13 @@ fun ClaimedRewardsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            AutoResizedText(
+                            Text(
                                 text = "Claimed Rewards",
                                 color = textColor,
                                 fontSize = 25.sp,
                                 fontFamily = monteBold,
                             )
-                            AutoResizedText(
+                            Text(
                                 text = "Push yourself for more",
                                 color = Color.LightGray,
                                 fontSize = 13.sp,
@@ -215,7 +214,7 @@ fun ClaimedRewardsScreen(
                                         .padding(end = 5.dp),
                                     tint = Color.Unspecified
                                 )
-                                AutoResizedText(
+                                Text(
                                     text = pointsEarned.toString(),
                                     color = textColor,
                                     fontSize = 15.sp,
@@ -259,7 +258,7 @@ fun ClaimedRewardsScreen(
                                                 .width(40.dp)
                                                 .padding(5.dp)
                                         ) {
-                                            AutoResizedText(
+                                            Text(
                                                 text = "1",
                                                 fontWeight = FontWeight.Medium,
                                                 modifier = Modifier.padding(2.dp),
@@ -278,7 +277,7 @@ fun ClaimedRewardsScreen(
                                     ),
 
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Your Rewards",
                                         fontSize = 25.sp,
                                         color = Color.Black,
@@ -342,7 +341,7 @@ fun LazyVerticalGrid() {
                                 .padding(5.dp),
                             CircleShape
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "1",
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier.padding(2.dp),
@@ -374,7 +373,7 @@ fun LazyVerticalGrid() {
                                     ),
 
                                 ) {
-                                AutoResizedText(
+                                Text(
                                     text = "Flat $100 off",
                                     color = Color.White,
                                     fontWeight = FontWeight.SemiBold,
@@ -383,7 +382,7 @@ fun LazyVerticalGrid() {
                                     textAlign = TextAlign.Center,
 
                                     )
-                                AutoResizedText(
+                                Text(
                                     text = "Cashback on Paytm to a friend",
                                     color = Color.White,
                                     fontSize = 7.sp,
@@ -423,7 +422,7 @@ fun LazyVerticalGrid() {
                                 .padding(5.dp),
                             CircleShape
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "1",
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier.padding(2.dp),
@@ -449,7 +448,7 @@ fun LazyVerticalGrid() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
 
-                            AutoResizedText(
+                            Text(
                                 text = "Activating",
                                 color = Color.Blue,
                                 fontWeight = FontWeight.SemiBold,
@@ -470,7 +469,7 @@ fun LazyVerticalGrid() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
 
-                            AutoResizedText(
+                            Text(
                                 text = "Cashback on Paytm to a friend",
                                 color = Color.White,
                                 fontSize = 12.sp,

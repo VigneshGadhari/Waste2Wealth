@@ -73,12 +73,12 @@ import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.TextFieldWithIcons
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.rewards.levels
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -239,7 +239,7 @@ fun SuccessfullyCollected(
                                     .offset(x = (-10).dp),
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                AutoResizedText(
+                                Text(
                                     text = "Collect Waste",
                                     color = textColor,
                                     fontFamily = monteSB,
@@ -255,7 +255,7 @@ fun SuccessfullyCollected(
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "Have you Deposited the Waste",
                                 color = textColor,
                                 fontSize = 16.sp,
@@ -283,7 +283,7 @@ fun SuccessfullyCollected(
                                         .padding(10.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = value,
                                         color = textColor,
                                         fontFamily = monteSB
@@ -309,7 +309,7 @@ fun SuccessfullyCollected(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "Collected All Waste ?",
                                 color = textColor,
                                 fontSize = 16.sp,
@@ -337,7 +337,7 @@ fun SuccessfullyCollected(
                                         .padding(10.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = value,
                                         color = textColor,
                                         fontFamily = monteSB
@@ -388,7 +388,7 @@ fun SuccessfullyCollected(
                                 .fillMaxWidth()
                                 .padding(start = 10.dp, top = 0.dp)
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "Upload proof here",
                                 color = textColor,
                                 fontSize = 15.sp,
@@ -429,7 +429,7 @@ fun SuccessfullyCollected(
                                         tint = CardColor,
                                         modifier = Modifier.size(60.dp)
                                     )
-                                    AutoResizedText(
+                                    Text(
                                         text = "Upload Proof of Attempt",
                                         color = textColor,
                                         fontSize = 16.sp
@@ -497,6 +497,25 @@ fun SuccessfullyCollected(
                                                     allWasteCollected = receiver2 == "Yes",
                                                     feedBack = feedback.text,
                                                 )
+                                                viewModel.getCurrentLevel(
+                                                    points = pointsEarned + calculatePointsEarned(
+                                                        noOfTimesReported,
+                                                        noOfTimesCollected,
+                                                        noOfTimesActivity,
+                                                        maxReported,
+                                                        maxCollected,
+                                                        maxCommunity
+                                                    ),
+                                                    levels = levels
+                                                )
+                                                viewModel.pointsEarned = pointsEarned + calculatePointsEarned(
+                                                    noOfTimesReported,
+                                                    noOfTimesCollected,
+                                                    noOfTimesActivity,
+                                                    maxReported,
+                                                    maxCollected,
+                                                    maxCommunity
+                                                )
                                                 updateInfoToFirebase(
                                                     context,
                                                     name = name,
@@ -544,7 +563,7 @@ fun SuccessfullyCollected(
                             shape = RoundedCornerShape(35.dp),
                             modifier = Modifier.padding(start = 10.dp)
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "Collect Waste",
                                 color = Color.White,
                                 fontSize = 12.sp,
@@ -578,6 +597,7 @@ fun SuccessfullyCollected(
                     LaunchedEffect(key1 = isCOinVisible) {
                         if (isCOinVisible) {
                             delay(4000)
+                            viewModel.showLevelDialog = true
                             navController.navigate(Screens.Dashboard.route)
                         }
                     }

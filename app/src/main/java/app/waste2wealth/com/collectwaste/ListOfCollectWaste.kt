@@ -1,8 +1,21 @@
 package app.waste2wealth.com.collectwaste
 
 import android.Manifest
+import android.util.Log
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,9 +27,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,12 +47,17 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,22 +66,37 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.bottombar.items
+import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.reportwaste.ReportWasteViewModel
+import app.waste2wealth.com.tags.Tag
+import app.waste2wealth.com.tags.TagItem
+import app.waste2wealth.com.tags.allTags
+import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -69,68 +108,202 @@ import kotlin.math.sin
 
 @OptIn(
     ExperimentalPermissionsApi::class,
-    ExperimentalMaterialApi::class
+    ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
+    ExperimentalFoundationApi::class
 )
 @Composable
 fun CollectWaste(
     paddingValues: PaddingValues,
     navController: NavHostController,
-    viewModel: LocationViewModel
+    viewModel: LocationViewModel,
+    reportWasteViewModel: ReportWasteViewModel = hiltViewModel()
 ) {
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        )
-    )
-    val permissionDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
-    val gesturesEnabled by remember { derivedStateOf { permissionDrawerState.isOpen } }
+    val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
+    var storedWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
+    var searchText by remember { mutableStateOf("") }
+    val lazyListState = rememberLazyListState()
+    val isAtTop by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex == 0 &&
+                    lazyListState.firstVisibleItemScrollOffset == 0
+        }
+    }
+    var isSearchVisible by remember { mutableStateOf(false) }
+    var isTyping by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = isAtTop) {
+        if (!isAtTop) {
+            focusManager.clearFocus()
+            isTyping = false
+            searchText = ""
+            try {
+                lazyListState.animateScrollToItem(0)
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
+    }
+
+    allWastes?.forEach {
+        Log.i("Wastessssss Collected", it.toString())
+    }
+
+    LaunchedEffect(key1 = reportWasteViewModel.selectedTags.size){
+        if (reportWasteViewModel.selectedTags.size == 0){
+            allWastes = storedWastes
+        }
     }
 
     JetFirestore(path = {
         collection("AllWastes")
     }, onRealtimeCollectionFetch = { values, _ ->
         allWastes = values?.getListOfObjects()
+        storedWastes = values?.getListOfObjects()
 
     }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(appBackground)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 30.dp, start = 0.dp),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBackIos,
-                    contentDescription = "",
-                    tint = textColor,
-                    modifier = Modifier
-                        .padding(start = 15.dp)
-                        .size(25.dp)
-                        .clickable {
-                            navController.popBackStack()
-                        }
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = {
+                        focusManager.clearFocus()
+                    }
                 )
+        ) {
+            AnimatedVisibility(visible = !isSearchVisible) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset(x = (-10).dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(top = 30.dp, start = 0.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    AutoResizedText(
-                        text = "Collect Waste",
-                        color = textColor,
-                        fontFamily = monteBold,
-                        fontSize = 25.sp
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBackIos,
+                        contentDescription = "",
+                        tint = textColor,
+                        modifier = Modifier
+                            .padding(start = 15.dp)
+                            .size(25.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
                     )
+                    Row(
+                        modifier = Modifier
+                            .offset(x = (-10).dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Collect Waste",
+                            color = textColor,
+                            fontFamily = monteBold,
+                            fontSize = 25.sp
+                        )
+                    }
+
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "",
+                        tint = textColor,
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .size(25.dp)
+                            .clickable {
+                                isSearchVisible = !isSearchVisible
+                            }
+                    )
+
+
                 }
+            }
+            AnimatedVisibility(visible = isSearchVisible) {
+                TextField(
+                    value = searchText,
+                    onValueChange = {
+                        searchText = it
+                        isTyping = true
+                        allWastes = if (it.isBlank()) {
+                            storedWastes
+                        } else {
+                            allWastes?.filter { wasteItem ->
+                                wasteItem.doesMatchSearchQuery(searchText)
+                            }
+                        }
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = appBackground,
+                        focusedIndicatorColor = appBackground,
+                        unfocusedIndicatorColor = appBackground,
+                        disabledIndicatorColor = textColor,
+                        errorIndicatorColor = textColor,
+                    ),
+                    label = {
+                        if (!isTyping && searchText != "") {
+                            AnimatedContent(
+                                targetState = seconds,
+                                transitionSpec = {
+                                    slideIntoContainer(
+                                        towards = AnimatedContentScope.SlideDirection.Up,
+                                        animationSpec = tween(durationMillis = 500)
+                                    ) + fadeIn() with slideOutOfContainer(
+                                        towards = AnimatedContentScope.SlideDirection.Up,
+                                        animationSpec = tween(durationMillis = 500)
+                                    ) + fadeOut()
+                                }, label = ""
+                            ) { targetCount ->
+                                Text(
+                                    text = "Search $targetCount",
+                                    color = textColor,
+                                    fontSize = 15.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    maxLines = 1,
+
+                                )
+
+                            }
+                        }
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Search",
+                            tint = CardTextColor
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = "Search",
+                            tint = CardTextColor,
+                            modifier = Modifier.clickable {
+                                isSearchVisible = !isSearchVisible
+                                allWastes = storedWastes
+                            }
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 30.dp)
+                        .focusRequester(focusRequester)
+                        .height(80.dp)
+                        .shadow(50.dp, shape = RoundedCornerShape(10.dp)),
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = androidx.compose.ui.text.input.ImeAction.Search
+                    )
+                )
             }
 
             val cList = listOf("List View", "Map View (Beta)")
@@ -153,7 +326,7 @@ fun CollectWaste(
                 ) {
                     cList.forEachIndexed { index, title ->
                         Tab(text = {
-                            AutoResizedText(
+                            Text(
                                 title,
                                 softWrap = false,
                                 fontSize = 13.sp,
@@ -170,11 +343,97 @@ fun CollectWaste(
             if (tabIndex == 0) {
                 Spacer(modifier = Modifier.height(30.dp))
                 if (allWastes != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LazyRow(
+                            contentPadding = PaddingValues(
+                                start = 10.dp,
+                                top = 10.dp,
+                                end = 30.dp,
+                                bottom = 10.dp
+                            )
+                        ) {
+                            items(allTags) { item ->
+                                Card(modifier = Modifier
+                                    .padding(10.dp)
+                                    .clickable {
+                                        if (reportWasteViewModel.selectedTags.contains(item)) {
+                                            reportWasteViewModel.selectedTags.remove(item)
+                                        } else {
+                                            reportWasteViewModel.selectedTags.clear()
+                                            reportWasteViewModel.selectedTags.add(item)
+                                        }
+                                        allWastes = allWastes?.filter { wasteItem ->
+                                            wasteItem.tag.contains(item.mapWithoutTips())
+                                        }
+                                    },
+                                    backgroundColor = if (reportWasteViewModel.selectedTags.contains(
+                                            item
+                                        )
+                                    ) {
+                                        CardColor
+                                    } else {
+                                        appBackground
+                                    },
+                                    shape = RoundedCornerShape(10.dp)
+                                ) {
+                                    Row(
+                                        horizontalArrangement = Arrangement.Center,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Image(
+                                            painter = painterResource(id = item.image),
+                                            modifier = Modifier
+                                                .size(50.dp)
+                                                .padding(2.dp),
+                                            contentScale = ContentScale.Crop,
+                                            contentDescription = "",
+                                        )
+                                        Spacer(modifier = Modifier.width(5.dp))
+                                        Column(verticalArrangement = Arrangement.Center) {
+                                            Text(
+                                                text = item.name.substringBefore(" "),
+                                                color = if (reportWasteViewModel.selectedTags.contains(
+                                                        item)
+                                                ) {
+                                                    CardTextColor
+                                                } else {
+                                                    textColor
+                                                },
+                                                fontSize = 12.sp,
+                                                softWrap = true
+                                            )
+                                            Spacer(modifier = Modifier.height(2.dp))
+                                            if (item.name.contains(" ")) {
+                                                Text(
+                                                    text = item.name.substringAfter(" "),
+                                                    color = if (reportWasteViewModel.selectedTags.contains(
+                                                            item)
+                                                    ) {
+                                                        CardTextColor
+                                                    } else {
+                                                        textColor
+                                                    },
+                                                    fontSize = 12.sp,
+                                                    softWrap = true
+                                                )
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.width(7.dp))
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     LazyColumn(
                         contentPadding = PaddingValues(
                             bottom = 150.dp,
                             top = 40.dp
-                        )
+                        ),
+                        state = lazyListState
                     ) {
                         allWastes = allWastes?.sortedBy {
                             distance(
@@ -186,6 +445,7 @@ fun CollectWaste(
                         }
                         itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
                             WasteItemCard(
+                                modifier = Modifier.animateItemPlacement(),
                                 locationNo = "Location ${index + 1}",
                                 address = wasteItem.address,
                                 distance = "${
@@ -199,6 +459,9 @@ fun CollectWaste(
                                     )
                                 } away",
                                 time = getTimeAgo(wasteItem.timeStamp),
+                                tags = wasteItem.tag.map {
+                                    it.mapWithTips()
+                                },
                             ) {
                                 viewModel.locationNo.value = "Location ${index + 1}"
                                 viewModel.address.value = wasteItem.address
@@ -216,6 +479,9 @@ fun CollectWaste(
                                 viewModel.wastePhoto.value = wasteItem.imagePath
                                 viewModel.theirLatitude.value = wasteItem.latitude
                                 viewModel.theirLongitude.value = wasteItem.longitude
+                                viewModel.tags.value = wasteItem.tag.map {
+                                    it.mapWithTips()
+                                }
                                 println("Collected time ${viewModel.time.value}")
                                 navController.navigate(Screens.CollectWasteInfo.route)
                             }
@@ -231,14 +497,15 @@ fun CollectWaste(
             }
 
         }
-
-
     }
+
 }
 
 
 @Composable
 fun WasteItemCard(
+    modifier: Modifier = Modifier,
+    tags: List<Tag> = emptyList(),
     locationNo: String,
     address: String,
     distance: String,
@@ -249,7 +516,7 @@ fun WasteItemCard(
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(13.dp)
             .clickable {
@@ -278,7 +545,7 @@ fun WasteItemCard(
                         .padding(end = 10.dp)
                 )
 
-                AutoResizedText(
+                Text(
                     text = locationNo,
                     color = Color.Gray,
                     fontFamily = monteSB,
@@ -290,7 +557,7 @@ fun WasteItemCard(
                     .fillMaxWidth()
                     .padding(start = 10.dp, bottom = 7.dp, end = 15.dp)
             ) {
-                AutoResizedText(
+                Text(
                     text = address,
                     color = CardTextColor,
                     fontFamily = monteSB,
@@ -300,6 +567,29 @@ fun WasteItemCard(
                     overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
                 )
             }
+            if (tags.isNotEmpty()) {
+                Text(
+                    text = "Tags",
+                    color = textColor,
+                    fontSize = 15.sp,
+                    fontFamily = monteSB,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                LazyRow(
+                    contentPadding = PaddingValues(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(tags) { tag ->
+                        TagItem(
+                            item = tag,
+                            modifier = Modifier,
+                            isSelected = false
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom
@@ -315,7 +605,7 @@ fun WasteItemCard(
                     shape = RoundedCornerShape(15.dp),
                     modifier = Modifier.padding(start = 10.dp)
                 ) {
-                    AutoResizedText(
+                    Text(
                         text = if (isCollectedInfo) "Navigate" else "Collect",
                         color = textColor,
                         fontFamily = monteSB,
@@ -329,7 +619,7 @@ fun WasteItemCard(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    AutoResizedText(
+                    Text(
                         text = "$distance, Reported $time",
                         color = CardTextColor.copy(0.75f),
                         fontFamily = monteBold,

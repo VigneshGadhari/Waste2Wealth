@@ -23,7 +23,6 @@ import androidx.navigation.NavHostController
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
-import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -62,7 +61,7 @@ fun OTPScreen(
         enter = slideInVertically() + fadeIn(),
         exit = slideOutVertically() + fadeOut()) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            AutoResizedText(text = "Code Sent to +91$phoneNumber",
+            Text(text = "Code Sent to +91$phoneNumber",
                 color = Color.White,
                 modifier = Modifier.padding(start = 15.dp, bottom = 15.dp),
                 fontSize = 25.sp)
@@ -89,7 +88,7 @@ fun OTPScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone,
                         imeAction = ImeAction.Send),
                     placeholder = {
-                        AutoResizedText(text = "Enter 6-Digit OTP sent", color = Color.DarkGray)
+                        Text(text = "Enter 6-Digit OTP sent", color = Color.DarkGray)
                     },
                     singleLine = true,
                     shape = RoundedCornerShape(15.dp),
@@ -116,7 +115,7 @@ fun OTPScreen(
                     exit = fadeOut(animationSpec = tween(durationMillis = 300)),
                 ) {
                     if (currentTime != 0L) {
-                        AutoResizedText(text = "Resend OTP in ${(currentTime / 1000L)}",
+                        Text(text = "Resend OTP in ${(currentTime / 1000L)}",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -139,7 +138,7 @@ fun OTPScreen(
                             shape = RoundedCornerShape(15.dp),
                             elevation = ButtonDefaults.elevation(15.dp),
                         ) {
-                            AutoResizedText(
+                            Text(
                                 text = "Get OTP on Call",
                                 color = Color.White,
                                 fontSize = 15.sp,
@@ -164,7 +163,7 @@ fun OTPScreen(
                 shape = RoundedCornerShape(15.dp),
                 elevation = ButtonDefaults.elevation(15.dp),
             ) {
-                AutoResizedText(
+                Text(
                     text = "Proceed Ahead",
                     color = Color.White,
                     fontSize = 20.sp,

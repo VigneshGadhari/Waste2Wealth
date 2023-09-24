@@ -30,6 +30,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.SwipeUp
@@ -74,556 +75,10 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.delay
-
-val listOfCommunities = listOf(
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Established in 2010",
-        activeRegion = "Mumbai",
-        name = "Green Guardians",
-        description = "Championing environmental causes",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 500,
-        latitude = 19.0760,
-        longitude = 72.8777,
-        drives = listOf(
-            Drive(
-                "Clean Beach Initiative",
-                "Mumbai",
-                "2023-10-15 10:00 AM",
-                DriveStatus.UPCOMING,
-                19.0759,
-                72.8773
-            ),
-            Drive(
-                "Eco-Friendly Park Cleanup",
-                "Mumbai",
-                "2023-11-05 09:30 AM",
-                DriveStatus.UPCOMING,
-                19.0762,
-                72.8770
-            ),
-            Drive(
-                "Plastic Recycling Workshop",
-                "Mumbai",
-                "2023-09-25 02:00 PM",
-                DriveStatus.PASSED,
-                19.0765,
-                72.8766
-            ),
-            Drive(
-                "Green Energy Seminar",
-                "Mumbai",
-                "2023-08-20 03:30 PM",
-                DriveStatus.PASSED,
-                19.0768,
-                72.8762
-            ),
-            Drive(
-                "Tree Planting Drive",
-                "Mumbai",
-                "2023-07-10 11:00 AM",
-                DriveStatus.PASSED,
-                19.0771,
-                72.8758
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Founded in 2015",
-        activeRegion = "Delhi",
-        name = "Art Enthusiasts",
-        description = "Promoting art and creativity",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 5,
-        members = 300,
-        latitude = 28.6139,
-        longitude = 77.2090,
-        drives = listOf(
-            Drive(
-                "Street Art Festival",
-                "Delhi",
-                "2023-09-30 11:30 AM",
-                DriveStatus.UPCOMING,
-                28.6136,
-                77.2085
-            ),
-            Drive(
-                "Art Exhibition",
-                "Delhi",
-                "2023-10-20 02:00 PM",
-                DriveStatus.UPCOMING,
-                28.6142,
-                77.2095
-            ),
-            Drive(
-                "Painting Workshop",
-                "Delhi",
-                "2023-08-15 10:00 AM",
-                DriveStatus.PASSED,
-                28.6130,
-                77.2080
-            ),
-            Drive(
-                "Sculpture Symposium",
-                "Delhi",
-                "2023-07-25 03:30 PM",
-                DriveStatus.PASSED,
-                28.6146,
-                77.2098
-            ),
-            Drive(
-                "Mural Painting",
-                "Delhi",
-                "2023-06-05 09:00 AM",
-                DriveStatus.PASSED,
-                28.6132,
-                77.2088
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Started in 2012",
-        activeRegion = "Bangalore",
-        name = "Tech Wizards",
-        description = "Exploring the latest tech trends",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 750,
-        latitude = 12.9716,
-        longitude = 77.5946,
-        drives = listOf(
-            Drive(
-                "Tech Innovation Expo",
-                "Bangalore",
-                "2023-09-10 11:30 AM",
-                DriveStatus.UPCOMING,
-                12.9710,
-                77.5940
-            ),
-            Drive(
-                "Coding Bootcamp",
-                "Bangalore",
-                "2023-10-05 02:00 PM",
-                DriveStatus.UPCOMING,
-                12.9720,
-                77.5945
-            ),
-            Drive(
-                "AI and Robotics Seminar",
-                "Bangalore",
-                "2023-08-28 03:30 PM",
-                DriveStatus.PASSED,
-                12.9715,
-                77.5935
-            ),
-            Drive(
-                "Startup Pitch Day",
-                "Bangalore",
-                "2023-07-15 10:00 AM",
-                DriveStatus.PASSED,
-                12.9712,
-                77.5948
-            ),
-            Drive(
-                "Hackathon Challenge",
-                "Bangalore",
-                "2023-06-20 09:00 AM",
-                DriveStatus.PASSED,
-                12.9718,
-                77.5942
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Established in 2016",
-        activeRegion = "Chennai",
-        name = "Health & Wellness",
-        description = "Promoting a healthy lifestyle",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 400,
-        latitude = 13.0827,
-        longitude = 80.2707,
-        drives = listOf(
-            Drive(
-                "Yoga in the Park",
-                "Chennai",
-                "2023-09-20 09:00 AM",
-                DriveStatus.UPCOMING,
-                13.0830,
-                80.2705
-            ),
-            Drive(
-                "Healthy Cooking Workshop",
-                "Chennai",
-                "2023-10-12 03:00 PM",
-                DriveStatus.UPCOMING,
-                13.0825,
-                80.2710
-            ),
-            Drive(
-                "Fitness Bootcamp",
-                "Chennai",
-                "2023-08-10 05:30 PM",
-                DriveStatus.PASSED,
-                13.0829,
-                80.2702
-            ),
-            Drive(
-                "Meditation Retreat",
-                "Chennai",
-                "2023-07-05 11:00 AM",
-                DriveStatus.PASSED,
-                13.0823,
-                80.2708
-            ),
-            Drive(
-                "Nutrition Seminar",
-                "Chennai",
-                "2023-06-15 02:30 PM",
-                DriveStatus.PASSED,
-                13.0826,
-                80.2704
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Founded in 2018",
-        activeRegion = "Hyderabad",
-        name = "Startup Enthusiasts",
-        description = "Supporting budding entrepreneurs",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 5,
-        members = 600,
-        latitude = 17.3850,
-        longitude = 78.4867,
-        drives = listOf(
-            Drive(
-                "Entrepreneurship Workshop",
-                "Hyderabad",
-                "2023-10-08 10:30 AM",
-                DriveStatus.UPCOMING,
-                17.3845,
-                78.4872
-            ),
-            Drive(
-                "Startup Pitch Competition",
-                "Hyderabad",
-                "2023-11-18 02:30 PM",
-                DriveStatus.UPCOMING,
-                17.3855,
-                78.4862
-            ),
-            Drive(
-                "Tech Startups Panel Discussion",
-                "Hyderabad",
-                "2023-09-02 04:00 PM",
-                DriveStatus.PASSED,
-                17.3848,
-                78.4868
-            ),
-            Drive(
-                "Investor Meetup",
-                "Hyderabad",
-                "2023-08-12 09:00 AM",
-                DriveStatus.PASSED,
-                17.3852,
-                78.4865
-            ),
-            Drive(
-                "Product Launch Event",
-                "Hyderabad",
-                "2023-07-22 03:00 PM",
-                DriveStatus.PASSED,
-                17.3842,
-                78.4870
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Started in 2014",
-        activeRegion = "Kolkata",
-        name = "Cultural Connect",
-        description = "Celebrating diverse cultures",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 350,
-        latitude = 22.5726,
-        longitude = 88.3639,
-        drives = listOf(
-            Drive(
-                "International Food Festival",
-                "Kolkata",
-                "2023-09-25 12:00 PM",
-                DriveStatus.UPCOMING,
-                22.5723,
-                88.3636
-            ),
-            Drive(
-                "Cultural Dance Performance",
-                "Kolkata",
-                "2023-10-30 04:30 PM",
-                DriveStatus.UPCOMING,
-                22.5730,
-                88.3642
-            ),
-            Drive(
-                "Art and Music Exhibition",
-                "Kolkata",
-                "2023-08-15 11:00 AM",
-                DriveStatus.PASSED,
-                22.5720,
-                88.3633
-            ),
-            Drive(
-                "Heritage Walk",
-                "Kolkata",
-                "2023-07-28 02:30 PM",
-                DriveStatus.PASSED,
-                22.5729,
-                88.3638
-            ),
-            Drive(
-                "Traditional Craft Fair",
-                "Kolkata",
-                "2023-06-10 10:30 AM",
-                DriveStatus.PASSED,
-                22.5725,
-                88.3640
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Established in 2011",
-        activeRegion = "Pune",
-        name = "Educators' Forum",
-        description = "Sharing knowledge and insights",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 5,
-        members = 200,
-        latitude = 18.5204,
-        longitude = 73.8567,
-        drives = listOf(
-            Drive(
-                "Teacher Training Workshop",
-                "Pune",
-                "2023-09-12 09:30 AM",
-                DriveStatus.UPCOMING,
-                18.5208,
-                73.8563
-            ),
-            Drive(
-                "STEM Education Conference",
-                "Pune",
-                "2023-10-25 03:00 PM",
-                DriveStatus.UPCOMING,
-                18.5202,
-                73.8569
-            ),
-            Drive(
-                "Student Career Counseling",
-                "Pune",
-                "2023-08-08 11:30 AM",
-                DriveStatus.PASSED,
-                18.5206,
-                73.8565
-            ),
-            Drive(
-                "Educational Technology Seminar",
-                "Pune",
-                "2023-07-20 02:00 PM",
-                DriveStatus.PASSED,
-                18.5210,
-                73.8561
-            ),
-            Drive(
-                "Literacy Awareness Drive",
-                "Pune",
-                "2023-06-15 10:00 AM",
-                DriveStatus.PASSED,
-                18.5203,
-                73.8567
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Founded in 2017",
-        activeRegion = "Jaipur",
-        name = "Heritage Preservers",
-        description = "Preserving and promoting heritage",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 300,
-        latitude = 26.9124,
-        longitude = 75.7873,
-        drives = listOf(
-            Drive(
-                "Historical Monument Restoration",
-                "Jaipur",
-                "2023-09-18 10:00 AM",
-                DriveStatus.UPCOMING,
-                26.9128,
-                75.7870
-            ),
-            Drive(
-                "Cultural Heritage Exhibition",
-                "Jaipur",
-                "2023-10-10 02:30 PM",
-                DriveStatus.UPCOMING,
-                26.9122,
-                75.7876
-            ),
-            Drive(
-                "Archaeological Workshop",
-                "Jaipur",
-                "2023-08-22 03:30 PM",
-                DriveStatus.PASSED,
-                26.9126,
-                75.7872
-            ),
-            Drive(
-                "Heritage Walk Tour",
-                "Jaipur",
-                "2023-07-12 11:30 AM",
-                DriveStatus.PASSED,
-                26.9130,
-                75.7878
-            ),
-            Drive(
-                "Traditional Craft Fair",
-                "Jaipur",
-                "2023-06-28 09:00 AM",
-                DriveStatus.PASSED,
-                26.9124,
-                75.7874
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Started in 2013",
-        activeRegion = "Ahmedabad",
-        name = "Health & Fitness Enthusiasts",
-        description = "Promoting a healthy lifestyle",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 4,
-        members = 400,
-        latitude = 23.0225,
-        longitude = 72.5714,
-        drives = listOf(
-            Drive(
-                "Yoga and Meditation Retreat",
-                "Ahmedabad",
-                "2023-09-20 09:00 AM",
-                DriveStatus.UPCOMING,
-                23.0229,
-                72.5710
-            ),
-            Drive(
-                "Healthy Cooking Workshop",
-                "Ahmedabad",
-                "2023-10-12 03:00 PM",
-                DriveStatus.UPCOMING,
-                23.0222,
-                72.5718
-            ),
-            Drive(
-                "Fitness Bootcamp",
-                "Ahmedabad",
-                "2023-08-10 05:30 PM",
-                DriveStatus.PASSED,
-                23.0226,
-                72.5714
-            ),
-            Drive(
-                "Meditation and Wellness Seminar",
-                "Ahmedabad",
-                "2023-07-05 11:00 AM",
-                DriveStatus.PASSED,
-                23.0220,
-                72.5722
-            ),
-            Drive(
-                "Nutrition and Health Expo",
-                "Ahmedabad",
-                "2023-06-15 02:30 PM",
-                DriveStatus.PASSED,
-                23.0224,
-                72.5716
-            )
-        )
-    ),
-    DummyCards(
-        cardColor = "#E91E63",
-        dateOfEstablishment = "Founded in 2019",
-        activeRegion = "Lucknow",
-        name = "Literary Enthusiasts",
-        description = "Celebrating the world of literature",
-        image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952",
-        ratings = 5,
-        members = 350,
-        latitude = 26.8467,
-        longitude = 80.9462,
-        drives = listOf(
-            Drive(
-                "Book Reading Club",
-                "Lucknow",
-                "2023-09-15 04:00 PM",
-                DriveStatus.UPCOMING,
-                26.8463,
-                80.9458
-            ),
-            Drive(
-                "Literary Festival",
-                "Lucknow",
-                "2023-10-22 10:30 AM",
-                DriveStatus.UPCOMING,
-                26.8468,
-                80.9465
-            ),
-            Drive(
-                "Poetry Slam Night",
-                "Lucknow",
-                "2023-08-18 06:30 PM",
-                DriveStatus.PASSED,
-                26.8462,
-                80.9469
-            ),
-            Drive(
-                "Author Meet and Greet",
-                "Lucknow",
-                "2023-07-08 01:00 PM",
-                DriveStatus.PASSED,
-                26.8466,
-                80.9461
-            ),
-            Drive(
-                "Classic Literature Symposium",
-                "Lucknow",
-                "2023-06-25 03:30 PM",
-                DriveStatus.PASSED,
-                26.8464,
-                80.9466
-            )
-        )
-    )
-    // You can continue to add more communities here...
-)
-
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMotionApi::class)
 @Composable
@@ -751,7 +206,7 @@ fun Pager2(
                                 }
 
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].name,
                                     color = CardTextColor,
                                     fontSize = 20.sp,
@@ -760,7 +215,7 @@ fun Pager2(
                                     softWrap = true
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Date of Establishment",
                                     color = Color.Gray,
                                     fontSize = 12.sp,
@@ -768,7 +223,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].dateOfEstablishment,
                                     color = CardTextColor,
                                     fontSize = 15.sp,
@@ -776,7 +231,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Active Region",
                                     color = Color.Gray,
                                     fontSize = 12.sp,
@@ -784,7 +239,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].activeRegion,
                                     color = CardTextColor,
                                     fontSize = 15.sp,
@@ -797,7 +252,7 @@ fun Pager2(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column {
-                                        AutoResizedText(
+                                        Text(
                                             text = "No of Members",
                                             color = Color.Gray,
                                             fontSize = 12.sp,
@@ -805,7 +260,7 @@ fun Pager2(
                                             modifier = Modifier.padding(horizontal = 10.dp)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = community[page].members.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -814,7 +269,7 @@ fun Pager2(
                                         )
                                     }
                                     Column {
-                                        AutoResizedText(
+                                        Text(
                                             text = "Rating",
                                             color = Color.Gray,
                                             fontSize = 12.sp,
@@ -822,7 +277,7 @@ fun Pager2(
                                             modifier = Modifier.padding(horizontal = 10.dp)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = "${community[page].ratings} / 5",
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -839,13 +294,14 @@ fun Pager2(
                                     },
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = appBackground,
-                                        contentColor = textColor
+                                        contentColor = textColor,
+                                        disabledBackgroundColor = appBackground
                                     ),
                                     shape = RoundedCornerShape(35.dp),
                                     modifier = Modifier.padding(start = 10.dp),
                                     enabled = !isMemberships
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = if(isMemberships) "Registered" else "Register",
                                         color = textColor,
                                         fontSize = 12.sp,
@@ -933,7 +389,7 @@ fun Pager2(
                                             startDragImmediately = true,
                                         ),
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Drives Conducted",
                                         fontSize = 21.sp,
                                         color = CardTextColor,

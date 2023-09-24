@@ -45,7 +45,6 @@ import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 
 @Composable
 fun LevelDialogBox(
@@ -86,6 +85,19 @@ fun LevelDialogBox(
 
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
+                            text = "🎉 ${level.name}  🎉",
+                            textAlign = TextAlign.Center,
+                            color = textColor,
+                            fontFamily = monteSB,
+                            fontSize = 15.sp,
+                            modifier = Modifier
+                                .padding(top = 0.dp)
+                                .fillMaxWidth(),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
                             text = if (isLevelUp) unlockLevelTaglines
                             else motivateLevelTaglines,
                             textAlign = TextAlign.Center,
@@ -111,7 +123,7 @@ fun LevelDialogBox(
                     ) {
 
                         TextButton(onClick = dismissRequest) {
-                            AutoResizedText(
+                            Text(
                                 text = "Hurray !!",
                                 fontWeight = FontWeight.ExtraBold,
                                 color = Color.White,
@@ -159,7 +171,7 @@ fun CircleComposable(
                 style = Stroke(8.dp.toPx(), cap = StrokeCap.Round)
             )
         }
-        AutoResizedText(
+        Text(
             modifier = Modifier.align(alignment = Alignment.Center),
             text = text,
             color = textColor,

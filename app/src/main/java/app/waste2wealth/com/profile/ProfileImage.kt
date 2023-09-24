@@ -11,13 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.min
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 
 @Composable
@@ -26,6 +26,7 @@ fun ProfileImage(
     imageUrl: Any? = null,
     initial: Char? = null,
     contentScale: ContentScale = ContentScale.Crop,
+    colorFilter: ColorFilter? = null,
     onClick: (() -> Unit)? = null,
 ) {
     if (imageUrl != null) {
@@ -43,7 +44,8 @@ fun ProfileImage(
                         Modifier
                     }
                 ),
-            contentScale = contentScale
+            contentScale = contentScale,
+            colorFilter = colorFilter
         )
     } else {
         BoxWithConstraints(
@@ -61,7 +63,7 @@ fun ProfileImage(
                 .background(backGround),
             contentAlignment = Alignment.Center
         ) {
-            AutoResizedText(
+            Text(
                 text = initial?.uppercase() ?: "",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = (min(maxWidth, maxHeight) * 0.4f).toSp(),

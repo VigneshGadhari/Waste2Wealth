@@ -34,7 +34,6 @@ import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 
 @Composable
 fun BottomBar(
@@ -85,7 +84,7 @@ fun BottomBar(
                             },
                             label = {
                                 it.title?.let {
-                                    AutoResizedText(
+                                    Text(
                                         text = it,
                                         color = Color.Black,
                                         softWrap = true,
