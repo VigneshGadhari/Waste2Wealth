@@ -383,3 +383,9 @@ val wasteGroups = listOf(
         )
     )
 )
+
+val allTags = getAllTagsFromGroups(wasteGroups)
+
+fun getAllTagsFromGroups(wasteGroups: List<Groups>): List<Tag> {
+    return wasteGroups.flatMap { it.tags }
+}
