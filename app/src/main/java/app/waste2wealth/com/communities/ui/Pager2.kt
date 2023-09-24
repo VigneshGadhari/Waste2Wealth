@@ -30,6 +30,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.SwipeUp
@@ -74,7 +75,6 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -206,7 +206,7 @@ fun Pager2(
                                 }
 
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].name,
                                     color = CardTextColor,
                                     fontSize = 20.sp,
@@ -215,7 +215,7 @@ fun Pager2(
                                     softWrap = true
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Date of Establishment",
                                     color = Color.Gray,
                                     fontSize = 12.sp,
@@ -223,7 +223,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].dateOfEstablishment,
                                     color = CardTextColor,
                                     fontSize = 15.sp,
@@ -231,7 +231,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = "Active Region",
                                     color = Color.Gray,
                                     fontSize = 12.sp,
@@ -239,7 +239,7 @@ fun Pager2(
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                AutoResizedText(
+                                Text(
                                     text = community[page].activeRegion,
                                     color = CardTextColor,
                                     fontSize = 15.sp,
@@ -252,7 +252,7 @@ fun Pager2(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column {
-                                        AutoResizedText(
+                                        Text(
                                             text = "No of Members",
                                             color = Color.Gray,
                                             fontSize = 12.sp,
@@ -260,7 +260,7 @@ fun Pager2(
                                             modifier = Modifier.padding(horizontal = 10.dp)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = community[page].members.toString(),
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -269,7 +269,7 @@ fun Pager2(
                                         )
                                     }
                                     Column {
-                                        AutoResizedText(
+                                        Text(
                                             text = "Rating",
                                             color = Color.Gray,
                                             fontSize = 12.sp,
@@ -277,7 +277,7 @@ fun Pager2(
                                             modifier = Modifier.padding(horizontal = 10.dp)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        AutoResizedText(
+                                        Text(
                                             text = "${community[page].ratings} / 5",
                                             color = CardTextColor,
                                             fontSize = 15.sp,
@@ -301,7 +301,7 @@ fun Pager2(
                                     modifier = Modifier.padding(start = 10.dp),
                                     enabled = !isMemberships
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = if(isMemberships) "Registered" else "Register",
                                         color = textColor,
                                         fontSize = 12.sp,
@@ -389,7 +389,7 @@ fun Pager2(
                                             startDragImmediately = true,
                                         ),
                                 ) {
-                                    AutoResizedText(
+                                    Text(
                                         text = "Drives Conducted",
                                         fontSize = 21.sp,
                                         color = CardTextColor,

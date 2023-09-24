@@ -64,7 +64,6 @@ import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.retry
 
@@ -102,14 +101,14 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        AutoResizedText(
+                        Text(
                             text = "Tag your waste",
                             color = textColor,
                             fontSize = 25.sp,
                             fontFamily = monteBold,
                         )
                         Spacer(modifier = Modifier.height(5.dp))
-                        AutoResizedText(
+                        Text(
                             text = "Every waste is different",
                             color = Color.LightGray,
                             fontSize = 13.sp,
@@ -184,7 +183,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                             ) + fadeOut()
                         }, label = ""
                     ) { targetCount ->
-                        AutoResizedText(
+                        Text(
                             text = "Search $targetCount",
                             color = textColor,
                             fontSize = 15.sp,
@@ -229,7 +228,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                             .padding(horizontal = 10.dp)
                             .animateItemPlacement()
                     ) {
-                        AutoResizedText(
+                        Text(
                             text = group.name,
                             color = textColor,
                             fontSize = 15.sp,
@@ -296,7 +295,7 @@ fun TagItem(
         )
         Spacer(modifier = Modifier.width(5.dp))
         Column(verticalArrangement = Arrangement.Center) {
-            AutoResizedText(
+            Text(
                 text = item.name.substringBefore(" "),
                 color = if (isSelected)
                     textColor
@@ -307,7 +306,7 @@ fun TagItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             if (item.name.contains(" ")) {
-                AutoResizedText(
+                Text(
                     text = item.name.substringAfter(" "),
                     color = if (isSelected)
                         textColor

@@ -45,7 +45,6 @@ import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 
 @Composable
 fun LevelDialogBox(
@@ -124,7 +123,7 @@ fun LevelDialogBox(
                     ) {
 
                         TextButton(onClick = dismissRequest) {
-                            AutoResizedText(
+                            Text(
                                 text = "Hurray !!",
                                 fontWeight = FontWeight.ExtraBold,
                                 color = Color.White,
@@ -172,7 +171,7 @@ fun CircleComposable(
                 style = Stroke(8.dp.toPx(), cap = StrokeCap.Round)
             )
         }
-        AutoResizedText(
+        Text(
             modifier = Modifier.align(alignment = Alignment.Center),
             text = text,
             color = textColor,

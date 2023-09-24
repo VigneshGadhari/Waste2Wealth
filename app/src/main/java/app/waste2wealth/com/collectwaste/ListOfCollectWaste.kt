@@ -89,7 +89,6 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -177,7 +176,7 @@ fun CollectWaste(
                         .offset(x = (-10).dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    AutoResizedText(
+                    Text(
                         text = "Collect Waste",
                         color = textColor,
                         fontFamily = monteBold,
@@ -206,7 +205,7 @@ fun CollectWaste(
                 ) {
                     cList.forEachIndexed { index, title ->
                         Tab(text = {
-                            AutoResizedText(
+                            Text(
                                 title,
                                 softWrap = false,
                                 fontSize = 13.sp,
@@ -255,7 +254,7 @@ fun CollectWaste(
                                     ) + fadeOut()
                                 }, label = ""
                             ) { targetCount ->
-                                AutoResizedText(
+                                Text(
                                     text = "Search $targetCount",
                                     color = textColor,
                                     fontSize = 15.sp,
@@ -397,7 +396,7 @@ fun WasteItemCard(
                         .padding(end = 10.dp)
                 )
 
-                AutoResizedText(
+                Text(
                     text = locationNo,
                     color = Color.Gray,
                     fontFamily = monteSB,
@@ -409,7 +408,7 @@ fun WasteItemCard(
                     .fillMaxWidth()
                     .padding(start = 10.dp, bottom = 7.dp, end = 15.dp)
             ) {
-                AutoResizedText(
+                Text(
                     text = address,
                     color = CardTextColor,
                     fontFamily = monteSB,
@@ -420,7 +419,7 @@ fun WasteItemCard(
                 )
             }
             if (tags.isNotEmpty()) {
-                AutoResizedText(
+                Text(
                     text = "Tags",
                     color = textColor,
                     fontSize = 15.sp,
@@ -457,7 +456,7 @@ fun WasteItemCard(
                     shape = RoundedCornerShape(15.dp),
                     modifier = Modifier.padding(start = 10.dp)
                 ) {
-                    AutoResizedText(
+                    Text(
                         text = if (isCollectedInfo) "Navigate" else "Collect",
                         color = textColor,
                         fontFamily = monteSB,
@@ -471,7 +470,7 @@ fun WasteItemCard(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    AutoResizedText(
+                    Text(
                         text = "$distance, Reported $time",
                         color = CardTextColor.copy(0.75f),
                         fontFamily = monteBold,

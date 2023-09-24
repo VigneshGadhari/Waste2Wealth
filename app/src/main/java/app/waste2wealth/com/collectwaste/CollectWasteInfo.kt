@@ -53,7 +53,6 @@ import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
-import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -123,7 +122,7 @@ fun CollectWasteInfo(
                     .offset(x = (-10).dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                AutoResizedText(
+                Text(
                     text = "Collect Waste",
                     color = textColor,
                     fontFamily = monteSB,
@@ -198,7 +197,7 @@ fun CollectWasteInfo(
                 shape = RoundedCornerShape(35.dp),
                 modifier = Modifier.padding(start = 10.dp)
             ) {
-                AutoResizedText(
+                Text(
                     text = "Collect Waste",
                     color = CardTextColor,
                     fontSize = 12.sp,

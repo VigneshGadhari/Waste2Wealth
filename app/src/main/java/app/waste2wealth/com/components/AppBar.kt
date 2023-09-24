@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
-import app.waste2wealth.com.utils.AutoResizedText
 
 @Composable
 fun AppBar(
@@ -52,7 +51,7 @@ fun AppBar(
                     tint = Color.White
                 )
             }
-            AutoResizedText(
+            Text(
                 text = currentPage,
                 color = Color.White,
                 fontSize = 20.sp,
@@ -76,7 +75,7 @@ fun AppBar(
 fun TasksListsAppBar(navHostController: NavHostController) {
     TopAppBar(
         title = {
-            AutoResizedText(
+            Text(
                 text = "Pending Tasks",
                 color = Color.White,
             )
@@ -119,7 +118,7 @@ fun TasksDetailsAppBar(
                     tint = Color.White
                 )
             }
-            AutoResizedText(
+            Text(
                 text = text,
                 color = Color.White,
                 fontFamily = monteNormal,

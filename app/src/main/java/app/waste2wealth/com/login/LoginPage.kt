@@ -38,7 +38,6 @@ import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.ui.theme.backGround
 import app.waste2wealth.com.ui.theme.monteNormal
-import app.waste2wealth.com.utils.AutoResizedText
 
  @Composable
 fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {
@@ -65,7 +64,7 @@ fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {
         .background(backGround)
         .verticalScroll(rememberScrollState())
     ) {
-        AutoResizedText(
+        Text(
             text = "Waste 2 Wealth",
             color = Color.White,
             fontFamily = monteNormal,
@@ -105,7 +104,7 @@ fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {
                     focusManager.moveFocus(FocusDirection.Next)
                 },
                 placeholder = {
-                    AutoResizedText(text = "Enter your mobile number", color = Color.DarkGray)
+                    Text(text = "Enter your mobile number", color = Color.DarkGray)
                 },
                 singleLine = true,
                 shape = RoundedCornerShape(15.dp),
@@ -118,7 +117,7 @@ fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {
             )
 
             if (isPhoneError) {
-                AutoResizedText(
+                Text(
                     text = "Phone Number Invalid",
                     color = Color.Red,
                     modifier = Modifier.padding(top = 10.dp, start = 15.dp)
@@ -143,7 +142,7 @@ fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {
             shape = RoundedCornerShape(15.dp),
             elevation = ButtonDefaults.elevation(15.dp),
         ) {
-            AutoResizedText(
+            Text(
                 text = "Continue",
                 color = Color.White,
                 fontSize = 20.sp,

@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.min
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage
 
 @Composable
@@ -64,7 +63,7 @@ fun ProfileImage(
                 .background(backGround),
             contentAlignment = Alignment.Center
         ) {
-            AutoResizedText(
+            Text(
                 text = initial?.uppercase() ?: "",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = (min(maxWidth, maxHeight) * 0.4f).toSp(),
