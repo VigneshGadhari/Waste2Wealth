@@ -249,7 +249,7 @@ fun CollectWaste(
                         errorIndicatorColor = textColor,
                     ),
                     label = {
-                        if (!isTyping && searchText != "") {
+                        if (!isTyping && searchText == "") {
                             AnimatedContent(
                                 targetState = seconds,
                                 transitionSpec = {
@@ -265,9 +265,10 @@ fun CollectWaste(
                                 Text(
                                     text = "Search $targetCount",
                                     color = textColor,
-                                    fontSize = 15.sp,
+                                    fontSize = 18.sp,
                                     modifier = Modifier
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .align(Alignment.CenterHorizontally),
                                     maxLines = 1,
 
                                 )

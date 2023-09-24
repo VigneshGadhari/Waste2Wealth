@@ -207,7 +207,7 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                     errorIndicatorColor = textColor,
                 ),
                 label = {
-                    if (!isTyping && searchText != "") {
+                    if (!isTyping && searchText == "") {
                         AnimatedContent(
                             targetState = seconds ,
                             transitionSpec = {
@@ -223,9 +223,10 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                             Text(
                                 text = "Search $targetCount",
                                 color = textColor,
-                                fontSize = 15.sp,
+                                fontSize = 20.sp,
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .align(Alignment.CenterHorizontally)
                             )
 
                         }
