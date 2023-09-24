@@ -98,6 +98,7 @@ import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
+import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
@@ -385,8 +386,8 @@ fun CollectWaste(
                                         horizontalArrangement = Arrangement.Center,
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        Image(
-                                            painter = painterResource(id = item.image),
+                                        AsyncImage(
+                                            item.image,
                                             modifier = Modifier
                                                 .size(50.dp)
                                                 .padding(2.dp),
@@ -586,7 +587,7 @@ fun WasteItemCard(
                     overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
                 )
             }
-            if (tags.isNotEmpty()) {
+            if (tags.size > 0) {
                 Text(
                     text = "Tags",
                     color = textColor,

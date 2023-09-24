@@ -1,5 +1,6 @@
 package app.waste2wealth.com.tags
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
@@ -73,6 +74,7 @@ import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.monteBold
 import app.waste2wealth.com.ui.theme.textColor
+import coil.compose.AsyncImage
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.retry
 
@@ -161,8 +163,8 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                     ) {
                         if (reportWasteViewModel.tagsList.size > 0) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Image(
-                                    painter = painterResource(id = reportWasteViewModel.tagsList[0].image),
+                                AsyncImage(
+                                    reportWasteViewModel.tagsList[0].image,
                                     modifier = Modifier
                                         .size(50.dp)
                                         .padding(2.dp),
@@ -326,8 +328,8 @@ fun TagItem(
         modifier = modifier
             .padding(end = 7.dp)
     ) {
-        Image(
-            painter = painterResource(id = item.image),
+        AsyncImage(
+            item.image,
             modifier = Modifier
                 .size(50.dp)
                 .padding(2.dp),

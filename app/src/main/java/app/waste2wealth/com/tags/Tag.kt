@@ -4,10 +4,10 @@ import app.waste2wealth.com.R
 
 data class Tag(
     val name: String,
-    val image: Int,
+    val image: String,
     val tips: List<String> = emptyList()
 ) {
-    constructor() : this("", 0, emptyList())
+    constructor() : this("", "", emptyList())
 
     fun mapWithoutTips() = TagWithoutTips(
         name = name,
@@ -17,9 +17,9 @@ data class Tag(
 
 data class TagWithoutTips(
     val name: String,
-    val image: Int,
+    val image: String,
 ) {
-    constructor() : this("", 0)
+    constructor() : this("", "")
 
     fun mapWithTips() = Tag(
         name = name,
@@ -60,7 +60,7 @@ val wasteGroups = listOf(
                     "Consider upcycling plastic bottles for DIY projects.",
                     "Avoid single-use plastic bottles whenever possible."
                 ),
-                image = R.drawable.plastic_bottle
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fplastic-bottle.png?alt=media&token=5ac75192-9ffd-4d2f-bab3-fc764d1ee609"
             ),
             Tag(
                 name = "Plastic Bags",
@@ -71,7 +71,7 @@ val wasteGroups = listOf(
                     "Avoid littering plastic bags to protect the environment.",
                     "Consider repurposing plastic bags for storage or crafts."
                 ),
-                image = R.drawable.plastic_bag
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fplastic-bag.png?alt=media&token=5c473f87-13fe-4577-b029-68de9539b0f0"
 
             ),
             Tag(
@@ -83,7 +83,7 @@ val wasteGroups = listOf(
                     "Repurpose plastic containers for organizing small items.",
                     "Support businesses that offer plastic container recycling programs."
                 ),
-                image = R.drawable.plastic_container
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fplastic-container.png?alt=media&token=0bb3e02a-7e10-4d8e-8763-8401b8662329"
             ),
             Tag(
                 name = "Plastic Wrappers",
@@ -94,7 +94,7 @@ val wasteGroups = listOf(
                     "Avoid buying individually wrapped items.",
                     "Participate in plastic wrapper recycling initiatives in your community."
                 ),
-                image = R.drawable.plastic_wrapper
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fplastic-wrapper.png?alt=media&token=5806649e-2312-4a2c-897a-a8e44218628c"
 
 
             ),
@@ -107,7 +107,7 @@ val wasteGroups = listOf(
                     "Avoid buying excessive plastic toys to reduce waste.",
                     "Look for eco-friendly and sustainable toy options made from biodegradable materials."
                 ),
-                image = R.drawable.plastic_toys
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fplastic-toys.png?alt=media&token=257e2be8-e01b-4f85-afa7-79728f894228"
             )
         )
     ),
@@ -123,7 +123,7 @@ val wasteGroups = listOf(
                     "Support digital news platforms to reduce paper waste.",
                     "Consider donating newspapers to animal shelters for bedding."
                 ),
-                image = R.drawable.paper_newspaper
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fpaper-newspaper.png?alt=media&token=5cd105ca-9f41-4e03-88d8-e1a5489289af"
             ),
             Tag(
                 name = "Cardboard",
@@ -134,7 +134,7 @@ val wasteGroups = listOf(
                     "Recycle cardboard packaging from online shopping.",
                     "Support businesses that use eco-friendly cardboard packaging."
                 ),
-                image = R.drawable.paper_cardboard
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fpaper-cardboard.png?alt=media&token=afd40573-d1a8-4aab-8892-b5c523d66274"
             ),
             Tag(
                 name = "Office Paper",
@@ -145,7 +145,7 @@ val wasteGroups = listOf(
                     "Encourage employees to recycle paper and use electronic communication.",
                     "Choose recycled office paper products to support sustainability."
                 ),
-                image = R.drawable.paper_office
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fpaper-office.png?alt=media&token=a06b006c-2892-4ef7-a516-915b9a2c7674"
             ),
         )
     ),
@@ -161,7 +161,7 @@ val wasteGroups = listOf(
                     "Support bottle return programs to promote glass recycling.",
                     "Choose products with glass packaging to reduce waste."
                 ),
-                image = R.drawable.glass_bottle
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fglass-bottle.png?alt=media&token=7d0544a8-e1c0-48e9-a9ec-1d6994d75788"
             ),
             Tag(
                 name = "Broken Glass",
@@ -172,7 +172,7 @@ val wasteGroups = listOf(
                     "Consider recycling broken glass at designated collection points.",
                     "Educate others about safe handling and disposal of broken glass."
                 ),
-                image = R.drawable.glass_broken
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fglass-broken.png?alt=media&token=05f019b4-9eb4-4f7a-ba6f-fb05c4f0c965"
             ),
             Tag(
                 name = "Glassware",
@@ -183,7 +183,7 @@ val wasteGroups = listOf(
                     "Avoid disposing of glassware in the trash.",
                     "Consider using durable glassware to reduce waste."
                 ),
-                image = R.drawable.glass_mirror
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fglass-mirror.png?alt=media&token=9079e258-01e2-4dbb-a2a9-600e42d6cafc"
             )
         )
     ),
@@ -199,7 +199,7 @@ val wasteGroups = listOf(
                     "Consider collecting cans for recycling drives or charity.",
                     "Support metal recycling programs in your community."
                 ),
-                image = R.drawable.metal_aluminium
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmetal-aluminium.png?alt=media&token=659e9d13-9461-4fd5-be4c-a9f27747eb56"
             ),
             Tag(
                 name = "Steel Cans",
@@ -210,7 +210,7 @@ val wasteGroups = listOf(
                     "Support steel recycling initiatives in your area.",
                     "Choose products with minimal steel packaging to reduce waste."
                 ),
-                image = R.drawable.metal_steel_can
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmetal-steel-can.png?alt=media&token=c80611a6-5e4d-42ab-b039-b7d114ff4569"
             ),
             Tag(
                 name = "Scrap Metal",
@@ -221,7 +221,7 @@ val wasteGroups = listOf(
                     "Support businesses that buy and recycle scrap metal.",
                     "Avoid leaving scrap metal in public areas."
                 ),
-                image = R.drawable.metal_scrap
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmetal-scrap.png?alt=media&token=a331b92f-07b9-44c5-b346-9565b6aea587"
             ),
 
             // Add more tags and tips for Metal Waste...
@@ -239,7 +239,7 @@ val wasteGroups = listOf(
                     "Consider trading in old smartphones for discounts on new ones.",
                     "Support e-waste recycling programs in your region."
                 ),
-                image = R.drawable.e_mobile
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fe-mobile.png?alt=media&token=21aadf1a-c6e0-4a46-8baf-ea69c21c9989"
             ),
             Tag(
                 name = "Computer Accessories",
@@ -250,7 +250,7 @@ val wasteGroups = listOf(
                     "Support e-waste collection events in your area.",
                     "Avoid storing unused computer accessories indefinitely."
                 ),
-                image = R.drawable.e_computer
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fe-computer.png?alt=media&token=54ae8d30-5c6e-4121-a384-fb461a6a67b7"
             ),
             Tag(
                 name = "Printers",
@@ -261,7 +261,7 @@ val wasteGroups = listOf(
                     "Support e-waste recycling initiatives in your region.",
                     "Minimize unnecessary printing to reduce printer waste."
                 ),
-                image = R.drawable.e_printer
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fe-printer.png?alt=media&token=ff074e26-c665-460f-91aa-5870a649ba8e"
             )
             // Add more tags and tips for E-Waste...
         )
@@ -278,7 +278,7 @@ val wasteGroups = listOf(
                     "Learn about proper composting techniques for best results.",
                     "Support community composting programs."
                 ),
-                image = R.drawable.or_scraps
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2For-scraps.png?alt=media&token=6b68e921-20dd-40e5-b59e-1b2063aeb63e"
             ),
             Tag(
                 name = "Garden Waste",
@@ -289,7 +289,7 @@ val wasteGroups = listOf(
                     "Consider turning garden waste into organic fertilizer.",
                     "Support green waste collection services in your area."
                 ),
-                image = R.drawable.or_garden
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2For-garden.png?alt=media&token=e6b0fe93-92ab-4ad8-b157-6fe90074f7ad"
             ),
             Tag(
                 name = "Compost",
@@ -300,7 +300,7 @@ val wasteGroups = listOf(
                     "Avoid throwing fruit peels in the trash.",
                     "Support eco-friendly kitchen practices."
                 ),
-                image = R.drawable.or_compost
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2For-compost.png?alt=media&token=5f9923df-6e05-4849-9556-bfd6c4dca5d6"
             ),
         )
     ),
@@ -316,7 +316,7 @@ val wasteGroups = listOf(
                     "Consider upcycling old clothing into new fashion pieces.",
                     "Support sustainable fashion brands that promote recycling."
                 ),
-                image = R.drawable.textile_clothing
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Ftextile-clothing.png?alt=media&token=d319dea9-419e-4c60-b309-b7853341445d"
             ),
             Tag(
                 name = "Footwear",
@@ -327,7 +327,7 @@ val wasteGroups = listOf(
                     "Support footwear donation drives for those in need.",
                     "Choose sustainable footwear options made from recycled materials."
                 ),
-                image = R.drawable.textile_shoes
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Ftextile-shoes.png?alt=media&token=dc1a8032-7e7c-47a7-9e53-b0c6fbb8d3f7"
             ),
             Tag(
                 name = "Fabric Scraps",
@@ -338,7 +338,7 @@ val wasteGroups = listOf(
                     "Avoid adding fabric scraps to household waste.",
                     "Explore creative ways to repurpose fabric scraps in your home."
                 ),
-                image = R.drawable.textile_fabric
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Ftextile-fabric.png?alt=media&token=88d56b44-a6b8-4df6-8b5b-cb6ce9a0864b"
             )
             // Add more tags and tips for Textile Waste...
         )
@@ -355,7 +355,7 @@ val wasteGroups = listOf(
                     "Avoid throwing sharps in the regular trash.",
                     "Support safe needle disposal programs in your community."
                 ),
-                image = R.drawable.medical_syringes
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmedical-syringes.png?alt=media&token=844c77d6-2318-48af-aa83-3d401afad66c"
             ),
             Tag(
                 name = "Expired Medications",
@@ -366,7 +366,7 @@ val wasteGroups = listOf(
                     "Keep medications out of reach of children and pets.",
                     "Support medication take-back programs for safe disposal."
                 ),
-                image = R.drawable.medical_contaminated
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmedical-contaminated.png?alt=media&token=749ea1f8-54ac-4a09-b5ba-791943327891"
             ),
             Tag(
                 name = "Medical Equipment",
@@ -377,7 +377,7 @@ val wasteGroups = listOf(
                     "Support medical equipment recycling programs in your region.",
                     "Avoid contributing to medical waste through careful equipment usage."
                 ),
-                image = R.drawable.medical_bandage
+                image = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/tags%2Fmedical-bandage.png?alt=media&token=5814645b-a2c6-4de1-9271-f6761e1b6708"
             )
             // Add more tags and tips for Medical Waste...
         )
