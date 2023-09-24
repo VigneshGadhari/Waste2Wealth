@@ -80,6 +80,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import app.waste2wealth.com.R
 import app.waste2wealth.com.bottombar.items
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.WasteItem
@@ -428,65 +429,82 @@ fun CollectWaste(
                             }
                         }
                     }
-
-                    LazyColumn(
-                        contentPadding = PaddingValues(
-                            bottom = 150.dp,
-                            top = 40.dp
-                        ),
-                        state = lazyListState
-                    ) {
-                        allWastes = allWastes?.sortedBy {
-                            distance(
-                                viewModel.latitude,
-                                viewModel.longitude,
-                                it.latitude,
-                                it.longitude
+                    if (allWastes?.isEmpty() == true){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.empty_state),
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(130.dp),
+                                alignment = Alignment.Center
                             )
                         }
-                        itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
-                            WasteItemCard(
-                                modifier = Modifier.animateItemPlacement(),
-                                locationNo = "Location ${index + 1}",
-                                address = wasteItem.address,
-                                distance = "${
-                                    convertDistance(
-                                        distance(
-                                            viewModel.latitude,
-                                            viewModel.longitude,
-                                            wasteItem.latitude,
-                                            wasteItem.longitude
-                                        )
-                                    )
-                                } away",
-                                time = getTimeAgo(wasteItem.timeStamp),
-                                tags = wasteItem.tag.map {
-                                    it.mapWithTips()
-                                },
-                            ) {
-                                viewModel.locationNo.value = "Location ${index + 1}"
-                                viewModel.address.value = wasteItem.address
-                                viewModel.distance.value = "${
-                                    convertDistance(
-                                        distance(
-                                            viewModel.latitude,
-                                            viewModel.longitude,
-                                            wasteItem.latitude,
-                                            wasteItem.longitude
-                                        )
-                                    )
-                                } away"
-                                viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
-                                viewModel.wastePhoto.value = wasteItem.imagePath
-                                viewModel.theirLatitude.value = wasteItem.latitude
-                                viewModel.theirLongitude.value = wasteItem.longitude
-                                viewModel.tags.value = wasteItem.tag.map {
-                                    it.mapWithTips()
-                                }
-                                println("Collected time ${viewModel.time.value}")
-                                navController.navigate(Screens.CollectWasteInfo.route)
+                    } else {
+                        LazyColumn(
+                            contentPadding = PaddingValues(
+                                bottom = 150.dp,
+                                top = 40.dp
+                            ),
+                            state = lazyListState
+                        ) {
+                            allWastes = allWastes?.sortedBy {
+                                distance(
+                                    viewModel.latitude,
+                                    viewModel.longitude,
+                                    it.latitude,
+                                    it.longitude
+                                )
                             }
+                            itemsIndexed(allWastes ?: emptyList()) { index, wasteItem ->
+                                WasteItemCard(
+                                    modifier = Modifier.animateItemPlacement(),
+                                    locationNo = "Location ${index + 1}",
+                                    address = wasteItem.address,
+                                    distance = "${
+                                        convertDistance(
+                                            distance(
+                                                viewModel.latitude,
+                                                viewModel.longitude,
+                                                wasteItem.latitude,
+                                                wasteItem.longitude
+                                            )
+                                        )
+                                    } away",
+                                    time = getTimeAgo(wasteItem.timeStamp),
+                                    tags = wasteItem.tag.map {
+                                        it.mapWithTips()
+                                    },
+                                ) {
+                                    viewModel.locationNo.value = "Location ${index + 1}"
+                                    viewModel.address.value = wasteItem.address
+                                    viewModel.distance.value = "${
+                                        convertDistance(
+                                            distance(
+                                                viewModel.latitude,
+                                                viewModel.longitude,
+                                                wasteItem.latitude,
+                                                wasteItem.longitude
+                                            )
+                                        )
+                                    } away"
+                                    viewModel.time.value = getTimeAgo(wasteItem.timeStamp)
+                                    viewModel.wastePhoto.value = wasteItem.imagePath
+                                    viewModel.theirLatitude.value = wasteItem.latitude
+                                    viewModel.theirLongitude.value = wasteItem.longitude
+                                    viewModel.tags.value = wasteItem.tag.map {
+                                        it.mapWithTips()
+                                    }
+                                    println("Collected time ${viewModel.time.value}")
+                                    navController.navigate(Screens.CollectWasteInfo.route)
+                                }
 
+                            }
                         }
                     }
                 }
