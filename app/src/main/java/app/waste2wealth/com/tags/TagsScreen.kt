@@ -117,13 +117,13 @@ fun TagsScreen(reportWasteViewModel: ReportWasteViewModel) {
                         )
                     }
                     Spacer(modifier = Modifier.width(20.dp))
-                    AnimatedVisibility(visible = reportWasteViewModel.tagsList.isNotEmpty(),
+                    AnimatedVisibility(visible = reportWasteViewModel.tagsList.size > 0,
                         enter = slideInHorizontally(
                             initialOffsetX = { it },
                             animationSpec = tween(durationMillis = 500)
                         ) + fadeIn(),
                         exit = slideOutVertically(
-                            targetOffsetY = { -it },
+                            targetOffsetY = { it },
                             animationSpec = tween(durationMillis = 500)
                         ) + fadeOut()
                         ) {

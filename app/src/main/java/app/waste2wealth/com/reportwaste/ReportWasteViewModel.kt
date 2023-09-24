@@ -26,6 +26,7 @@ class ReportWasteViewModel @Inject constructor() : ViewModel() {
 
     val tagsList = mutableStateListOf<Tag>()
 
+    val showTips = mutableStateOf(false)
 
     val tagsSearch = listOf(
         "Tags",
