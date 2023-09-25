@@ -27,6 +27,7 @@ import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastReceiverListener
 import app.waste2wealth.com.navigation.NavigationController
 import app.waste2wealth.com.navigation.Screens
+import app.waste2wealth.com.newcommunities.CommunitiesScreen
 import app.waste2wealth.com.ui.theme.Waste2WealthTheme
 import app.waste2wealth.com.ui.theme.appBackground
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -34,6 +35,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.play.integrity.internal.c
 import dagger.hilt.android.AndroidEntryPoint
 import javax.annotation.Nullable
 
@@ -99,12 +101,15 @@ class MainActivity : ComponentActivity() {
                         val scaffoldState = rememberScaffoldState()
                         val client = SmsRetriever.getClient(this)
                         client.startSmsUserConsent(null)
+                        println(it)
+
                         NavigationController(
                             scaffoldState,
                             locationViewModel,
                             navController,
                             it
                         )
+
                     }
                 }
             }

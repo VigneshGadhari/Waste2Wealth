@@ -60,6 +60,7 @@ import app.waste2wealth.com.ui.theme.textColor
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
+import app.waste2wealth.com.newcommunities.CommunitiesScreen
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
@@ -235,83 +236,88 @@ fun CommunitiesSection(
                                         expanded = true
                                     },
                                 ) {
-                                    ExposedDropdownMenuBox(
-                                        modifier = Modifier,
-                                        expanded = expanded,
-                                        onExpandedChange = { expanded = it }
-                                    ) {
-                                        Row(
-                                            verticalAlignment = Alignment.Bottom,
-                                            modifier = Modifier,
-                                        ) {
-                                            Text(
-                                                text = selectedType,
-                                                color = textColor,
-                                                fontSize = 30.sp,
-                                                fontFamily = monteBold,
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Default.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = textColor,
-                                                modifier = Modifier
-                                                    .size(25.dp)
-                                                    .padding(bottom = 7.dp)
-                                            )
-                                        }
-
-                                        DropdownMenu(
-                                            expanded = expanded,
-                                            onDismissRequest = { expanded = false },
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .background(appBackground)
-                                        ) {
-                                            typeOfCommunities.forEach { type ->
-                                                DropdownMenuItem(
-                                                    onClick = {
-                                                        selectedType = type
-                                                        expanded = false
-                                                    }
-                                                ) {
-                                                    Text(
-                                                        text = type,
-                                                        color = textColor
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
+//                                    ExposedDropdownMenuBox(
+//                                        modifier = Modifier,
+//                                        expanded = expanded,
+//                                        onExpandedChange = { expanded = it }
+//                                    ) {
+//                                        Row(
+//                                            verticalAlignment = Alignment.Bottom,
+//                                            modifier = Modifier,
+//                                        ) {
+//                                            Text(
+//                                                text = selectedType,
+//                                                color = textColor,
+//                                                fontSize = 30.sp,
+//                                                fontFamily = monteBold,
+//                                            )
+//                                            Icon(
+//                                                imageVector = Icons.Default.ArrowDropDown,
+//                                                contentDescription = null,
+//                                                tint = textColor,
+//                                                modifier = Modifier
+//                                                    .size(25.dp)
+//                                                    .padding(bottom = 7.dp)
+//                                            )
+//                                        }
+//
+//                                        DropdownMenu(
+//                                            expanded = expanded,
+//                                            onDismissRequest = { expanded = false },
+//                                            modifier = Modifier
+//                                                .weight(1f)
+//                                                .background(appBackground)
+//                                        ) {
+//                                            typeOfCommunities.forEach { type ->
+//                                                DropdownMenuItem(
+//                                                    onClick = {
+//                                                        selectedType = type
+//                                                        expanded = false
+//                                                    }
+//                                                ) {
+//                                                    Text(
+//                                                        text = type,
+//                                                        color = textColor
+//                                                    )
+//                                                }
+//                                            }
+//                                        }
+//                                    }
                                 }
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(top = 15.dp, end = 0.dp, start = 20.dp),
-                                    horizontalArrangement = Arrangement.End,
+                                        .padding(top = 15.dp),
+                                    horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Row(
-                                        modifier = Modifier.padding(end = 25.dp),
+                                        modifier = Modifier,
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.End
+                                        horizontalArrangement = Arrangement.Center
                                     ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.coins),
-                                            contentDescription = "coins",
-                                            modifier = Modifier
-                                                .size(30.dp)
-                                                .padding(end = 5.dp),
-                                            tint = Color.Unspecified
-                                        )
-                                        AutoResizedText(
-                                            text = pointsEarned.toString(),
-                                            color = textColor,
-                                            fontSize = 15.sp,
-                                            softWrap = false,
-                                            fontFamily = monteNormal,
-                                        )
+//                                        Icon(
+//                                            painter = painterResource(id = R.drawable.coins),
+//                                            contentDescription = "coins",
+//                                            modifier = Modifier
+//                                                .size(30.dp)
+//                                                .padding(end = 5.dp),
+//                                            tint = Color.Unspecified
+//                                        )
+//                                        AutoResizedText(
+//                                            text = pointsEarned.toString(),
+//                                            color = textColor,
+//                                            fontSize = 15.sp,
+//                                            softWrap = false,
+//                                            fontFamily = monteNormal,
+//                                        )
+                                        Text(
+                                                text = "Communities Events",
+                                                color = textColor,
+                                                fontSize = 30.sp,
+                                            fontWeight = FontWeight.SemiBold
+                                            )
                                     }
-
                                 }
                             }
                         }
@@ -411,7 +417,7 @@ fun CommunitiesSection(
                             }
 
                         }
-                        Pager2(
+                        CommunitiesScreen(
                             viewModel,
                             progress2,
                             paddingValues,

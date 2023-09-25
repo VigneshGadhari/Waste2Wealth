@@ -20,6 +20,7 @@ import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.collectwaste.CollectWaste
 import app.waste2wealth.com.collectwaste.CollectWasteInfo
 import app.waste2wealth.com.collectwaste.SuccessfullyCollected
+import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.communities.ui.CommunitiesSection
 import app.waste2wealth.com.dashboard.NewDashboard
 import app.waste2wealth.com.location.LocationViewModel
@@ -27,6 +28,7 @@ import app.waste2wealth.com.login.CompleteProfile
 import app.waste2wealth.com.login.LoginPage
 import app.waste2wealth.com.login.onboarding.Onboarding
 import app.waste2wealth.com.login.onboarding.SettingUp
+import app.waste2wealth.com.newcommunities.CommunityInfo
 import app.waste2wealth.com.profile.NewProfileScreen
 import app.waste2wealth.com.reportwaste.ReportWaste
 import app.waste2wealth.com.reportwaste.ReportWasteViewModel
@@ -142,11 +144,12 @@ fun NavigationController(
 
         }
         composable(Screens.Community.route) {
-            CommunitiesSection(
-                paddingValues = paddingValues,
-                email = email.value,
-                name = name.value,
-            )
+//            CommunitiesSection(
+//                paddingValues = paddingValues,
+//                email = email.value,
+//                name = name.value,
+//            )
+            CommunityInfo()
         }
         composable(Screens.ReportWaste.route) {
             ReportWaste(
