@@ -1,17 +1,13 @@
 package app.waste2wealth.com.collectwaste
 
-import android.Manifest
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,15 +30,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -54,7 +46,6 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,13 +55,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
@@ -80,27 +69,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.items
-import app.waste2wealth.com.firebase.firestore.ProfileInfo
+import app.waste2wealth.baseUI.constants.Screens
+import app.waste2wealth.baseUI.theme.CardColor
+import app.waste2wealth.baseUI.theme.CardTextColor
+import app.waste2wealth.baseUI.theme.appBackground
+import app.waste2wealth.baseUI.R
+import app.waste2wealth.baseUI.animations.MovingText
+import app.waste2wealth.baseUI.theme.TintType
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.reportwaste.ReportWasteViewModel
 import app.waste2wealth.com.tags.Tag
 import app.waste2wealth.com.tags.TagItem
 import app.waste2wealth.com.tags.allTags
-import app.waste2wealth.com.tags.wasteGroups
-import app.waste2wealth.com.ui.theme.CardColor
-import app.waste2wealth.com.ui.theme.CardTextColor
-import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteSB
-import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteSB
+import app.waste2wealth.baseUI.theme.textColor
+import app.waste2wealth.baseUI.utils.ColumnWrapper
+import app.waste2wealth.baseUI.utils.DefaultCard
+import app.waste2wealth.baseUI.utils.DefaultIcon
+import app.waste2wealth.baseUI.utils.DefaultText
+import app.waste2wealth.baseUI.utils.DefaultTextField
+import app.waste2wealth.baseUI.utils.WasteItemCard
 import coil.compose.AsyncImage
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import java.util.concurrent.TimeUnit
@@ -108,11 +100,7 @@ import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-@OptIn(
-    ExperimentalPermissionsApi::class,
-    ExperimentalMaterialApi::class, ExperimentalAnimationApi::class,
-    ExperimentalFoundationApi::class
-)
+
 @Composable
 fun CollectWaste(
     paddingValues: PaddingValues,
@@ -123,7 +111,6 @@ fun CollectWaste(
     val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
     var storedWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
     var searchText by remember { mutableStateOf("") }
@@ -154,10 +141,6 @@ fun CollectWaste(
         viewModel.getPlaces()
     }
 
-    allWastes?.forEach {
-        Log.i("Wastessssss Collected", it.toString())
-    }
-
     LaunchedEffect(key1 = reportWasteViewModel.selectedTags.size){
         if (reportWasteViewModel.selectedTags.size == 0){
             allWastes = storedWastes
@@ -171,10 +154,8 @@ fun CollectWaste(
         storedWastes = values?.getListOfObjects()
 
     }) {
-        Column(
+        ColumnWrapper(
             modifier = Modifier
-                .fillMaxSize()
-                .background(appBackground)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
@@ -206,10 +187,8 @@ fun CollectWaste(
                             .offset(x = (-10).dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(
+                        DefaultText(
                             text = "Collect Waste",
-                            color = textColor,
-                            fontFamily = monteBold,
                             fontSize = 25.sp
                         )
                     }
@@ -230,7 +209,7 @@ fun CollectWaste(
                 }
             }
             AnimatedVisibility(visible = isSearchVisible) {
-                TextField(
+                DefaultTextField(
                     value = searchText,
                     onValueChange = {
                         searchText = it
@@ -243,53 +222,23 @@ fun CollectWaste(
                             }
                         }
                     },
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = appBackground,
-                        focusedIndicatorColor = appBackground,
-                        unfocusedIndicatorColor = appBackground,
-                        disabledIndicatorColor = textColor,
-                        errorIndicatorColor = textColor,
-                    ),
                     label = {
                         if (!isTyping && searchText == "") {
-                            AnimatedContent(
-                                targetState = seconds,
-                                transitionSpec = {
-                                    slideIntoContainer(
-                                        towards = AnimatedContentScope.SlideDirection.Up,
-                                        animationSpec = tween(durationMillis = 500)
-                                    ) + fadeIn() with slideOutOfContainer(
-                                        towards = AnimatedContentScope.SlideDirection.Up,
-                                        animationSpec = tween(durationMillis = 500)
-                                    ) + fadeOut()
-                                }, label = ""
-                            ) { targetCount ->
-                                Text(
-                                    text = "Search $targetCount",
-                                    color = textColor,
-                                    fontSize = 18.sp,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .align(Alignment.CenterHorizontally),
-                                    maxLines = 1,
-
-                                )
-
-                            }
+                            MovingText(targetState = seconds, text = "Search")
                         }
                     },
                     leadingIcon = {
-                        Icon(
+                        DefaultIcon(
                             imageVector = Icons.Filled.Search,
                             contentDescription = "Search",
-                            tint = CardTextColor
+                            tintType = TintType.OnCard
                         )
                     },
                     trailingIcon = {
-                        Icon(
+                        DefaultIcon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "Search",
-                            tint = CardTextColor,
+                            tintType = TintType.OnCard,
                             modifier = Modifier.clickable {
                                 isSearchVisible = !isSearchVisible
                                 allWastes = storedWastes
@@ -298,14 +247,11 @@ fun CollectWaste(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 30.dp)
-                        .focusRequester(focusRequester)
-                        .height(80.dp)
-                        .shadow(50.dp, shape = RoundedCornerShape(10.dp)),
-                    maxLines = 1,
+                        .padding(horizontal = 10.dp, vertical = 30.dp),
                     keyboardOptions = KeyboardOptions(
                         imeAction = androidx.compose.ui.text.input.ImeAction.Search
-                    )
+                    ),
+                    focusRequester = focusRequester,
                 )
             }
 
@@ -329,7 +275,7 @@ fun CollectWaste(
                 ) {
                     cList.forEachIndexed { index, title ->
                         Tab(text = {
-                            Text(
+                            DefaultText(
                                 title,
                                 softWrap = false,
                                 fontSize = 13.sp,
@@ -359,7 +305,7 @@ fun CollectWaste(
                             )
                         ) {
                             items(allTags) { item ->
-                                Card(modifier = Modifier
+                                DefaultCard(modifier = Modifier
                                     .padding(10.dp)
                                     .clickable {
                                         if (reportWasteViewModel.selectedTags.contains(item)) {
@@ -521,139 +467,6 @@ fun CollectWaste(
 
 }
 
-
-@Composable
-fun WasteItemCard(
-    modifier: Modifier = Modifier,
-    tags: List<Tag> = emptyList(),
-    locationNo: String,
-    address: String,
-    distance: String,
-    time: String,
-    isCollectedInfo: Boolean = false,
-    isEllipsis: Boolean = true,
-    onCollected: () -> Unit = {},
-    onClick: () -> Unit = {}
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(13.dp)
-            .clickable {
-                onClick()
-            },
-        shape = RoundedCornerShape(10.dp),
-        backgroundColor = CardColor,
-        elevation = 5.dp
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 10.dp,
-                        bottom = 7.dp
-                    ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.LocationOn,
-                    contentDescription = "",
-                    tint = Color.Gray,
-                    modifier = Modifier
-                        .size(25.dp)
-                        .padding(end = 10.dp)
-                )
-
-                Text(
-                    text = locationNo,
-                    color = Color.Gray,
-                    fontFamily = monteSB,
-                    fontSize = 14.sp
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp, bottom = 7.dp, end = 15.dp)
-            ) {
-                Text(
-                    text = address,
-                    color = CardTextColor,
-                    fontFamily = monteSB,
-                    fontSize = 15.sp,
-                    maxLines = if (isEllipsis) 1 else Int.MAX_VALUE,
-                    softWrap = true,
-                    overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
-                )
-            }
-            if (tags.size > 0) {
-                Text(
-                    text = "Tags",
-                    color = textColor,
-                    fontSize = 15.sp,
-                    fontFamily = monteSB,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                LazyRow(
-                    contentPadding = PaddingValues(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(tags) { tag ->
-                        TagItem(
-                            item = tag,
-                            modifier = Modifier,
-                            isSelected = false
-                        )
-                    }
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Button(
-                    onClick = {
-                        if (isCollectedInfo) onCollected() else onClick()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = appBackground,
-                        contentColor = textColor
-                    ),
-                    shape = RoundedCornerShape(15.dp),
-                    modifier = Modifier.padding(start = 10.dp)
-                ) {
-                    Text(
-                        text = if (isCollectedInfo) "Navigate" else "Collect",
-                        color = textColor,
-                        fontFamily = monteSB,
-                        fontSize = 10.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 10.dp, bottom = 7.dp),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Text(
-                        text = "$distance, Reported $time",
-                        color = CardTextColor.copy(0.75f),
-                        fontFamily = monteBold,
-                        fontSize = 10.sp
-                    )
-
-                }
-            }
-        }
-
-
-    }
-
-}
 
 private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val theta = lon1 - lon2

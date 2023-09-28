@@ -1,4 +1,4 @@
-package app.waste2wealth.com.components.permissions
+package app.waste2wealth.baseUI.permissions
 
 import android.content.Intent
 import android.net.Uri
@@ -37,10 +37,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.waste2wealth.com.R
-import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteNormal
-import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.baseUI.R
+import app.waste2wealth.baseUI.permissions.Grapple
+import app.waste2wealth.baseUI.theme.appBackground
+import app.waste2wealth.baseUI.theme.monteNormal
+import app.waste2wealth.baseUI.theme.textColor
 import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState

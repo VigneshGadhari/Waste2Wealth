@@ -1,4 +1,4 @@
-package app.waste2wealth.com.ui.theme
+package app.waste2wealth.baseUI.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.lightColors
+import app.waste2wealth.baseUI.theme.Palette
 
 
 val Purple200 = Color(0xFFBB86FC)

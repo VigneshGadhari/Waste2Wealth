@@ -17,7 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import app.waste2wealth.com.ui.theme.appBackground
+import app.waste2wealth.baseUI.constants.Screens
+import app.waste2wealth.baseUI.theme.appBackground
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
@@ -48,7 +49,7 @@ fun SplashScreen(navController: NavController, email: String) {
             .background(appBackground)
     ) {
         Image(
-            painter = painterResource(id = app.waste2wealth.com.R.drawable.appicon),
+            painter = painterResource(id = app.waste2wealth.baseUI.R.drawable.appicon),
             contentDescription = "Logo",
             modifier = Modifier.scale(scale.value)
         )

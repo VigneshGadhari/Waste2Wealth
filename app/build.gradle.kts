@@ -62,6 +62,9 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":baseUI"))
+
     //Compose Bom
     implementation(platform(libs.compose.bom))
 

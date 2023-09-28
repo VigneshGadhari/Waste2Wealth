@@ -20,15 +20,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
-import app.waste2wealth.com.bottombar.BottomBar
-import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.baseUI.bottomBar.BottomBar
+import app.waste2wealth.baseUI.constants.BottomBarItems
+import app.waste2wealth.baseUI.permissions.PermissionDrawer
+import app.waste2wealth.baseUI.theme.appBackground
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastReceiverListener
 import app.waste2wealth.com.navigation.NavigationController
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.Waste2WealthTheme
-import app.waste2wealth.com.ui.theme.appBackground
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -85,7 +85,8 @@ class MainActivity : ComponentActivity() {
                     Scaffold(bottomBar = {
                         BottomBar(
                             navController = navController,
-                            bottomBarState = bottomBarState
+                            bottomBarState = bottomBarState,
+                            items = BottomBarItems
                         )
                     }) {
 

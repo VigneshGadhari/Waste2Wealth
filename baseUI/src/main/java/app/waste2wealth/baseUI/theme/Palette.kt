@@ -1,5 +1,4 @@
-package app.waste2wealth.com.ui.theme
-
+package app.waste2wealth.baseUI.theme
 import androidx.compose.ui.graphics.Color
 
 object Palette {

@@ -1,18 +1,15 @@
-package app.waste2wealth.com.bottombar
+package app.waste2wealth.baseUI.bottomBar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,17 +25,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import app.waste2wealth.com.navigation.Screens
-import app.waste2wealth.com.ui.theme.CardColor
-import app.waste2wealth.com.ui.theme.CardTextColor
-import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteSB
-import app.waste2wealth.com.ui.theme.textColor
-
+import app.waste2wealth.baseUI.constants.BottomBarScreens
+import app.waste2wealth.baseUI.constants.Screens
+import app.waste2wealth.baseUI.constants.items
+import app.waste2wealth.baseUI.theme.CardColor
+import app.waste2wealth.baseUI.theme.monteSB
+import app.waste2wealth.baseUI.theme.textColor
+import app.waste2wealth.baseUI.utils.DefaultCard
 @Composable
 fun BottomBar(
     navController: NavController,
-    bottomBarState: MutableState<Boolean> = mutableStateOf(true)
+    bottomBarState: MutableState<Boolean> = mutableStateOf(true),
+    items: List<BottomBarScreens>
 ) {
     AnimatedVisibility(
         visible = bottomBarState.value,
@@ -47,13 +45,7 @@ fun BottomBar(
         content = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                backgroundColor = CardColor,
-                elevation = 5.dp,
-                shape = RoundedCornerShape(17.dp)
-            ) {
+            DefaultCard {
                 BottomNavigation(
                     modifier = Modifier
                         .height(80.dp),
@@ -64,11 +56,6 @@ fun BottomBar(
                         val isYellow = currentRoute?.hierarchy?.any { nav ->
                             nav.route == it.route
                         } == true
-                        val myTextColor = if (isSystemInDarkTheme()) {
-                            if (isYellow) Color.Black else Color.White
-                        } else {
-                            if (isYellow) Color.White else Color.Black
-                        }
                         BottomNavigationItem(
                             icon = {
                                 it.icon?.let {

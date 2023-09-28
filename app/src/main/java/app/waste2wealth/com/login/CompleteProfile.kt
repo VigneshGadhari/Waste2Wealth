@@ -62,10 +62,9 @@ import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.UserDatastore
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteSB
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

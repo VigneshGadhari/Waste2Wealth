@@ -1,4 +1,4 @@
-package app.waste2wealth.com.components.permissions
+package app.waste2wealth.baseUI.permissions
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable

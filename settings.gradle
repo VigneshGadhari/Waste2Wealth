@@ -37,3 +37,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Waste2Wealth"
 include(":app")
+include ':baseUI'

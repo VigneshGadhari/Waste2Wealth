@@ -1,6 +1,5 @@
 package app.waste2wealth.com.collectwaste
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -17,45 +16,37 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.BottomBar
-import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.baseUI.constants.Screens
+import app.waste2wealth.baseUI.dialogs.DialogBox
+import app.waste2wealth.baseUI.theme.CardColor
+import app.waste2wealth.baseUI.theme.CardTextColor
+import app.waste2wealth.baseUI.theme.appBackground
 import app.waste2wealth.com.location.LocationViewModel
-import app.waste2wealth.com.navigation.Screens
-import app.waste2wealth.com.reportwaste.DialogBox
-import app.waste2wealth.com.ui.theme.CardColor
-import app.waste2wealth.com.ui.theme.CardTextColor
-import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteSB
-import app.waste2wealth.com.ui.theme.textColor
+import app.waste2wealth.baseUI.theme.monteSB
+import app.waste2wealth.baseUI.theme.textColor
+import app.waste2wealth.baseUI.utils.ColumnWrapper
+import app.waste2wealth.baseUI.utils.DefaultButton
+import app.waste2wealth.baseUI.utils.DefaultText
+import app.waste2wealth.baseUI.utils.WasteItemCard
 import coil.compose.AsyncImage
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -79,6 +70,9 @@ fun CollectWasteInfo(
         viewModel.theirLatitude.value,
         viewModel.theirLongitude.value
     )
+    var imageUrlState by remember {
+        mutableStateOf("")
+    }
     BackHandler {
         viewModel.locationNo.value = ""
         viewModel.address.value = ""
@@ -93,12 +87,18 @@ fun CollectWasteInfo(
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
+    LaunchedEffect(key1 = Unit) {
+        val imageUrl = withContext(Dispatchers.IO) {
+            try {
+                getDownloadUrlFromPath(viewModel.wastePhoto.value)
+            } catch (e: Exception) {
+                ""
+            }
+        }
+        imageUrlState = imageUrl
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(appBackground)
-    ) {
+    ColumnWrapper {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,10 +122,8 @@ fun CollectWasteInfo(
                     .offset(x = (-10).dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
+                DefaultText(
                     text = "Collect Waste",
-                    color = textColor,
-                    fontFamily = monteSB,
                     fontSize = 25.sp
                 )
             }
@@ -153,19 +151,6 @@ fun CollectWasteInfo(
             },
         )
         Spacer(modifier = Modifier.height(30.dp))
-        var imageUrlState by remember {
-            mutableStateOf("")
-        }
-        LaunchedEffect(key1 = Unit) {
-            val imageUrl = withContext(Dispatchers.IO) {
-                try {
-                    getDownloadUrlFromPath(viewModel.wastePhoto.value)
-                } catch (e: Exception) {
-                    ""
-                }
-            }
-            imageUrlState = imageUrl
-        }
         if (imageUrlState != "") {
             AsyncImage(
                 model = imageUrlState,
@@ -182,7 +167,7 @@ fun CollectWasteInfo(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(
+            DefaultButton(
                 onClick = {
                     if (!isWithin) {
                         isDialogVisible = true
@@ -190,21 +175,13 @@ fun CollectWasteInfo(
                         navController.navigate(Screens.CollectedWasteSuccess.route)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = CardColor,
-                    contentColor = CardTextColor
-                ),
-                shape = RoundedCornerShape(35.dp),
                 modifier = Modifier.padding(start = 10.dp)
             ) {
-                Text(
+                DefaultText(
                     text = "Collect Waste",
                     color = CardTextColor,
                     fontSize = 12.sp,
-                    fontFamily = monteSB,
                     modifier = Modifier.padding(bottom = 4.dp),
-                    maxLines = 1,
-                    softWrap = true
                 )
             }
         }

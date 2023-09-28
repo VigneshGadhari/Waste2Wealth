@@ -2,7 +2,6 @@ package app.waste2wealth.com.reportwaste
 
 import android.Manifest
 import android.graphics.Bitmap
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,18 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.InfiniteRepeatableSpec
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,7 +36,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomDrawerValue
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
@@ -60,9 +47,7 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -72,14 +57,12 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.rememberBottomDrawerState
-import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -95,17 +78,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -113,26 +92,22 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
-import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.components.permissions.PermissionDrawer
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.calculatePointsEarned
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.firebase.firestore.updateWasteToFirebase
 import app.waste2wealth.com.location.LocationViewModel
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.rewards.levels
 import app.waste2wealth.com.tags.TagItem
-import app.waste2wealth.com.tags.TagWithoutTips
 import app.waste2wealth.com.tags.TagsScreen
-import app.waste2wealth.com.tags.wasteGroups
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteNormal
-import app.waste2wealth.com.ui.theme.monteSB
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteNormal
+import app.waste2wealth.baseUI.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.DefaultSnackbar
 import com.airbnb.lottie.compose.LottieAnimation
@@ -144,10 +119,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.replay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import kotlin.math.roundToInt
 
 
 @OptIn(
@@ -826,99 +799,5 @@ fun ReportWaste(
 
     }
 
-}
-
-@Composable
-fun DialogBox(
-    isVisible: Boolean,
-    tint: Color = Color.Red.copy(0.6f),
-    icon: ImageVector = Icons.Filled.QuestionMark,
-    title: String = "Are you sure you want to report this waste?",
-    description: String = "Reporting a wrong location will result in a penalty of 100 points " +
-            "and may also lead to a permanent ban from the app",
-    successRequest: () -> Unit,
-    dismissRequest: () -> Unit
-) {
-    if (isVisible) {
-
-        Dialog(onDismissRequest = dismissRequest) {
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
-                elevation = 8.dp
-            ) {
-                Column(
-                    Modifier
-                        .background(appBackground)
-                ) {
-
-                    Image(
-                        icon,
-                        contentDescription = null, // decorative
-                        contentScale = ContentScale.Fit,
-                        colorFilter = ColorFilter.tint(
-                            color = tint
-                        ),
-                        modifier = Modifier
-                            .padding(top = 35.dp)
-                            .height(70.dp)
-                            .fillMaxWidth(),
-
-                        )
-
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = title,
-                            textAlign = TextAlign.Center,
-                            color = textColor,
-                            fontFamily = monteSB,
-                            fontSize = 15.sp,
-                            modifier = Modifier
-                                .padding(top = 0.dp)
-                                .fillMaxWidth(),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = description,
-                            textAlign = TextAlign.Center,
-                            fontFamily = monteNormal,
-                            fontSize = 13.sp,
-                            modifier = Modifier
-                                .padding(top = 7.dp, start = 25.dp, end = 13.dp)
-                                .fillMaxWidth(),
-                            color = textColor
-                        )
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp)
-                            .background(backGround),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-
-                        TextButton(onClick = dismissRequest) {
-                            Text(
-                                "NO",
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                            )
-                        }
-                        TextButton(onClick = successRequest) {
-                            Text(
-                                "YES",
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White,
-                                modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-    }
 }
 

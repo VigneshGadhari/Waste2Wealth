@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.ui.theme.monteNormal
+import app.waste2wealth.baseUI.theme.monteNormal
 
  @Composable
 fun LoginPage(navController: NavHostController, scaffoldState: ScaffoldState) {

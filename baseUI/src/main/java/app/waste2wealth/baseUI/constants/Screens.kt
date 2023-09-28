@@ -1,8 +1,6 @@
-package app.waste2wealth.com.navigation
+package app.waste2wealth.baseUI.constants
 
 sealed class Screens(val route: String) {
-
-
     object Onboarding : Screens("onboarding")
     object CompleteProfile : Screens("completeProfile")
     object Community : Screens("community")

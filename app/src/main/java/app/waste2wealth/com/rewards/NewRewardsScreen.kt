@@ -38,10 +38,9 @@ import androidx.navigation.NavHostController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.location.LocationViewModel
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteNormal
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteNormal
 import app.waste2wealth.com.ui.theme.textColor
 import app.waste2wealth.com.utils.AutoResizedText
 import coil.compose.AsyncImage

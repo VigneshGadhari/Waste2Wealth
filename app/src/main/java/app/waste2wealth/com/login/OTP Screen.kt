@@ -20,9 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.ui.theme.backGround
-import app.waste2wealth.com.ui.theme.monteNormal
+import app.waste2wealth.baseUI.theme.monteNormal
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition

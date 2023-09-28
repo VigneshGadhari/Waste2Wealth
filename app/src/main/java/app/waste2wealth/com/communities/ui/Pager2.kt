@@ -1,11 +1,6 @@
 package app.waste2wealth.com.communities.ui
 
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.graphics.drawable.Icon
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -24,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -32,7 +26,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.SwipeUp
 import androidx.compose.material.icons.sharp.PrivacyTip
 import androidx.compose.runtime.Composable
@@ -48,8 +41,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asComposeRenderEffect
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -64,16 +55,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import app.waste2wealth.com.communities.CommunitiesViewModel
-import app.waste2wealth.com.components.permissions.Grapple
+import app.waste2wealth.baseUI.permissions.Grapple
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
-import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.reportwaste.DialogBox
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteSB
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec

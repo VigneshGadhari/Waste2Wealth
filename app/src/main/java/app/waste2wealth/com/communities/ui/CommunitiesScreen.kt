@@ -54,15 +54,13 @@ import androidx.compose.ui.unit.sp
 import app.waste2wealth.com.R
 import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.ui.theme.appBackground
-import app.waste2wealth.com.ui.theme.monteBold
-import app.waste2wealth.com.ui.theme.monteNormal
+import app.waste2wealth.baseUI.theme.monteBold
+import app.waste2wealth.baseUI.theme.monteNormal
 import app.waste2wealth.com.ui.theme.textColor
 import com.jet.firestore.JetFirestore
 import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
-import app.waste2wealth.com.ui.theme.CardColor
-import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.utils.AutoResizedText
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
