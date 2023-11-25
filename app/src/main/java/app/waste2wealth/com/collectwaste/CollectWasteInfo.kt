@@ -73,6 +73,7 @@ fun CollectWasteInfo(
 ) {
     val context = LocalContext.current
     var isDialogVisible by remember { mutableStateOf(false) }
+    var isDialogMainVisible by remember { mutableStateOf(false) }
     val isWithin = isWithinRadius(
         viewModel.latitude,
         viewModel.longitude,
@@ -187,8 +188,7 @@ fun CollectWasteInfo(
                     if (!isWithin) {
                         isDialogVisible = true
                     } else {
-                        viewModel.beforeCollectedPath.value = viewModel.wastePhoto.value
-                        navController.navigate(Screens.CollectedWasteSuccess.route)
+                        isDialogMainVisible = true
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -224,6 +224,21 @@ fun CollectWasteInfo(
                 }
             )
         }
+
+        DialogBox(
+            isVisible = isDialogMainVisible,
+            title = "Did you find the waste at the given location?",
+            description = "",
+            successRequest = {
+                isDialogVisible = false
+                viewModel.beforeCollectedPath.value = viewModel.wastePhoto.value
+                navController.navigate(Screens.CollectedWasteSuccess.route)
+            },
+            dismissRequest = {
+                isDialogMainVisible = false
+            }
+        )
+
     }
 
 }
