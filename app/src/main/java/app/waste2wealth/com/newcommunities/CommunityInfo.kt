@@ -1,6 +1,7 @@
 package app.waste2wealth.com.newcommunities
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,14 +29,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import app.waste2wealth.com.R
+import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
+import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.textColor
 
 @Composable
-fun CommunityInfo() {
+fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
 
-    Column (modifier = Modifier.verticalScroll(rememberScrollState())){
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())
+        .background(appBackground)) {
 
         Row(
             modifier = Modifier
@@ -125,8 +131,9 @@ fun CommunityInfo() {
 
         }
 
-        Card(modifier = Modifier
-            .padding(horizontal = 110.dp),
+        Card(
+            modifier = Modifier
+                .padding(horizontal = 110.dp),
             shape = RoundedCornerShape(25.dp)
         ) {
             Row(
@@ -145,7 +152,6 @@ fun CommunityInfo() {
         }
         Spacer(modifier = Modifier.height(100.dp))
     }
-
 
 
 }

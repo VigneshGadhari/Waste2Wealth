@@ -28,6 +28,7 @@ import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastRe
 import app.waste2wealth.com.navigation.NavigationController
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.newcommunities.CommunitiesScreen
+import app.waste2wealth.com.newcommunities.CommunityInfo
 import app.waste2wealth.com.ui.theme.Waste2WealthTheme
 import app.waste2wealth.com.ui.theme.appBackground
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
