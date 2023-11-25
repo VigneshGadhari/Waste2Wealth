@@ -33,15 +33,21 @@ import androidx.navigation.NavController
 import app.waste2wealth.com.R
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.profile.ProfileImage
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.textColor
+import coil.compose.AsyncImage
 
 @Composable
 fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
 
     Column(modifier = Modifier
+        .fillMaxHeight(0.96f)
+        .fillMaxWidth()
         .verticalScroll(rememberScrollState())
-        .background(appBackground)) {
+        .background(appBackground)
+        ) {
 
         Row(
             modifier = Modifier
@@ -52,7 +58,7 @@ fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
         ) {
 
             Text(
-                text = "Communities Events",
+                text = communitiesViewModel.communitiesTitle.value,
                 color = textColor,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold
@@ -87,44 +93,28 @@ fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
 //            contentScale = ContentScale.FillBounds,
 //        )
 
-            Image(
-                painter = painterResource(id = R.drawable.commi),
+            AsyncImage(
+                model = communitiesViewModel.communititesImage.value,
                 contentDescription = "",
                 modifier = Modifier
-                    .size(150.dp)
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .size(250.dp)
 
             )
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-
-
-                Image(
-                    painter = painterResource(id = R.drawable.commi),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(80.dp)
-
-                )
-
-                Text(text = "Contact us", fontSize = 18.sp)
-            }
         }
 
 
         Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
 
-            CommunityColumnCard(text = "Location", text2 = "Vashi, Navi Mumbai")
-            CommunityColumnCard(text = "Date", text2 = "29th Sept, 2023")
-            CommunityColumnCard(text = "Time", text2 = "7am to 10am")
-            CommunityColumnCard(text = "Organised by", text2 = "Rotary Club, Mumbai")
+            CommunityColumnCard(text = "Location", text2 = communitiesViewModel.communitiesLocation.value)
+            CommunityColumnCard(text = "Time", text2 = communitiesViewModel.communitiesTime.value)
 
             Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                Text(text = "About Rotary ", fontSize = 15.sp)
+                Text(text = "Description", fontSize = 15.sp)
                 Text(
-                    text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown .",
+                    communitiesViewModel.communitesDescription.value,
                     fontSize = 15.sp
                 )
             }
@@ -134,7 +124,8 @@ fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
         Card(
             modifier = Modifier
                 .padding(horizontal = 110.dp),
-            shape = RoundedCornerShape(25.dp)
+            shape = RoundedCornerShape(25.dp),
+            backgroundColor = CardColor,
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
@@ -144,7 +135,8 @@ fun CommunityInfo(communitiesViewModel: CommunitiesViewModel) {
 
                 Text(
                     text = "Register",
-                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 3.dp)
+                    modifier = Modifier.padding(vertical = 12.dp, horizontal = 3.dp),
+                    color = CardTextColor
                 )
 
 

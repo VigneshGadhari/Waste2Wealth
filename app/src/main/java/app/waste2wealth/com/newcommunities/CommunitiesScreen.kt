@@ -2,6 +2,8 @@ package app.waste2wealth.com.newcommunities
 
 import android.util.Log
 import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.End
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +30,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,16 +47,19 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.SwipeUp
 import androidx.compose.material.icons.sharp.PrivacyTip
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -66,6 +75,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
 import app.waste2wealth.com.R
+import app.waste2wealth.com.collectwaste.getTimeAgo
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.communities.ui.Drive
 import app.waste2wealth.com.communities.ui.DriveStatus
@@ -76,6 +86,7 @@ import app.waste2wealth.com.components.permissions.Grapple
 import app.waste2wealth.com.firebase.firestore.updateInfoToFirebase
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.reportwaste.DialogBox
+import app.waste2wealth.com.tags.TagsScreen
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
@@ -90,9 +101,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMotionApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMotionApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CommunitiesScreen(
     viewModel: CommunitiesViewModel,
@@ -111,7 +123,8 @@ fun CommunitiesScreen(
     noOfTimesCollected: Int,
     noOfTimesActivity: Int,
     communities: MutableState<MutableList<String>>,
-    isMemberships: Boolean
+    isMemberships: Boolean,
+    modalSheetState: ModalBottomSheetState
 ) {
     val pagerState = rememberPagerState()
     val selectedItempage = remember { mutableStateOf(0) }
@@ -120,12 +133,14 @@ fun CommunitiesScreen(
         start = 40.dp, end = (40.dp), top = 5.dp, bottom = padding.calculateBottomPadding() + 15.dp
     )
     val register = remember { mutableStateOf(false) }
-    val currentTitle = remember { mutableStateOf("") }
     val context = LocalContext.current
 
     var isCOinVisible by remember {
         mutableStateOf(false)
     }
+
+    val coroutineScope = rememberCoroutineScope()
+
 
     allCommunities?.let { community ->
         Box(modifier = Modifier.fillMaxSize()) {
@@ -180,7 +195,7 @@ fun CommunitiesScreen(
                     } else {
                         progress2.value
                     },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxHeight(0.95f).fillMaxWidth(),
                 ) {
                     Card(
                         backgroundColor =
@@ -190,10 +205,39 @@ fun CommunitiesScreen(
                         ), shape = RoundedCornerShape(40.dp), modifier = Modifier
                             .layoutId("card")
                     ) {
-                        Box(modifier = Modifier.padding(end =20.dp ), Alignment.CenterEnd ){
-                            Card(shape = CircleShape, modifier = Modifier.size(50.dp)) {
-                                Icon(imageVector = Icons.Default.ArrowForwardIos, contentDescription = "", modifier = Modifier.padding(15.dp))
-
+                        Box(modifier = Modifier.padding(end = 20.dp, bottom = 40.dp), Alignment.BottomEnd) {
+                            Card(
+                                shape = CircleShape, modifier = Modifier.size(50.dp),
+                                backgroundColor = CardColor
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForwardIos,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .padding(15.dp)
+                                        .clickable {
+                                            viewModel.communitesDescription.value =
+                                                community[page].description
+                                            viewModel.communitiesTime.value =
+                                                community[page].dateOfEstablishment
+                                            viewModel.communitiesTitle.value =
+                                                community[page].name
+                                            viewModel.communititesImage.value =
+                                                community[page].image
+                                            viewModel.communitiesLocation.value =
+                                                community[page].activeRegion
+                                            coroutineScope.launch {
+                                                if (modalSheetState.isVisible) {
+                                                    // Hide the bottom sheet
+                                                    modalSheetState.hide()
+                                                } else {
+                                                    // Show the bottom sheet
+                                                    modalSheetState.show()
+                                                }
+                                            }
+                                        },
+                                    tint = CardTextColor
+                                )
 
                             }
                         }
@@ -248,25 +292,25 @@ fun CommunitiesScreen(
                                 Spacer(modifier = Modifier.height(10.dp))
 
                                 Text(
-                                    text = "4 km away",
+                                    text =
+                                    community[page].dateOfEstablishment,
                                     color = CardTextColor,
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(end = 25.dp)
-                                        .align(alignment = Alignment.End)
+                                        .padding(start = 15.dp)
                                 )
                             }
 
                         }
                     }
 
-                    Box(modifier = Modifier.padding(end =20.dp ), Alignment.BottomEnd ){
-                        Card(shape = CircleShape, modifier = Modifier.size(50.dp)) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "", modifier = Modifier.padding(15.dp))
-
-
-                        }
-                    }
+//                    Box(modifier = Modifier.padding(end =20.dp ), Alignment.BottomEnd ){
+//                        Card(shape = CircleShape, modifier = Modifier.size(50.dp)) {
+//                            Icon(imageVector = Icons.Default.Add, contentDescription = "", modifier = Modifier.padding(15.dp))
+//
+//
+//                        }
+//                    }
 
                     Card(
                         modifier = Modifier
@@ -403,7 +447,6 @@ fun CommunitiesScreen(
 
         }
     }
-
 }
 
 
