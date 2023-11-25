@@ -496,6 +496,7 @@ fun SuccessfullyCollected(
                                                     isWasteCollected = receiver == "Yes",
                                                     allWasteCollected = receiver2 == "Yes",
                                                     feedBack = feedback.text,
+                                                    beforeCollectedPath = viewModel.beforeCollectedPath.value
                                                 )
                                                 viewModel.getCurrentLevel(
                                                     points = pointsEarned + calculatePointsEarned(

@@ -46,6 +46,7 @@ data class CollectedWasteItem(
     val isWasteCollected: Boolean,
     val allWasteCollected: Boolean,
     val feedBack: String,
+    val beforeCollectedPath: String? = null
 ) {
     constructor() : this(
         0.0,
@@ -56,6 +57,7 @@ data class CollectedWasteItem(
         "",
         false,
         false,
+        "",
         ""
     )
 }

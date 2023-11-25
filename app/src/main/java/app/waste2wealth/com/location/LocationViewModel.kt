@@ -45,6 +45,7 @@ class LocationViewModel @Inject constructor(
     var time = mutableStateOf("")
     var tags = mutableStateOf(listOf<Tag>())
     var wastePhoto = mutableStateOf("")
+    var beforeCollectedPath = mutableStateOf("")
     var rewardImage = mutableStateOf("")
     var rewardTitle = mutableStateOf("")
     var rewardDescription = mutableStateOf("")

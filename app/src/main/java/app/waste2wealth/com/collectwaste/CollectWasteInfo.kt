@@ -187,6 +187,7 @@ fun CollectWasteInfo(
                     if (!isWithin) {
                         isDialogVisible = true
                     } else {
+                        viewModel.beforeCollectedPath.value = viewModel.wastePhoto.value
                         navController.navigate(Screens.CollectedWasteSuccess.route)
                     }
                 },

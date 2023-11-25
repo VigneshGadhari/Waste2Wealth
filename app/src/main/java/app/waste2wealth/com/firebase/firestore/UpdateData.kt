@@ -104,6 +104,7 @@ fun updateCollectedWasteToFirebase(
     isWasteCollected: Boolean,
     allWasteCollected: Boolean,
     feedBack: String,
+    beforeCollectedPath: String? = null
 ) {
     val wasteItem = CollectedWasteItem(
         latitude,
@@ -114,12 +115,13 @@ fun updateCollectedWasteToFirebase(
         address,
         isWasteCollected,
         allWasteCollected,
-        feedBack
+        feedBack,
+        beforeCollectedPath
     )
 
     val db = FirebaseFirestore.getInstance()
     timeStamp.let {
-        db.collection("CollectedWastes").document(it.toString()).set(wasteItem)
+        db.collection("TempCollectedWastes").document(it.toString()).set(wasteItem)
             .addOnSuccessListener {
 
                 Toast.makeText(context, "Waste Reported Successfully", Toast.LENGTH_SHORT).show()
