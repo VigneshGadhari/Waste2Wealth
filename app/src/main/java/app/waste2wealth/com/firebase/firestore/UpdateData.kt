@@ -74,7 +74,7 @@ fun updateWasteToFirebase(
 
     val db = FirebaseFirestore.getInstance()
     timeStamp.let {
-        db.collection("AllWastes").document(it.toString()).set(wasteItem)
+        db.collection("TempAllWastes").document(it.toString()).set(wasteItem)
             .addOnSuccessListener {
 
                 Toast.makeText(context, "Waste Reported Successfully", Toast.LENGTH_SHORT).show()
