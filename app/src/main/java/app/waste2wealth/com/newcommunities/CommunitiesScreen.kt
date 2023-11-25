@@ -1,6 +1,7 @@
 package app.waste2wealth.com.newcommunities
 
 import android.util.Log
+import androidx.compose.animation.AnimatedContentScope.SlideDirection.Companion.End
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -29,9 +31,12 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.SwipeUp
@@ -53,6 +58,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -184,8 +190,16 @@ fun CommunitiesScreen(
                         ), shape = RoundedCornerShape(40.dp), modifier = Modifier
                             .layoutId("card")
                     ) {
-                        Box(modifier = Modifier.fillMaxSize()) {
+                        Box(modifier = Modifier.padding(end =20.dp ), Alignment.CenterEnd ){
+                            Card(shape = CircleShape, modifier = Modifier.size(50.dp)) {
+                                Icon(imageVector = Icons.Default.ArrowForwardIos, contentDescription = "", modifier = Modifier.padding(15.dp))
+
+
+                            }
+                        }
+                        Box(modifier = Modifier) {
                             Column {
+
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -213,141 +227,43 @@ fun CommunitiesScreen(
                                     )
                                 }
 
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(20.dp))
                                 Text(
                                     text = community[page].name,
                                     color = CardTextColor,
-                                    fontSize = 20.sp,
+                                    fontSize = 25.sp,
                                     fontFamily = monteBold,
                                     modifier = Modifier.padding(horizontal = 10.dp),
                                     softWrap = true
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Date of Establishment",
-                                    color = Color.Gray,
-                                    fontSize = 12.sp,
-                                    fontFamily = monteBold,
-                                    modifier = Modifier.padding(horizontal = 10.dp)
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = community[page].dateOfEstablishment,
-                                    color = CardTextColor,
-                                    fontSize = 15.sp,
-                                    fontFamily = monteBold,
-                                    modifier = Modifier.padding(horizontal = 10.dp)
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = "Active Region",
-                                    color = Color.Gray,
-                                    fontSize = 12.sp,
-                                    fontFamily = monteBold,
-                                    modifier = Modifier.padding(horizontal = 10.dp)
-                                )
+
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
                                     text = community[page].activeRegion,
                                     color = CardTextColor,
-                                    fontSize = 15.sp,
-                                    fontFamily = monteBold,
+                                    fontSize = 22.sp,
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Column {
-                                        Text(
-                                            text = "No of Members",
-                                            color = Color.Gray,
-                                            fontSize = 12.sp,
-                                            fontFamily = monteBold,
-                                            modifier = Modifier.padding(horizontal = 10.dp)
-                                        )
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Text(
-                                            text = community[page].members.toString(),
-                                            color = CardTextColor,
-                                            fontSize = 15.sp,
-                                            fontFamily = monteBold,
-                                            modifier = Modifier.padding(horizontal = 10.dp)
-                                        )
-                                    }
-                                    Column {
-                                        Text(
-                                            text = "Rating",
-                                            color = Color.Gray,
-                                            fontSize = 12.sp,
-                                            fontFamily = monteBold,
-                                            modifier = Modifier.padding(horizontal = 10.dp)
-                                        )
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        Text(
-                                            text = "${community[page].ratings} / 5",
-                                            color = CardTextColor,
-                                            fontSize = 15.sp,
-                                            fontFamily = monteBold,
-                                            modifier = Modifier.padding(horizontal = 10.dp)
-                                        )
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Button(
-                                    onClick = {
-                                        register.value = true
-                                        currentTitle.value = community[page].name
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = appBackground,
-                                        contentColor = textColor,
-                                        disabledBackgroundColor = appBackground
-                                    ),
-                                    shape = RoundedCornerShape(35.dp),
-                                    modifier = Modifier.padding(start = 10.dp),
 
-                                ) {
-                                    Text(
-                                        text = "Registered" ,
-                                        color = textColor,
-                                        fontSize = 12.sp,
-                                        fontFamily = monteSB,
-                                        modifier = Modifier.padding(bottom = 4.dp),
-                                        maxLines = 1,
-                                        softWrap = true,
-                                    )
-                                }
                                 Spacer(modifier = Modifier.height(10.dp))
-                                Row(
+
+                                Text(
+                                    text = "4 km away",
+                                    color = CardTextColor,
+                                    fontSize = 14.sp,
                                     modifier = Modifier
-                                        .fillMaxWidth()
-//                                        .draggable(
-//                                            state = draggableState,
-//                                            orientation = Orientation.Vertical,
-//                                            startDragImmediately = true,
-//                                        )
-                                    ,
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.SwipeUp,
-                                        contentDescription = null,
-                                        tint = CardTextColor,
-                                        modifier = Modifier
-                                            .padding(bottom = 4.dp)
-//                                            .draggable(
-//                                                state = draggableState,
-//                                                orientation = Orientation.Vertical,
-//                                                startDragImmediately = true,
-//                                            )
-                                            .size(30.dp),
-                                    )
-
-                                }
+                                        .padding(end = 25.dp)
+                                        .align(alignment = Alignment.End)
+                                )
                             }
+
+                        }
+                    }
+
+                    Box(modifier = Modifier.padding(end =20.dp ), Alignment.BottomEnd ){
+                        Card(shape = CircleShape, modifier = Modifier.size(50.dp)) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = "", modifier = Modifier.padding(15.dp))
+
 
                         }
                     }
@@ -392,13 +308,12 @@ fun CommunitiesScreen(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(start = 10.dp)
+                                        .padding(start = 10.dp),
 //                                        .draggable(
 //                                            state = draggableState2,
 //                                            orientation = Orientation.Vertical,
 //                                            startDragImmediately = true,
 //                                        )
-                                    ,
                                 ) {
                                     Text(
                                         text = "Drives Conducted",
@@ -479,8 +394,8 @@ fun CommunitiesScreen(
                 }
 
             }
-            LaunchedEffect(key1 = isCOinVisible){
-                if (isCOinVisible){
+            LaunchedEffect(key1 = isCOinVisible) {
+                if (isCOinVisible) {
                     delay(2000)
                     isCOinVisible = false
                 }
@@ -490,26 +405,6 @@ fun CommunitiesScreen(
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
