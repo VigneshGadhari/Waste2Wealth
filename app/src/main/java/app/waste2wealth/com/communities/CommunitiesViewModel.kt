@@ -15,4 +15,5 @@ class CommunitiesViewModel : ViewModel() {
     val communitiesTime = mutableStateOf("")
     val communitesDescription = mutableStateOf("")
     val communititesOrgBy = mutableStateOf("")
+    val communititesImage = mutableStateOf("")
 }
