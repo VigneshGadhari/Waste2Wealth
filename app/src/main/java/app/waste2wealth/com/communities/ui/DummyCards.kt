@@ -30,6 +30,28 @@ data class DummyCards(
     )
 }
 
+data class RegistrationForm(
+    val dateOfEstablishment: String,
+    val activeRegion: String,
+    val name: String,
+    val description: String,
+    val motivation: String,
+    val location: String,
+    val time: String,
+    val image : String = "https://firebasestorage.googleapis.com/v0/b/waste2wealth-225f8.appspot.com/o/image%207.png?alt=media&token=5ee8672f-b690-408b-b15a-756e4da1f952"
+) {
+    constructor() : this(
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+
+    )
+}
+
 data class Drive(
     val name: String,
     val location: String, // Assuming location is a specific place within India

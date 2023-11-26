@@ -3,6 +3,7 @@ package app.waste2wealth.com.firebase.firestore
 import android.content.Context
 import android.widget.Toast
 import app.waste2wealth.com.communities.ui.DummyCards
+import app.waste2wealth.com.communities.ui.RegistrationForm
 import app.waste2wealth.com.tags.Groups
 import app.waste2wealth.com.tags.Tag
 import app.waste2wealth.com.tags.TagWithoutTips
@@ -137,18 +138,17 @@ fun updateCollectedWasteToFirebase(
 }
 
 fun updateCommunitiesToFirebase(
-    communities: List<DummyCards>
+    communities: RegistrationForm
 ) {
     val db = FirebaseFirestore.getInstance()
-    communities.forEach {
-        db.collection("Communities").document(it.name).set(it)
-            .addOnSuccessListener {
-                println("Communities Updated successfully..")
+    db.collection("Communities").document(communities.name).set(communities)
+        .addOnSuccessListener {
+            println("Communities Updated successfully..")
 
-            }.addOnFailureListener { exception ->
-                println("Fail to update Communities : " + exception.message)
-            }
-    }
+        }.addOnFailureListener { exception ->
+            println("Fail to update Communities : " + exception.message)
+        }
+
 }
 
 fun updateTagsToFirebase(
@@ -165,4 +165,19 @@ fun updateTagsToFirebase(
             }
     }
 }
+
+fun updateCommunityToFirebase(
+    community: DummyCards
+) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("Communities").document(community.name).set(community)
+        .addOnSuccessListener {
+            println("Communities Updated successfully..")
+
+        }.addOnFailureListener { exception ->
+            println("Fail to update Communities : " + exception.message)
+        }
+}
+
+
 

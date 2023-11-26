@@ -10,7 +10,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.BottomDrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.getValue
@@ -31,6 +37,7 @@ import app.waste2wealth.com.newcommunities.CommunitiesScreen
 import app.waste2wealth.com.newcommunities.CommunityInfo
 import app.waste2wealth.com.ui.theme.Waste2WealthTheme
 import app.waste2wealth.com.ui.theme.appBackground
+import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
