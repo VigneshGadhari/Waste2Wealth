@@ -14,6 +14,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,17 +27,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -44,6 +50,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,6 +73,7 @@ import com.jet.firestore.getListOfObjects
 import app.waste2wealth.com.communities.CommunitiesViewModel
 import app.waste2wealth.com.newcommunities.CommunitiesScreen
 import app.waste2wealth.com.newcommunities.CommunityInfo
+import app.waste2wealth.com.newcommunities.Form
 import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
@@ -74,11 +82,12 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CommunitiesSection(
-    name:String,
+    name: String,
     paddingValues: PaddingValues,
     email: String
 ) {
@@ -121,8 +130,11 @@ fun CommunitiesSection(
     var myCommunities = remember {
         mutableStateOf(mutableListOf(""))
     }
+    var isFormVisible = remember {
+        mutableStateOf(false)
+    }
     var selectedType by remember { mutableStateOf(TypeOfCommunities.ALL_COMMUNITIES.names) }
-    LaunchedEffect(key1 = Unit){
+    LaunchedEffect(key1 = Unit) {
         isLaunched = true
     }
     val modalSheetState = rememberModalBottomSheetState(
@@ -135,11 +147,21 @@ fun CommunitiesSection(
             easing = FastOutLinearInEasing
         )
     )
+
+    LaunchedEffect(key1 = modalSheetState.isVisible){
+        if(!modalSheetState.isVisible){
+            isFormVisible.value = false
+        }
+    }
     ModalBottomSheetLayout(
         sheetState = modalSheetState,
         sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
         sheetContent = {
-            CommunityInfo(communitiesViewModel = viewModel)
+            if (isFormVisible.value) {
+                Form(modalSheetState)
+            } else {
+                CommunityInfo(communitiesViewModel = viewModel)
+            }
         }
     ) {
         JetFirestore(path = {
@@ -186,7 +208,8 @@ fun CommunitiesSection(
                         }
 
                         TypeOfCommunities.Memberships.names -> {
-                            allCommunities = communities?.filter { it.name in myCommunities.value }
+                            allCommunities =
+                                communities?.filter { it.name in myCommunities.value }
                             isMemberShips = true
                         }
 
@@ -195,9 +218,15 @@ fun CommunitiesSection(
 
                 var progress2 = remember { mutableStateOf(0f) }
                 val visible =
-                    animateFloatAsState(if (progress2.value > 0.35f) 1f else 0f, label = "").value
+                    animateFloatAsState(
+                        if (progress2.value > 0.35f) 1f else 0f,
+                        label = ""
+                    ).value
                 val inVisible =
-                    animateFloatAsState(if (progress2.value > 0.35f) 0f else 1f, label = "").value
+                    animateFloatAsState(
+                        if (progress2.value > 0.35f) 0f else 1f,
+                        label = ""
+                    ).value
                 val isLoading = remember { mutableStateOf(false) }
                 var expanded by remember { mutableStateOf(false) }
 
@@ -375,7 +404,8 @@ fun CommunitiesSection(
                                                     community[viewModel.currentPage.value].cardColor
                                                 ),
                                                 border = BorderStroke(
-                                                    width = 1.dp, color = Color(0xFFE91E63).fromHex(
+                                                    width = 1.dp,
+                                                    color = Color(0xFFE91E63).fromHex(
                                                         community[viewModel.currentPage.value].cardColor
                                                     )
                                                 ),
@@ -458,17 +488,57 @@ fun CommunitiesSection(
                                 noOfTimesActivity,
                                 myCommunities,
                                 isMemberShips,
-                                modalSheetState
+                                modalSheetState,
+                                isFormVisible
                             )
                         }
                         Log.i("ExpandedState", "HomeScreen: ${viewModel.expandedState.value}")
 
                     }
                 }
+                val coroutineScope = rememberCoroutineScope()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 100.dp, end = 20.dp),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    Card(shape = CircleShape, backgroundColor = textColor) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = null,
+                            tint = appBackground,
+                            modifier = Modifier
+                                .size(35.dp)
+                                .padding(5.dp)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) {
+                                    isFormVisible.value = true
+                                    coroutineScope.launch {
+                                        if (modalSheetState.isVisible) {
+                                            // Hide the bottom sheet
+                                            modalSheetState.hide()
+                                            isFormVisible.value = false
+                                        } else {
+                                            // Show the bottom sheet
+                                            modalSheetState.show()
+
+
+                                        }
+                                    }
+                                }
+                        )
+                    }
+                }
             }
         }
     }
+
+
 }
+
 
 
 

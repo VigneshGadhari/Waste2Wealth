@@ -124,7 +124,8 @@ fun CommunitiesScreen(
     noOfTimesActivity: Int,
     communities: MutableState<MutableList<String>>,
     isMemberships: Boolean,
-    modalSheetState: ModalBottomSheetState
+    modalSheetState: ModalBottomSheetState,
+    isFormVisible: MutableState<Boolean>
 ) {
     val pagerState = rememberPagerState()
     val selectedItempage = remember { mutableStateOf(0) }
