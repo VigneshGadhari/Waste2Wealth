@@ -123,6 +123,7 @@ fun CollectWaste(
 ) {
     val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
     val focusRequester = remember { FocusRequester() }
+    val isMapsSearchVisible = remember { mutableStateOf(true) }
     val focusManager = LocalFocusManager.current
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
@@ -214,18 +215,33 @@ fun CollectWaste(
                             fontSize = 25.sp
                         )
                     }
+                    if (isMapsSearchVisible.value) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "",
+                            tint = textColor,
+                            modifier = Modifier
+                                .padding(end = 20.dp)
+                                .size(25.dp)
+                                .clickable {
+                                    isSearchVisible = !isSearchVisible
+                                }
 
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = "",
-                        tint = textColor,
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .size(25.dp)
-                            .clickable {
-                                isSearchVisible = !isSearchVisible
-                            }
-                    )
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = "",
+                            tint = textColor,
+                            modifier = Modifier
+                                .padding(end = 20.dp)
+                                .size(25.dp)
+                                .clickable {
+                                    isSearchVisible = !isSearchVisible
+                                }
+
+                        )
+                    }
 
 
                 }
@@ -343,6 +359,13 @@ fun CollectWaste(
 
                 }
 
+            }
+            LaunchedEffect(key1 = tabIndex){
+                if (tabIndex == 0) {
+                    isMapsSearchVisible.value = true
+                } else {
+                    isMapsSearchVisible.value = false
+                }
             }
             if (tabIndex == 0) {
                 Spacer(modifier = Modifier.height(30.dp))
