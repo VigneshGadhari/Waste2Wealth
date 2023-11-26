@@ -44,12 +44,12 @@ fun updateInfoToFirebase(
         db.collection("ProfileInfo").document(it).set(profile)
             .addOnSuccessListener {
 
-                Toast.makeText(context, "Profile Updated successfully..", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
 
             }.addOnFailureListener { exception ->
                 Toast.makeText(
                     context,
-                    "Fail to update Profile : " + exception.message,
+                    "Process Failed : " + exception.message,
                     Toast.LENGTH_SHORT
                 )
                     .show()

@@ -51,6 +51,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
@@ -158,8 +159,8 @@ fun CollectWaste(
         Log.i("Wastessssss Collected", it.toString())
     }
 
-    LaunchedEffect(key1 = reportWasteViewModel.selectedTags.size){
-        if (reportWasteViewModel.selectedTags.size == 0){
+    LaunchedEffect(key1 = reportWasteViewModel.selectedTags.size) {
+        if (reportWasteViewModel.selectedTags.size == 0) {
             allWastes = storedWastes
         }
     }
@@ -273,7 +274,7 @@ fun CollectWaste(
                                         .align(Alignment.CenterHorizontally),
                                     maxLines = 1,
 
-                                )
+                                    )
 
                             }
                         }
@@ -347,7 +348,8 @@ fun CollectWaste(
                 Spacer(modifier = Modifier.height(30.dp))
                 if (allWastes != null) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         LazyRow(
@@ -359,19 +361,20 @@ fun CollectWaste(
                             )
                         ) {
                             items(allTags) { item ->
-                                Card(modifier = Modifier
-                                    .padding(10.dp)
-                                    .clickable {
-                                        if (reportWasteViewModel.selectedTags.contains(item)) {
-                                            reportWasteViewModel.selectedTags.remove(item)
-                                        } else {
-                                            reportWasteViewModel.selectedTags.clear()
-                                            reportWasteViewModel.selectedTags.add(item)
-                                        }
-                                        allWastes = allWastes?.filter { wasteItem ->
-                                            wasteItem.tag.contains(item.mapWithoutTips())
-                                        }
-                                    },
+                                Card(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .clickable {
+                                            if (reportWasteViewModel.selectedTags.contains(item)) {
+                                                reportWasteViewModel.selectedTags.remove(item)
+                                            } else {
+                                                reportWasteViewModel.selectedTags.clear()
+                                                reportWasteViewModel.selectedTags.add(item)
+                                            }
+                                            allWastes = allWastes?.filter { wasteItem ->
+                                                wasteItem.tag.contains(item.mapWithoutTips())
+                                            }
+                                        },
                                     backgroundColor = if (reportWasteViewModel.selectedTags.contains(
                                             item
                                         )
@@ -399,7 +402,8 @@ fun CollectWaste(
                                             Text(
                                                 text = item.name.substringBefore(" "),
                                                 color = if (reportWasteViewModel.selectedTags.contains(
-                                                        item)
+                                                        item
+                                                    )
                                                 ) {
                                                     CardTextColor
                                                 } else {
@@ -413,7 +417,8 @@ fun CollectWaste(
                                                 Text(
                                                     text = item.name.substringAfter(" "),
                                                     color = if (reportWasteViewModel.selectedTags.contains(
-                                                            item)
+                                                            item
+                                                        )
                                                     ) {
                                                         CardTextColor
                                                     } else {
@@ -430,7 +435,46 @@ fun CollectWaste(
                             }
                         }
                     }
-                    if (allWastes?.isEmpty() == true){
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "unchecked",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(text = "Little", fontSize = 14.sp)
+
+                            }
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "unchecked",
+                                    modifier = Modifier.size(20.dp)
+
+                                )
+                                Text(text = "Medium", fontSize = 14.sp)
+
+                            }
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "unchecked",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(text = "Substantial", fontSize = 14.sp)
+
+
+                            }
+
+                    }
+                    if (allWastes?.isEmpty() == true) {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize(),

@@ -29,7 +29,7 @@ fun DefaultSnackbar(
                     Text(
                         text = data.message,
                         style = MaterialTheme.typography.body2,
-                        color = textColor
+                        color = appBackground
                     )
                 },
                 action = {
@@ -39,13 +39,13 @@ fun DefaultSnackbar(
                         )) {
                             Text(
                                 text = actionLabel,
-                                color = CardTextColor,
+                                color = appBackground,
                                 style = MaterialTheme.typography.body2,
                             )
                         }
                     }
                 },
-                backgroundColor = appBackground,
+                backgroundColor = textColor.copy(0.8f),
                 elevation = 10.dp,
                 shape = RoundedCornerShape(10.dp)
             )

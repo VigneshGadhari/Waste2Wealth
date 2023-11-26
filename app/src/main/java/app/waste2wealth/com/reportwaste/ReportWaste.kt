@@ -69,6 +69,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.rememberBottomDrawerState
@@ -95,12 +96,14 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.WindowInfo
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -290,10 +293,10 @@ fun ReportWaste(
 
             },
         ) {
-            LaunchedEffect(key1 = modalSheetState.isVisible){
+            LaunchedEffect(key1 = modalSheetState.isVisible) {
                 reportWasteViewModel.showTips.value = !modalSheetState.isVisible
             }
-            LaunchedEffect(key1 = reportWasteViewModel.showTips.value){
+            LaunchedEffect(key1 = reportWasteViewModel.showTips.value) {
                 if (reportWasteViewModel.showTips.value && reportWasteViewModel.tagsList.size > 0) {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = reportWasteViewModel.tagsList.random().tips.random(),
@@ -533,8 +536,8 @@ fun ReportWaste(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(top = 15.dp),
-                                    horizontalArrangement = Arrangement.Start,
+                                        .padding(vertical = 10.dp, horizontal = 10.dp),
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
@@ -542,15 +545,14 @@ fun ReportWaste(
                                         color = textColor,
                                         fontSize = 16.sp,
                                         fontFamily = monteBold,
-                                        modifier = Modifier.padding(start = 45.dp, end = 60.dp)
+                                        modifier = Modifier
                                     )
-                                    Row(modifier = Modifier.padding(end = 25.dp)) {
+                                    Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
                                         Icon(
                                             painter = painterResource(id = R.drawable.coins),
                                             contentDescription = "coins",
                                             modifier = Modifier
-                                                .size(20.dp)
-                                                .padding(end = 5.dp),
+                                                .size(20.dp).padding(end= 3.dp),
                                             tint = Color.Unspecified
                                         )
                                         Text(
@@ -558,6 +560,7 @@ fun ReportWaste(
                                             color = textColor,
                                             fontSize = 15.sp,
                                             fontFamily = monteNormal,
+                                            modifier = Modifier.padding(start= 3.dp)
                                         )
                                     }
 
@@ -653,12 +656,62 @@ fun ReportWaste(
                                     }
                                 }
 
-                                Spacer(modifier = Modifier.height(100.dp))
+                             
+
+                                Row(
+                                    modifier = Modifier
+                                        .padding(vertical = 5.dp)
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(text = "Size of Waste", fontSize = 18.sp)
+                                }
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+
+
+                                    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = "unchecked",
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Text(text = "Little", fontSize = 14.sp)
+
+                                    }
+                                    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = "unchecked",
+                                            modifier = Modifier.size(20.dp)
+
+                                        )
+                                        Text(text = "Medium", fontSize = 14.sp)
+
+                                    }
+                                    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                        Icon(
+                                            imageVector = Icons.Default.CheckCircle,
+                                            contentDescription = "unchecked",
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                        Text(text = "Substantial", fontSize = 14.sp)
+
+
+                                    }
+
+                                }
                             }
+
                             Row(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(bottom = 100.dp),
+                                    .padding(bottom = 50.dp),
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.Bottom
                             ) {
@@ -806,7 +859,7 @@ fun ReportWaste(
                             }
 
                         }
-                        if (reportWasteViewModel.showTips.value){
+                        if (reportWasteViewModel.showTips.value) {
                             AnimatedVisibility(visible = reportWasteViewModel.showTips.value) {
                                 Box(modifier = Modifier, contentAlignment = Alignment.TopStart) {
                                     // Content of the screen
