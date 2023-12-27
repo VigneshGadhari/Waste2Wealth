@@ -87,6 +87,7 @@ import app.waste2wealth.com.firebase.firestore.ProfileInfo
 import app.waste2wealth.com.firebase.firestore.WasteItem
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.maps.MapScreen
+import app.waste2wealth.com.maps.MapsSearchViewModel
 import app.waste2wealth.com.navigation.Screens
 import app.waste2wealth.com.reportwaste.ReportWasteViewModel
 import app.waste2wealth.com.tags.Tag
@@ -119,7 +120,8 @@ fun CollectWaste(
     paddingValues: PaddingValues,
     navController: NavHostController,
     viewModel: LocationViewModel,
-    reportWasteViewModel: ReportWasteViewModel = hiltViewModel()
+    reportWasteViewModel: ReportWasteViewModel = hiltViewModel(),
+    mapsSearchViewModel: MapsSearchViewModel = hiltViewModel(),
 ) {
     val seconds by reportWasteViewModel.tagsSearch.collectAsState(initial = "")
     val focusRequester = remember { FocusRequester() }
@@ -580,6 +582,8 @@ fun CollectWaste(
                 MapScreen(
                     paddingValues = paddingValues,
                     viewModel = viewModel,
+                    mapsSearchViewModel = mapsSearchViewModel,
+                    navController = navController,
                 )
             }
 

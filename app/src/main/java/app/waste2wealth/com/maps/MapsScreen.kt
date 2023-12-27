@@ -28,6 +28,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.rememberBottomDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +47,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +62,7 @@ import app.waste2wealth.com.profile.ProfileImage
 import app.waste2wealth.com.ui.theme.CardColor
 import app.waste2wealth.com.ui.theme.CardTextColor
 import app.waste2wealth.com.ui.theme.appBackground
+import app.waste2wealth.com.ui.theme.lightText
 import app.waste2wealth.com.ui.theme.textColor
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -70,10 +74,18 @@ import com.mapbox.geojson.*
     ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class,
 )
 @Composable
-fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
+fun MapScreen(
+    viewModel: LocationViewModel,
+    paddingValues: PaddingValues,
+    mapsSearchViewModel: MapsSearchViewModel,
+    navController: NavController
+) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getPlaces()
     }
+
+    val query = mapsSearchViewModel.query.collectAsState()
+    val imageState = mapsSearchViewModel.imageState.collectAsState()
 
     var allWastes by remember { mutableStateOf<List<WasteItem>?>(null) }
 
@@ -93,9 +105,6 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
     val latitude = viewModel.latitude
     val longitude = viewModel.longitude
     Log.i("MapScreensssssss", "latitude: $latitude, longitude: $longitude")
-    var isClicked = remember { mutableStateOf(false) }
-    var isReset = remember { mutableStateOf(false) }
-    var currentPoint = remember { mutableStateOf<Point?>(null) }
     val mapsItems = allWastes?.map {
         MapItem(
             image = it.imagePath,
@@ -126,10 +135,10 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                         onPointChange = { point = it },
                         modifier = Modifier
                             .fillMaxSize(),
-                        isClicked = isClicked,
+                        isClicked = mapsSearchViewModel.isClicked,
                         points = mapsItems,
-                        currentPoint = currentPoint,
-                        isReset = isReset,
+                        currentPoint = mapsSearchViewModel.currentPoint,
+                        isReset = mapsSearchViewModel.isReset,
                         currentLocation = Point.fromLngLat(
                             viewModel.longitude, viewModel.latitude
                         )
@@ -137,7 +146,7 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                 }
             }
             AnimatedVisibility(
-                visible = !isClicked.value,
+                visible = !mapsSearchViewModel.isClicked.value,
                 enter = slideInVertically(tween(1000), initialOffsetY = {
                     it
                 }),
@@ -201,9 +210,9 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Button(
                                             onClick = {
-                                                isReset.value = false
-                                                isClicked.value = true
-                                                currentPoint.value = item.point
+                                                mapsSearchViewModel.isReset.value = false
+                                                mapsSearchViewModel.isClicked.value = true
+                                                mapsSearchViewModel.currentPoint.value = item.point
                                             },
                                             shape = RoundedCornerShape(10.dp),
                                             colors = ButtonDefaults.buttonColors(
@@ -235,40 +244,69 @@ fun MapScreen(viewModel: LocationViewModel, paddingValues: PaddingValues) {
                     }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 10.dp, vertical = 25.dp),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Card(
-                    modifier = Modifier
-                        .padding(end = 10.dp),
-                    shape = RoundedCornerShape(10.dp),
-                    elevation = 10.dp
-                ) {
-                    Button(
-                        onClick = {
-                            isReset.value = true
-                            isClicked.value = false
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(horizontal = 10.dp, vertical = 25.dp),
+//                contentAlignment = Alignment.TopEnd
+//            ) {
+//                Card(
+//                    modifier = Modifier
+//                        .padding(end = 10.dp),
+//                    shape = RoundedCornerShape(10.dp),
+//                    elevation = 10.dp
+//                ) {
+//                    Button(
+//                        onClick = {
+//                            isReset.value = true
+//                            isClicked.value = false
+//
+//                        },
+//                        shape = RoundedCornerShape(10.dp),
+//                        colors = ButtonDefaults.buttonColors(
+//                            backgroundColor = CardColor,
+//                            contentColor = CardTextColor
+//                        )
+//                    ) {
+//                        Text(
+//                            text = "Reset",
+//                            color = CardTextColor,
+//                            fontSize = 10.sp,
+//                            fontWeight = FontWeight.Normal
+//                        )
+//                    }
+//
+//                }
+//            }
 
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
+                Column {
+                    MapsSearchBar(
+                        mutableText = query.value,
+                        onValueChange = {
+                            mapsSearchViewModel.setQuery(it)
                         },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CardColor,
-                            contentColor = CardTextColor
-                        )
+                        viewModel = mapsSearchViewModel,
+                        onTrailingClick = {
+                            mapsSearchViewModel.setQuery(TextFieldValue(""))
+                        },
+                        navController = navController
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    AnimatedVisibility(
+                        visible = imageState.value !is ApiState.NotStarted && imageState.value !is ApiState.ReceivedPhoto,
                     ) {
-                        Text(
-                            text = "Reset",
-                            color = CardTextColor,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Normal
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp),
+                            color = lightText
                         )
                     }
 
                 }
             }
+
         }
 
     }

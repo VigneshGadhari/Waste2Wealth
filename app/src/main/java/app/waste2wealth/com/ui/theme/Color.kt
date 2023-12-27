@@ -15,7 +15,8 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 val backGround = Color(0xFF21c998)
-
+val CardBackground = Color(0xFF122754)
+val lightText = Color(0xFF3f68a8)
 
 
 @SuppressLint("ConflictingOnColor")
