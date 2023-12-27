@@ -71,8 +71,8 @@ class LocationViewModel @Inject constructor(
                         }
 
                         is Resource.Success -> {
-                            resource.result.results?.forEach { address ->
-                                listOfAddresses.add(address.formattedAddress)
+                            resource.result.items?.forEach { address ->
+                                listOfAddresses.add(address?.address?.label)
                             }
                             latitude = it.latitude
                             longitude = it.longitude
