@@ -28,6 +28,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 import app.waste2wealth.com.bottombar.BottomBar
 import app.waste2wealth.com.components.permissions.PermissionDrawer
+import app.waste2wealth.com.hereMaps.HereMaps
+import app.waste2wealth.com.hereMaps.PermissionsRequestor
+import app.waste2wealth.com.hereMaps.initializeHERESDK
 import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver
 import app.waste2wealth.com.login.onboarding.SmsBroadcastReceiver.SmsBroadcastReceiverListener
@@ -44,6 +47,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.play.integrity.internal.c
+import com.here.sdk.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.annotation.Nullable
 
@@ -51,6 +55,8 @@ import javax.annotation.Nullable
 class MainActivity : ComponentActivity() {
     private lateinit var smsBroadcastReceiver: SmsBroadcastReceiver
     private lateinit var viewModel: LocationViewModel
+    private var mapView: MapView? = null
+    private var permissionsRequestor: PermissionsRequestor? = null
 
     @OptIn(
         ExperimentalAnimationApi::class, ExperimentalPermissionsApi::class,
@@ -59,6 +65,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            initializeHERESDK(context = applicationContext.applicationContext)
             Waste2WealthTheme {
                 val navController = rememberAnimatedNavController()
                 val permissionState = rememberMultiplePermissionsState(
@@ -110,13 +117,20 @@ class MainActivity : ComponentActivity() {
                         val client = SmsRetriever.getClient(this)
                         client.startSmsUserConsent(null)
                         println(it)
+                        permissionsRequestor = PermissionsRequestor(this)
 
-                        NavigationController(
-                            scaffoldState,
-                            locationViewModel,
-                            navController,
-                            it
-                        )
+                        mapView?.let {
+                            permissionsRequestor?.let { per ->
+                                HereMaps(savedInstanceState, it, per)
+                            }
+                        }
+
+//                        NavigationController(
+//                            scaffoldState,
+//                            locationViewModel,
+//                            navController,
+//                            it
+//                        )
 
                     }
                 }
@@ -160,6 +174,17 @@ class MainActivity : ComponentActivity() {
                 viewModel.result.value = message
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        mapView?.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionsRequestor?.onRequestPermissionsResult(requestCode, grantResults)
     }
 
 }
