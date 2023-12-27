@@ -6,6 +6,7 @@ import app.waste2wealth.com.ktorClient.here.dto.HerePlaces
 import app.waste2wealth.com.ktorClient.hereSearch.HereSearchResponse
 import app.waste2wealth.com.ktorClient.placesAPI.dto.Places
 import app.waste2wealth.com.ktorClient.routing.dto.HereRoutes
+import app.waste2wealth.com.ktorClient.weather.dto.HereWeather
 
 
 interface PlacesRepository {
@@ -25,6 +26,11 @@ interface PlacesRepository {
         origin: String,
         destination:String
     ): HereRoutes
+
+    suspend fun hereWeather(
+        latitude: String,
+        longitude: String
+    ): HereWeather
 
 
 }

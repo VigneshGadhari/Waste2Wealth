@@ -1,6 +1,7 @@
 package app.waste2wealth.com.maps
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -10,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,6 +48,7 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,6 +60,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -63,9 +68,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import app.waste2wealth.com.collectwaste.WasteItemCard
+import app.waste2wealth.com.collectwaste.convertDistance
+import app.waste2wealth.com.collectwaste.distance
+import app.waste2wealth.com.collectwaste.getTimeAgo
+import app.waste2wealth.com.location.LocationViewModel
 import app.waste2wealth.com.login.TextFieldWithIcons
+import app.waste2wealth.com.tags.Tag
+import app.waste2wealth.com.tags.TagItem
 import app.waste2wealth.com.ui.theme.CardBackground
+import app.waste2wealth.com.ui.theme.CardColor
+import app.waste2wealth.com.ui.theme.CardTextColor
+import app.waste2wealth.com.ui.theme.appBackground
 import app.waste2wealth.com.ui.theme.lightText
+import app.waste2wealth.com.ui.theme.monteBold
+import app.waste2wealth.com.ui.theme.monteSB
 import app.waste2wealth.com.ui.theme.textColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,6 +92,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MapsSearchBar(
+    locationViewModel: LocationViewModel,
     mutableText: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     onTrailingClick: () -> Unit = {},
@@ -84,6 +102,7 @@ fun MapsSearchBar(
     val isChecking by viewModel.isChecking.collectAsState()
     var isCheckingJob: Job? = null // Initialize isCheckingJob
     val addresses = viewModel.addresses.collectAsState()
+    val moreWasteInfo = viewModel.moreInfoWaste.collectAsState()
 
     Column(
         modifier = Modifier
@@ -208,8 +227,164 @@ fun MapsSearchBar(
                 }
             }
         }
+
+        AnimatedVisibility(
+            visible = addresses.value.isEmpty() && viewModel.isClicked.value,
+            enter = slideInVertically(tween(1000), initialOffsetY = {
+                it
+            }),
+            exit = slideOutVertically(tween(1000), targetOffsetY = {
+                it
+            })
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                MoreWasteItemCard(
+                    modifier = Modifier,
+                    locationNo = "Your Location",
+                    address = moreWasteInfo.value?.address ?: "",
+                    distance = "${moreWasteInfo.value?.distance}",
+                    time = moreWasteInfo.value?.time ?: "",
+                    weather = moreWasteInfo.value?.weather ?: ""
+                ) {
+
+                }
+            }
+
+        }
     }
 }
+
+
+@Composable
+fun MoreWasteItemCard(
+    weather: String,
+    modifier: Modifier = Modifier,
+    locationNo: String,
+    address: String,
+    distance: String,
+    time: String,
+    isCollectedInfo: Boolean = false,
+    isEllipsis: Boolean = true,
+    onCollected: () -> Unit = {},
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(13.dp)
+            .clickable {
+                onClick()
+            },
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = CardColor,
+        elevation = 5.dp
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 10.dp,
+                        bottom = 7.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.LocationOn,
+                    contentDescription = "",
+                    tint = Color.Gray,
+                    modifier = Modifier
+                        .size(25.dp)
+                        .padding(end = 10.dp)
+                )
+
+                Text(
+                    text = locationNo,
+                    color = Color.Gray,
+                    fontFamily = monteSB,
+                    fontSize = 14.sp
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, bottom = 7.dp, end = 15.dp)
+            ) {
+                Text(
+                    text = address,
+                    color = CardTextColor,
+                    fontFamily = monteSB,
+                    fontSize = 15.sp,
+                    maxLines = if (isEllipsis) 1 else Int.MAX_VALUE,
+                    softWrap = true,
+                    overflow = if (isEllipsis) TextOverflow.Ellipsis else TextOverflow.Visible
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp, bottom = 7.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = weather,
+                        color = CardTextColor.copy(0.75f),
+                        fontFamily = monteBold,
+                        fontSize = 10.sp
+                    )
+
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Button(
+                    onClick = {
+                        if (isCollectedInfo) onCollected() else onClick()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = appBackground,
+                        contentColor = textColor
+                    ),
+                    shape = RoundedCornerShape(15.dp),
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    Text(
+                        text = if (isCollectedInfo) "Navigate" else "Collect",
+                        color = textColor,
+                        fontFamily = monteSB,
+                        fontSize = 10.sp
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp, bottom = 7.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = "$distance, $time minutes",
+                        color = CardTextColor.copy(0.75f),
+                        fontFamily = monteBold,
+                        fontSize = 10.sp
+                    )
+
+                }
+            }
+        }
+
+
+    }
+
+}
+
 
 @Composable
 fun TextFieldWithIcons(

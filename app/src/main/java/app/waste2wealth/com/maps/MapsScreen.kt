@@ -290,7 +290,8 @@ fun MapScreen(
                         onTrailingClick = {
                             mapsSearchViewModel.setQuery(TextFieldValue(""))
                         },
-                        navController = navController
+                        navController = navController,
+                        locationViewModel = viewModel
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     AnimatedVisibility(

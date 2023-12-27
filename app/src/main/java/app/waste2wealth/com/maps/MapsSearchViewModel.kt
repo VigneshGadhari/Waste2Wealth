@@ -9,6 +9,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import app.waste2wealth.com.ktorClient.repository.PlacesRepository
+import app.waste2wealth.com.location.LocationClientProvider
+import app.waste2wealth.com.location.LocationTracker
+import app.waste2wealth.com.tags.Tag
+import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,13 +46,22 @@ import javax.inject.Inject
 class MapsSearchViewModel @Inject constructor(
     private val application: Application,
     private val repository: PlacesRepository,
+    private val locationTracker: LocationTracker,
 ) : AndroidViewModel(application) {
+    private val locationClient = LocationClientProvider(
+        application.applicationContext,
+        LocationServices.getFusedLocationProviderClient(application.applicationContext)
+    )
+
 
     private val _imageState = MutableStateFlow<ApiState>(ApiState.NotStarted)
     val imageState: StateFlow<ApiState> = _imageState.asStateFlow()
 
     private val _query = MutableStateFlow(TextFieldValue())
     val query: StateFlow<TextFieldValue> = _query.asStateFlow()
+
+    private val _moreInfoWaste = MutableStateFlow<MoreWasteInfo?>(null)
+    val moreInfoWaste: StateFlow<MoreWasteInfo?> = _moreInfoWaste.asStateFlow()
 
     private val _addresses = MutableStateFlow<List<Address>>(listOf())
     val addresses: StateFlow<List<Address>> = _addresses.asStateFlow()
@@ -71,6 +84,7 @@ class MapsSearchViewModel @Inject constructor(
 
     var isReset = mutableStateOf(false)
     var currentPoint = mutableStateOf<Point?>(null)
+    var currentAddress = mutableStateOf<String>("")
 
 
     fun setImageState(state: ApiState) {
@@ -122,10 +136,13 @@ class MapsSearchViewModel @Inject constructor(
         }
     }
 
+
     fun searchPlace(index: Int) {
         try {
             isReset.value = false
             isClicked.value = true
+            currentAddress.value = _addresses.value[index].name
+            getMoreWasteInfo()
             currentPoint.value = _addresses.value[index].let {
                 Point.fromLngLat(it.longitude, it.latitude)
             }
@@ -146,6 +163,37 @@ class MapsSearchViewModel @Inject constructor(
 //            _addresses.value = listOf()
 //            e.printStackTrace()
 //        }
+    }
+
+
+    fun getMoreWasteInfo() {
+        viewModelScope.launch {
+            locationTracker.getCurrentLocation()?.let {myLocation ->
+                withContext(Dispatchers.IO) {
+                    try {
+                        val apiData = repository.hereRoutes(
+                            transportMode = "car",
+                            origin = "${myLocation.latitude},${myLocation.longitude}",
+                            destination = "${currentPoint.value?.latitude()},${currentPoint.value?.longitude()}"
+                        )
+                        val weatherData = repository.hereWeather(
+                            latitude = "${currentPoint.value?.latitude()}",
+                            longitude = "${currentPoint.value?.longitude()}",
+                        )
+                        _moreInfoWaste.value = MoreWasteInfo(
+                            weather = "${weatherData.current?.temperature} Celsius",
+                            distance = apiData.routes?.get(0)?.sections?.get(0)?.summary?.length.toString(),
+                            time = apiData.routes?.get(0)?.sections?.get(0)?.summary?.duration.toString(),
+                            latitude = currentPoint.value?.latitude() ?: 0.0,
+                            longitude = currentPoint.value?.longitude() ?: 0.0,
+                            address = currentAddress.value
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
     }
 
     fun getAutoComplete(query: String) {
@@ -222,4 +270,14 @@ data class Address(
     val formattedAddress: String? = null,
     val countryIso1: String? = null,
 )
+
+data class MoreWasteInfo(
+    val weather: String,
+    val distance: String,
+    val time: String,
+    val latitude: Double,
+    val longitude: Double,
+    val address: String
+)
+
 

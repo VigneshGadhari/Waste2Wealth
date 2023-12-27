@@ -10,4 +10,6 @@ object ApiRoutes {
 
     const val  routing = "https://router.hereapi.com/v8/routes"
 
+    const val weather = "https://weather.cc.api.here.com/weather/1.0/report.json"
+
 }

@@ -726,7 +726,7 @@ fun WasteItemCard(
 
 }
 
-private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val theta = lon1 - lon2
     var dist = (sin(deg2rad(lat1))
             * sin(deg2rad(lat2))
