@@ -150,4 +150,7 @@ dependencies {
     // MapBox
     implementation("com.mapbox.maps:android:10.14.0")
 
+    implementation(fileTree(baseDir = "libs"))
+
+
 }
