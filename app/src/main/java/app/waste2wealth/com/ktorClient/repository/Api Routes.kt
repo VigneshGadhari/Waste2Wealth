@@ -8,5 +8,6 @@ object ApiRoutes {
 
     const val reverseGeocoding = "https://revgeocode.search.hereapi.com/v1/"
 
+    const val  routing = "https://router.hereapi.com/v8/routes"
 
 }

@@ -6,6 +6,7 @@ import app.waste2wealth.com.ktorClient.geocoding.GeoCodes
 import app.waste2wealth.com.ktorClient.here.dto.HerePlaces
 import app.waste2wealth.com.ktorClient.hereSearch.HereSearchResponse
 import app.waste2wealth.com.ktorClient.placesAPI.dto.Places
+import app.waste2wealth.com.ktorClient.routing.dto.HereRoutes
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -76,6 +77,35 @@ class PlacesRepoImpl(private val client: HttpClient) : PlacesRepository {
             Log.i("ApiException", e.message.toString())
             return HereSearchResponse(
                 items = null,
+            )
+        }
+    }
+
+    override suspend fun hereRoutes(
+        transportMode: String,
+        origin: String,
+        destination: String
+    ): HereRoutes {
+        return try {
+            val a = client.get<HereRoutes> {
+                val encodeOrigin = URLEncoder.encode(origin, "UTF-8")
+                val encodeDestination = URLEncoder.encode(destination, "UTF-8")
+                url(
+                    ApiRoutes.routing +
+                            "?transportMode=$transportMode&origin=$encodeOrigin&destination=$encodeDestination" +
+                            "&return=summary&apiKey=OVXwPOfMbCfNnN2Vfv3lWpZnf_MMioswgR650v5gDug")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                headers {
+                    append("Accept", "*/*")
+                    append("Content-Type", "application/json")
+                }
+            }
+            println("photooooo: $a")
+            return a
+        } catch (e: Exception) {
+            Log.i("ApiException", e.message.toString())
+            return HereRoutes(
+                routes = null
             )
         }
     }

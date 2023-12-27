@@ -5,6 +5,7 @@ import app.waste2wealth.com.ktorClient.geocoding.GeoCodes
 import app.waste2wealth.com.ktorClient.here.dto.HerePlaces
 import app.waste2wealth.com.ktorClient.hereSearch.HereSearchResponse
 import app.waste2wealth.com.ktorClient.placesAPI.dto.Places
+import app.waste2wealth.com.ktorClient.routing.dto.HereRoutes
 
 
 interface PlacesRepository {
@@ -18,6 +19,12 @@ interface PlacesRepository {
         longitude: Double,
         limit: Int = 6,
     ): HereSearchResponse
+
+    suspend fun hereRoutes(
+        transportMode: String,
+        origin: String,
+        destination:String
+    ): HereRoutes
 
 
 }
