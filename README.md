@@ -1,91 +1,115 @@
-# Waste2Wealth
-Making Cities Sustainable, Rewarding, and Fun 
-It's the app that makes a difference. 
-Help us clean up our communities, And earn rewards for your efforts.
+<h1 align="center"> 📲 Waste2Wealth ♻️ </h1> <br>
+<p align="center">
+  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/here_Banner.png?alt=media&token=fc9aebbd-92ec-49d7-b65c-8a6df0f5e761">
+    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/here_Banner.png?alt=media&token=fc9aebbd-92ec-49d7-b65c-8a6df0f5e761" alt="HiewAF9.md.png" border="0">
+  </a
+</p>
 
 
-## Overview
+# Waste2Wealth - Making Cities Sustainable, Rewarding & Fun
+
+![Static Badge](https://img.shields.io/badge/Kotlin-black?style=for-the-badge&logo=kotlin&logoColor=%237F52FF&labelColor=black)
+![Static Badge](https://img.shields.io/badge/Jetpack_Compose-black?style=for-the-badge&logo=Jetpack%20Compose&logoColor=%234285F4&labelColor=black)
+![Static Badge](https://img.shields.io/badge/Firebase-black?style=for-the-badge&logo=firebase&logoColor=%23FFCA28&labelColor=black)
+![Static Badge](https://img.shields.io/badge/Mapbox-black?style=for-the-badge&logo=mapbox&logoColor=%23000000&labelColor=white)
+![Static Badge](https://img.shields.io/badge/HERE-black?style=for-the-badge&logo=here&logoColor=%2300AFAA&labelColor=black)
+
+**Available only for Android.**
+
+### It's the app that makes a difference. Help us clean up our communities, And earn rewards for your efforts.
+
+# Overview
 _____________________________________________________________________________________________________________________________________________
 At Waste2Wealth, we strongly believe in the power of individuals to make a positive impact on their environment. Our mission is to provide a sustainable solution that inspires people to take responsibility for keeping their surroundings clean and hygienic.
 
 With the increasing concern about littering and waste disposal in public areas, we recognized the need for an innovative approach to tackle this issue. Waste2Wealth is our solution to promote responsible waste management and raise awareness about the importance of maintaining clean communities.
 
-Our Vision
+### Our Vision
 
 We envision a world where every individual understands their role in preserving a clean and healthy environment. We imagine communities that are litter-free, where waste is properly managed, and where everyone actively participates in keeping their surroundings clean.
+_____________________________________________________________________________________________________________________________________________
 
-Our Solution
+# Features 
+_____________________________________________________________________________________________________________________________________________
 
-Waste2Wealth is a state-of-the-art mobile application that empowers individuals to contribute to the cleanliness of their surroundings. Our user-friendly interface and innovative features encourage users to collect and report waste, participate in challenges organized by local organizations in their city, and earn rewards for their efforts.
+💼 **Waste Collection** 🤝 - Report `littered` areas, join cleanup efforts easily.
 
-## Demo Video
-___
-> Demo Video Link: [Click here](https://youtu.be/90SDLmkjCcc)
+🎁 **Reward System** 🎉 - Earn points for active `participation`, redeem rewards.
 
-## UN Sustainable Development Goals And Targets
-___________________________________________________________________________________________________________________________________________________
-### SDG 11: Make cities and human settlements inclusive, safe, resilient and sustainable
+🔒 **Location Tracking** 📍- Track movement, optimize cleanup with `real-time` data.
 
-![image](https://github.com/teamcentennials/Waste2Wealth/assets/135758555/94c2cfac-c269-49bd-8423-08e4bc2f435d)
+🦾 **Community Engagement** 🤝- Host social cleanups, engage volunteers for `rewards`.
 
-> TARGET 11.6 -REDUCE THE ENVIRONMENTAL IMPACT OF CITIES
-By 2030, reduce the adverse per capita environmental impact of cities, including by paying special attention to air quality and municipal and other waste management.
-
-## Core Functionalities
-___________________________________________________________________________________________________________________________________________________
-### Waste Collection🤝:
-Our app allows users to easily report and collect waste in their vicinity. With just a few taps, users can notify our system about littered areas and actively participate in the cleanup process.
-
-### Reward System 🎁 :
-We believe that positive reinforcement is key to promoting lasting change. Waste2Wealth rewards users with points for their active participation in waste collection and disposal. These points can be redeemed for exciting rewards offered by our esteemed third-party partners.
-
-### Location Tracking 🔒:
-Our app incorporates background location tracking, ensuring accurate tracking of the user's movements while minimizing battery usage. This feature allows us to provide real-time information about waste accumulation in different areas and optimize cleanup efforts.
-
-### Community Engagement 🦾:
-Our app hosts various organizations that actively host social cleanups in the city. These organizations can host their activities as challenges and get the volunteers they need through our application. Volunteers can get rewarded for their participation to keep going and stay motivated.
+_____________________________________________________________________________________________________________________________________________
 
 
-## Distribution
-______________________________________________________________________________________________________________________________________________________
- Download Apk ✅- [Click here](https://drive.google.com/drive/folders/1yQvjFDko7IEKAGTaIgRcW-GzbD2S_0OZ)
- 
- Note :- Required AGP is 8.2.0 and above. Is Backward Compatible. To run on lower android studio versions go to gradle/libs.version.toml and change AGP as per your Android Studio Version.
-
-## Technologies
-__________________________________________________________________________________________________________________________________________________
-![alt text](https://img.shields.io/badge/Kotlin-FFFFFF?style=for-the-badge&logo=Kotlin) ![alt text](https://img.shields.io/badge/Firebase-FFFFFF?style=for-the-badge&logo=Firebase) ![alt text](https://img.shields.io/badge/GoogleCloud-FFFFFF?style=for-the-badge&logo=GoogleCloud) ![alt text](https://img.shields.io/badge/JetpackCompose-FFFFFF?style=for-the-badge&logo=JetpackCompose)
-
-## Achievement 
-___________________________________________________________________________________________________________________________________________________
-
-![image](https://github.com/teamcentennials/Waste2Wealth/assets/135758555/02d9389f-0076-4b8c-955a-1ffc31dba769)
-
-Event Name: Mumbai Hacks
-Date : 3rd , 4th june 2023
-Duration : 24 hours Hackathon
-
- Event Description:
-Mumbai's biggest hackathon Mumbai Hacks For the first time organized by the Tech Entrepreneurs Association of Mumbai (TEAM) is a non-profit, independent
-industry body formed with the mission of advancing the tech startup ecosystem of Mumbai. and
-made in mumbai (Community for tech, startups and small businesses) in collaboration with
-Google Developers, Wework labs , Llamalindex and replit, 
-
- It spanned 24 hours from 3rd June to 4th June and invited participants across India to
-provide Technical Solutions to the following tracks.
-1. Generative AI ( Build for the future with generative AI tools like Bard )
-2. Cybersecurity ( Make our digital world a safer place to live in)
-3. Solve for Mumbai ( Tech that makes Mumbai a better place to live in )
-4. Student Track ( Pick any problem from the three domains and build! )
-
- The event Hosted over 10 judges, 24 mentors, 4 tracks, and attracted 500+ participants
- Judges:
-![image](https://github.com/teamcentennials/Waste2Wealth/assets/95966154/fe24dd3c-e080-4255-a921-8c7f8ad385e0)
- Mentors:
-![image](https://github.com/teamcentennials/Waste2Wealth/assets/95966154/be0a6ffc-ba2a-41c8-b792-278ed69a75e6)
+| Uses of Here API    |
+|--------------------------|
+| 1. Geocoding          |
+| 2. Reverse Geocoding     |
+| 3. Here AutoSuggest |
+| 4. Here Search |
+| 5. Here Routing |
+| 6. Here Weather |
 
 
-During this hackathon we worked on the track Solve for Mumbai and got overwhelming user feedback and on ground mentoring from best in the industry 
+## Visulize it in most beautiful way
+
+| Preview  | 
+|----------|
+| ![Preview](https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenrecorder-2023-12-28-02-30-21-10.gif?alt=media&token=aac5df57-2e39-4e18-be88-21a531b4eb2f) |
+
+
+## Let's have a look
+
+<p align="center">
+  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.34.02%20AM.png?alt=media&token=5454b3ee-bcb7-4383-920b-1a2535596f05">
+    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.34.02%20AM.png?alt=media&token=5454b3ee-bcb7-4383-920b-1a2535596f05" border="0"></a>
+</p>
+
+<p align="center">
+  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.44.49%20AM.png?alt=media&token=4871ff11-fa42-4cc3-8cdc-e0c8a296383d">
+    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.44.49%20AM.png?alt=media&token=4871ff11-fa42-4cc3-8cdc-e0c8a296383d" border="0"></a>
+</p>
+
+_____________________________________________________________________________________________________________________________________________
+
+### Tech Stack
+| Name | Description |
+| --- | --- |
+| [`@here-api`](https://www.here.com/docs/) | Here API |
+| [`@mapbox`](https://docs.mapbox.com/) | Mapbox |
+| [`@compose`](https://developer.android.com/jetpack/compose) | Jetpack Compose |
+| [`@materialUI`](https://m3.material.io/) | Material 3 |
+| [`@ktor-client`](https://ktor.io/docs/create-client.html) | Ktor CLient |
+| [`@navigation-compose`](https://developer.android.com/jetpack/compose/navigation) | Navigation Compose |
+| [`@coil`](https://coil-kt.github.io/coil/compose/) | Coil-Compose |
+| [`@ksp-room`](https://developer.android.com/build/migrate-to-ksp) | Room Android |
+| [`@dagger-hilt`](https://developer.android.com/training/dependency-injection/hilt-android) | Dagger-hilt |
+| [`@camera-x`](https://developer.android.com/training/camerax) | Camera-X |
+| [`@mlkit`](https://developers.google.com/ml-kit) | MLKit-Google |
+| [`@keyboard-compose`](https://kotlinlang.org/api/latest/jvm/stdlib/) | Kotlin-STDLIB |
+
+## Steps To Run on your Device
+- The Following project was build using `AGP 8.1.0`
+-  Check your Android Studio's AGP.
+-  If it is `lower` than given AGP follow given steps :-
+-  -  #### Go to gradle/libs.version.toml
+   -  #### In [versions] change value of AGP as per requirement
+
+## Steps To Install on your Device
+- Visit the following link 
+- [Install Now](https://drive.google.com/drive/folders/1NAb6Yp4-YvJREhAYW8qH5gsdSNdRjYDS?usp=sharing)
+- Minimum SDK `27` --> `Android version 8.1`
+
+
+## Authors
+
+[@vaishnavapingale](https://www.linkedin.com/in/vaishnavpingale/)
+[@thekaailashsharma](https://linkedin.com/in/thekaailashsharma)
+
+
+
 
 
 
