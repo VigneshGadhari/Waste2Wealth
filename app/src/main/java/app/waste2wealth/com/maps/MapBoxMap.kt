@@ -22,6 +22,7 @@ import com.mapbox.android.gestures.StandardScaleGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
 import com.mapbox.maps.extension.style.atmosphere.generated.atmosphere
 import com.mapbox.maps.extension.style.expressions.dsl.generated.rgb
 import com.mapbox.maps.extension.style.expressions.dsl.generated.zoom
@@ -68,7 +69,7 @@ fun MapBoxMap(
                 .build()
             MapView(context).also { mapView ->
                 mapView.getMapboxMap().loadStyle(
-                    style("mapbox://styles/thekaailashsharma/clmk6u38j01tn01r74ejhgk4p") {
+                    style(Style.TRAFFIC_NIGHT) {
                         val zoom = zoom()
                         Log.i("Zoommmmmmmm", "${zoom.literalValue}")
                         +terrain("terrain-enable")
