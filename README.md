@@ -103,10 +103,7 @@ ________________________________________________________________________________
 - Minimum SDK `27` --> `Android version 8.1`
 
 
-## Authors
 
-[@vaishnavapingale](https://www.linkedin.com/in/vaishnavpingale/)
-[@thekaailashsharma](https://linkedin.com/in/thekaailashsharma)
 
 
 
