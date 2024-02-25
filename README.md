@@ -1,112 +1,65 @@
-<h1 align="center"> 📲 Waste2Wealth ♻️ </h1> <br>
-<p align="center">
-  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/here_Banner.png?alt=media&token=fc9aebbd-92ec-49d7-b65c-8a6df0f5e761">
-    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/here_Banner.png?alt=media&token=fc9aebbd-92ec-49d7-b65c-8a6df0f5e761" alt="HiewAF9.md.png" border="0">
-  </a
-</p>
+<h1 align="center"> 👗👕 WOWDrobe ♻️ </h1> <br>
+<div align="center">
+  
+![image](https://github.com/WowDrobe/.github/assets/59131714/dffeb4c3-e3f9-4509-ab4a-e3f0475733d6)
 
+</div>
 
-# Waste2Wealth - Making Cities Sustainable, Rewarding & Fun
+# WOWDrobe - Revive-Revibe-Restyle
 
 ![Static Badge](https://img.shields.io/badge/Kotlin-black?style=for-the-badge&logo=kotlin&logoColor=%237F52FF&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/Jetpack_Compose-black?style=for-the-badge&logo=Jetpack%20Compose&logoColor=%234285F4&labelColor=black)
 ![Static Badge](https://img.shields.io/badge/Firebase-black?style=for-the-badge&logo=firebase&logoColor=%23FFCA28&labelColor=black)
-![Static Badge](https://img.shields.io/badge/Mapbox-black?style=for-the-badge&logo=mapbox&logoColor=%23000000&labelColor=white)
-![Static Badge](https://img.shields.io/badge/HERE-black?style=for-the-badge&logo=here&logoColor=%2300AFAA&labelColor=black)
 
 **Available only for Android.**
 
-### It's the app that makes a difference. Help us clean up our communities, And earn rewards for your efforts.
+### A search engine for fashion companies to find clothes and accessories that go well together cut for a specific body type, or are made with sustainable materials.
 
 # Overview
 _____________________________________________________________________________________________________________________________________________
-At Waste2Wealth, we strongly believe in the power of individuals to make a positive impact on their environment. Our mission is to provide a sustainable solution that inspires people to take responsibility for keeping their surroundings clean and hygienic.
 
-With the increasing concern about littering and waste disposal in public areas, we recognized the need for an innovative approach to tackle this issue. Waste2Wealth is our solution to promote responsible waste management and raise awareness about the importance of maintaining clean communities.
+Stem, a search engine for fashion, empowers individuals to embrace sustainable style. By merging AI-generated outfit suggestions with existing wardrobes and thrifted treasures, Stem promotes circular fashion, reduces textile waste, and aligns with UN sustainability goals. 
 
-### Our Vision
+Users discover unique, personalized looks while contributing to a global movement towards responsible consumption and climate action. This venture represents a lucrative business model built on ethical principles, paving the way for a future where fashion harmonizes with both personal expression and environmental responsibility.
 
-We envision a world where every individual understands their role in preserving a clean and healthy environment. We imagine communities that are litter-free, where waste is properly managed, and where everyone actively participates in keeping their surroundings clean.
+# Our Vision
+
+## We envision a future where fashion thrives in harmony with the planet and individual expression. Imagine a world where:
+
+- Style is sustainable: Every outfit seamlessly blends personal flair with eco-conscious choices.
+- AI empowers individuality: Cutting-edge algorithms curate unique looks that complement existing wardrobes and promote thrifting.
+- Waste becomes treasure: Pre-loved clothing finds new life, minimizing textile waste and reducing the industry's footprint.
+- Consciousness is cool: Embracing sustainable practices becomes the norm, aligning with UN goals and inspiring responsible consumption.
+- Fashion fosters change: Our platform empowers individuals to actively participate in a global movement towards a more sustainable future.
+
+### This is the vision that drives Stem. We are more than just a search engine; we are a catalyst for change, empowering individuals to rewrite the fashion narrative.
 _____________________________________________________________________________________________________________________________________________
 
 # Features 
 _____________________________________________________________________________________________________________________________________________
 
-💼 **Waste Collection** 🤝 - Report `littered` areas, join cleanup efforts easily.
+🤖 **AI Stylist** 💛: Get personalized outfit ideas based on your wardrobe & `sustainability goals`.
 
-🎁 **Reward System** 🎉 - Earn points for active `participation`, redeem rewards.
+👕 **Thrift Finder** 🔍 : Discover pre-loved gems that match your `AI-generated` looks.
 
-🔒 **Location Tracking** 📍- Track movement, optimize cleanup with `real-time` data.
+🧃 **Eco-Material Search** ♻️: Explore clothing made with `recycled`, `organic`, & `upcycled materials`.
 
-🦾 **Community Engagement** 🤝- Host social cleanups, engage volunteers for `rewards`.
+🦾 **Fashion Inspiration** 🪄 : Share & discover unique styles from the communities.
+
+🎒 **Sustainability Education** 📔 : Learn about the impact of fashion & how to make a difference.
 
 _____________________________________________________________________________________________________________________________________________
-
-
-| Uses of Here API    |
-|--------------------------|
-| 1. Geocoding          |
-| 2. Reverse Geocoding     |
-| 3. Here AutoSuggest |
-| 4. Here Search |
-| 5. Here Routing |
-| 6. Here Weather |
-
 
 ## Visulize it in most beautiful way
 
 | Preview  | 
 |----------|
-| ![Preview](https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenrecorder-2023-12-28-02-30-21-10.gif?alt=media&token=aac5df57-2e39-4e18-be88-21a531b4eb2f) |
+| ![image](https://github.com/WowDrobe/.github/assets/59131714/9bf2cd2e-8eb5-413b-8141-526c72b4095c) |
 
 
-## Let's have a look
+## WOWDrobe
+![image](https://github.com/WowDrobe/.github/assets/59131714/259d5800-cdf0-4690-8176-776edaaa6a0f)
+![image](https://github.com/WowDrobe/.github/assets/59131714/c1509d65-58f8-485e-9dbd-d616ab55d048)
 
-<p align="center">
-  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.34.02%20AM.png?alt=media&token=5454b3ee-bcb7-4383-920b-1a2535596f05">
-    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.34.02%20AM.png?alt=media&token=5454b3ee-bcb7-4383-920b-1a2535596f05" border="0"></a>
-</p>
-
-<p align="center">
-  <a href="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.44.49%20AM.png?alt=media&token=4871ff11-fa42-4cc3-8cdc-e0c8a296383d">
-    <img src="https://firebasestorage.googleapis.com/v0/b/waste2wealth-v2.appspot.com/o/Screenshot%202023-12-28%20at%203.44.49%20AM.png?alt=media&token=4871ff11-fa42-4cc3-8cdc-e0c8a296383d" border="0"></a>
-</p>
 
 _____________________________________________________________________________________________________________________________________________
-
-### Tech Stack
-| Name | Description |
-| --- | --- |
-| [`@here-api`](https://www.here.com/docs/) | Here API |
-| [`@mapbox`](https://docs.mapbox.com/) | Mapbox |
-| [`@compose`](https://developer.android.com/jetpack/compose) | Jetpack Compose |
-| [`@materialUI`](https://m3.material.io/) | Material 3 |
-| [`@ktor-client`](https://ktor.io/docs/create-client.html) | Ktor CLient |
-| [`@navigation-compose`](https://developer.android.com/jetpack/compose/navigation) | Navigation Compose |
-| [`@coil`](https://coil-kt.github.io/coil/compose/) | Coil-Compose |
-| [`@ksp-room`](https://developer.android.com/build/migrate-to-ksp) | Room Android |
-| [`@dagger-hilt`](https://developer.android.com/training/dependency-injection/hilt-android) | Dagger-hilt |
-| [`@camera-x`](https://developer.android.com/training/camerax) | Camera-X |
-| [`@mlkit`](https://developers.google.com/ml-kit) | MLKit-Google |
-| [`@keyboard-compose`](https://kotlinlang.org/api/latest/jvm/stdlib/) | Kotlin-STDLIB |
-
-## Steps To Run on your Device
-- The Following project was build using `AGP 8.1.0`
--  Check your Android Studio's AGP.
--  If it is `lower` than given AGP follow given steps :-
--  -  #### Go to gradle/libs.version.toml
-   -  #### In [versions] change value of AGP as per requirement
-
-## Steps To Install on your Device
-- Visit the following link 
-- [Install Now](https://drive.google.com/drive/folders/1NAb6Yp4-YvJREhAYW8qH5gsdSNdRjYDS?usp=sharing)
-- Minimum SDK `27` --> `Android version 8.1`
-
-
-
-
-
-
-
-
-
